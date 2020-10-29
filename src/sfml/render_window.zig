@@ -1,8 +1,12 @@
+//! Window that can serve as a target for 2D drawing. 
+
 usingnamespace @import("sfml_import.zig");
 const sf = @import("sfml.zig");
 
 pub const RenderWindow = struct {
     const Self = @This();
+    
+    // Constructor/destructor
 
     pub fn init(width: usize, height: usize, bpp: usize, title: [:0]const u8) !Self {
         var ret: Self = undefined;
@@ -18,7 +22,7 @@ pub const RenderWindow = struct {
         if (window) |w| {
             ret.ptr = w;
         } else {
-            return error.windowCreationFailed;
+            return sf.Error.windowCreationFailed;
         }
 
         return ret;
@@ -27,6 +31,8 @@ pub const RenderWindow = struct {
     pub fn deinit(self: Self) void {
         Sf.sfRenderWindow_destroy(self.ptr);
     }
+
+    // Event related
 
     pub fn isOpen(self: Self) bool {
         return Sf.sfRenderWindow_isOpen(self.ptr) != 0;
@@ -43,6 +49,8 @@ pub const RenderWindow = struct {
         return event;
     }
 
+    // Drawing functions
+
     pub fn clear(self: Self, color: Sf.sfColor) void {
         Sf.sfRenderWindow_clear(self.ptr, color);
     }
@@ -58,5 +66,37 @@ pub const RenderWindow = struct {
         }
     }
 
+    // Getters/setters
+    pub fn getView(self: Self) sf.View {
+        var view = Sf.sfRenderWindow_getDefaultView(self.ptr);
+        return sf.View{.ptr = Sf.sfView_copy(view).?};
+    }
+    pub fn getDefaultView(self: Self) sf.View {
+        var view = Sf.sfRenderWindow_getView(self.ptr);
+        return sf.View{.ptr = Sf.sfView_copy(view).?};
+    }
+    pub fn setView(self: Self, view: sf.View) void {
+        Sf.sfRenderWindow_setView(self.ptr, view.ptr);
+    }
+
+    pub fn getSize(self: Self) Sf.sfVector2u {
+        return Sf.sfRenderWindow_getSize(self.ptr);
+    }
+    pub fn setSize(self: Self, size: Sf.sfVector2u) void {
+        Sf.sfRenderWindow_setSize(self.ptr, size);
+    }
+
+    pub fn getPosition(self: Self) Sf.sfVector2i {
+        return Sf.sfRenderWindow_getPosition(self.ptr);
+    }
+    pub fn setPosition(self: Self, pos: Sf.sfVector2i) void {
+        Sf.sfRenderWindow_setPosition(self.ptr, pos);
+    }
+
+    pub fn setTitle(self: Self, title: [:0]const u8) void {
+        Sf.sfRenderWindow_setTitle(self.ptr, title);
+    }
+
+    // Pointer to the csfml structure
     ptr: *Sf.sfRenderWindow
 };
