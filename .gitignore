@@ -1,0 +1,5 @@
+csfml/
+zig-cache/
+
+NUL
+*.dll
