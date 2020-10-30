@@ -23,6 +23,11 @@ pub fn main() anyerror!void {
     bob.setFillColor(Sf.sfRed);
     bob.setOrigin(.{.x = 10, .y = 10});
 
+    var rect = try sf.RectangleShape.init(.{.x = 50, .y = 70});
+    defer rect.deinit();
+    rect.setFillColor(Sf.sfYellow);
+    rect.setPosition(.{.x = 100, .y = 100});
+
     // Clock
     var clock = try sf.Clock.init();
     defer clock.deinit();
@@ -50,6 +55,7 @@ pub fn main() anyerror!void {
         window.clear(Sf.sfBlack);
         window.draw(circle, null);
         window.draw(bob, null);
+        window.draw(rect, null);
         window.display();
     }
 }

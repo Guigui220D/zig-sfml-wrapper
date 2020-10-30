@@ -75,6 +75,7 @@ pub const RenderWindow = struct {
     pub fn draw(self: Self, to_draw: anytype, states: ?*Sf.sfRenderStates) void {
         switch (@TypeOf(to_draw)) {
             sf.CircleShape => Sf.sfRenderWindow_drawCircleShape(self.ptr, to_draw.ptr, states),
+            sf.RectangleShape => Sf.sfRenderWindow_drawRectangleShape(self.ptr, to_draw.ptr, states),
             else => @compileError("You must provide a drawable object")
         }
     }

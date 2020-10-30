@@ -26,6 +26,7 @@ pub const View = struct {
 
     /// Creates a CSFML view from this view
     /// This is mainly for the inner workings of this wrapper
+    /// The resulting view must be destroyed!
     pub fn toCSFML(self: Self) *Sf.sfView {
         var view = Sf.sfView_create().?;
         Sf.sfView_setCenter(view, self.center.toCSFML());
