@@ -10,5 +10,6 @@ usingnamespace @import("graphics/rect.zig");
 usingnamespace @import("graphics/view.zig");
 
 usingnamespace @import("system/vector.zig");
+usingnamespace @import("system/time.zig");
 usingnamespace @import("system/clock.zig");
 

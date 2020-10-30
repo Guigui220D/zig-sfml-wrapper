@@ -53,14 +53,13 @@ pub fn Rect(comptime T: type) type {
             var max_y: T = math.max(self.top, self.top + self.height);
 
             return (
-                x >= min_x and 
-                x < max_x and 
-                y >= min_y and 
-                y < max_y
+                vec.x >= min_x and 
+                vec.x < max_x and 
+                vec.y >= min_y and 
+                vec.y < max_y
             );
         }
 
-        // TODO : Tests!
         /// Checks if two rectangles have a common intersection, if yes returns that zone, if not returns null
         pub fn intersects(self: Self, other: Self) ?Self {
             // Shamelessly stolen too
@@ -109,3 +108,31 @@ pub fn Rect(comptime T: type) type {
 // Common rect types
 pub const IntRect = Rect(i32);
 pub const FloatRect = Rect(f32);
+
+const tst = @import("std").testing;
+
+test "rect: intersect" {
+    var r1 = IntRect.init(0, 0, 10, 10);
+    var r2 = IntRect.init(6, 6, 20, 20);
+    var r3 = IntRect.init(-5, -5, 10, 10);
+
+    tst.expectEqual(@as(?IntRect, null), r2.intersects(r3));
+
+    var inter1: Sf.sfIntRect = undefined;
+    var inter2: Sf.sfIntRect = undefined;
+
+    tst.expectEqual(Sf.sfIntRect_intersects(&r1.toCSFML(), &r2.toCSFML(), &inter1), 1);
+    tst.expectEqual(Sf.sfIntRect_intersects(&r1.toCSFML(), &r3.toCSFML(), &inter2), 1);
+
+    tst.expectEqual(IntRect.fromCSFML(inter1), r1.intersects(r2).?);
+    tst.expectEqual(IntRect.fromCSFML(inter2), r1.intersects(r3).?);
+}
+
+test "rect: contains" {
+    var r1 = FloatRect.init(0, 0, 10, 10);
+
+    tst.expect(r1.contains(.{.x = 0, .y = 0}));
+    tst.expect(r1.contains(.{.x = 9, .y = 9}));
+    tst.expect(!r1.contains(.{.x = 5, .y = -1}));
+    tst.expect(!r1.contains(.{.x = 10, .y = 5}));
+}

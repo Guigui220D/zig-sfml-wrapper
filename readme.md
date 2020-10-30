@@ -19,6 +19,7 @@ sfml-wrapper
 + build.zig
 
 Use `zig build run` to run the example program
+
 Use `zig build test` to run the tests (which arent that useful)
 
 ### Small example

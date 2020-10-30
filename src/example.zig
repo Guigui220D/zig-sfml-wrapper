@@ -49,7 +49,7 @@ pub fn main() anyerror!void {
         }
 
         //Updating
-        var total = clock.getElapsedSeconds();
+        var total = clock.getElapsedTime().asSeconds();
         bob.setPosition(.{.x = 150.0 * std.math.cos(total), .y = 120.0 * std.math.sin(total)});
 
         rect.setRotation(total * 12);
