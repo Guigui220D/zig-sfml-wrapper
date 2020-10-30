@@ -48,6 +48,8 @@ pub fn main() anyerror!void {
         var total = clock.getElapsedSeconds();
         bob.setPosition(.{.x = 150.0 * std.math.cos(total), .y = 120.0 * std.math.sin(total)});
 
+        rect.setRotation(total * 12);
+
         view.center = bob.getPosition();
         window.setView(view);
 

@@ -63,6 +63,15 @@ pub const RectangleShape = struct {
         Sf.sfRectangleShape_setOrigin(self.ptr, origin.toCSFML());
     }
 
+    /// Gets the rotation of this rectangle shape
+    pub fn getRotation(self: Self) f32 {
+        return Sf.sfRectangleShape_getRotation(self.ptr);
+    }
+    /// Sets the rotation of this rectangle shape
+    pub fn setRotation(self: Self, angle: f32) void {
+        Sf.sfRectangleShape_setRotation(self.ptr, angle);
+    }
+
     /// Pointer to the csfml structure
     ptr: *Sf.sfRectangleShape
 };
@@ -77,12 +86,14 @@ test "rectangle shape: sane getters and setters" {
 
     rect.setFillColor(Sf.sfYellow);
     rect.setSize(.{.x = 15, .y = 510});
+    rect.setRotation(15);
     rect.setPosition(.{.x = 1, .y = 2});
     rect.setOrigin(.{.x = 20, .y = 25});
 
     // TODO : find why that doesn't work
     //tst.expectEqual(Sf.sfYellow, rect.getFillColor()); 
     tst.expectEqual(sf.Vector2f{.x = 15, .y = 510}, rect.getSize());
+    tst.expectEqual(@as(f32, 15), rect.getRotation());
     tst.expectEqual(sf.Vector2f{.x = 1, .y = 2}, rect.getPosition());
     tst.expectEqual(sf.Vector2f{.x = 20, .y = 25}, rect.getOrigin());
 }

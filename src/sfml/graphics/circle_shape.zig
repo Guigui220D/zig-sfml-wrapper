@@ -63,6 +63,15 @@ pub const CircleShape = struct {
         Sf.sfCircleShape_setOrigin(self.ptr, origin.toCSFML());
     }
 
+    /// Gets the rotation of this circle shape
+    pub fn getRotation(self: Self) f32 {
+        return Sf.sfCircleShape_getRotation(self.ptr);
+    }
+    /// Sets the rotation of this circle shape
+    pub fn setRotation(self: Self, angle: f32) void {
+        Sf.sfCircleShape_setRotation(self.ptr, angle);
+    }
+
     /// Pointer to the csfml structure
     ptr: *Sf.sfCircleShape
 };
@@ -75,12 +84,14 @@ test "circle shape: sane getters and setters" {
 
     circle.setFillColor(Sf.sfYellow);
     circle.setRadius(50);
+    circle.setRotation(15);
     circle.setPosition(.{.x = 1, .y = 2});
     circle.setOrigin(.{.x = 20, .y = 25});
 
     // TODO : find why that doesn't work
     //tst.expectEqual(Sf.sfYellow, circle.getFillColor()); 
-    tst.expectEqual(@as(f32, 50.0), circle.getRadius());
+    tst.expectEqual(@as(f32, 50), circle.getRadius());
+    tst.expectEqual(@as(f32, 15), circle.getRotation());
     tst.expectEqual(sf.Vector2f{.x = 1, .y = 2}, circle.getPosition());
     tst.expectEqual(sf.Vector2f{.x = 20, .y = 25}, circle.getOrigin());
 }
