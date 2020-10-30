@@ -72,6 +72,11 @@ pub const RectangleShape = struct {
         Sf.sfRectangleShape_setRotation(self.ptr, angle);
     }
 
+    /// Sets the texture of this shape
+    pub fn setTexture(self: Self, texture: sf.Texture) void {
+        Sf.sfRectangleShape_setTexture(self.ptr, texture.ptr, 0);
+    }
+
     /// Pointer to the csfml structure
     ptr: *Sf.sfRectangleShape
 };

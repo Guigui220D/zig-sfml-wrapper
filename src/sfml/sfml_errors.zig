@@ -2,5 +2,6 @@
 
 pub const Error = error {
     nullptrUnknownReason,
-    windowCreationFailed
+    windowCreationFailed,
+    resourceLoadingError
 };

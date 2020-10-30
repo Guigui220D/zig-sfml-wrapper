@@ -23,10 +23,14 @@ pub fn main() anyerror!void {
     bob.setFillColor(Sf.sfRed);
     bob.setOrigin(.{.x = 10, .y = 10});
 
+    var tex = try sf.Texture.initFromFile("test.png");
+    defer tex.deinit();
+
     var rect = try sf.RectangleShape.init(.{.x = 50, .y = 70});
     defer rect.deinit();
     rect.setFillColor(Sf.sfYellow);
     rect.setPosition(.{.x = 100, .y = 100});
+    rect.setTexture(tex);
 
     // Clock
     var clock = try sf.Clock.init();
