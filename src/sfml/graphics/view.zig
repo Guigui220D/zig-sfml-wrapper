@@ -1,74 +1,53 @@
 //! 2D camera that defines what region is shown on screen.
 
 usingnamespace @import("../sfml_import.zig");
-const sf = @import("../sfml_errors.zig");
-
-// TODO : some functions return const views, how to handle that?
-// Should this struct contain the view data (center and size) instead of a pointer to a csfml object?
+const sf = @import("../sfml.zig");
 
 pub const View = struct {
     const Self = @This();
     
-    // Constructor/destructor
-
-    pub fn init() !Self {
-        var view = Sf.sfView_create();
-        if (view == null)
-            return sf.Error.nullptrUnknownReason;
-
-        return Self{ .ptr = view.? };
+    pub fn fromRect(rect: Sf.sfFloatRect) Self {
+        var ret: Self = undefined;
+        ret.center = .{.x = rect.left, .y = rect.top};
+        ret.size = .{.x = rect.width, .y = rect.height};
+        ret.center = ret.center.plus(ret.size.scale(0.5));
+        return ret;
     }
 
-    pub fn initFromRect(rect: Sf.sfFloatRect) !Self {
-        var view = Sf.sfView_createFromRect(rect);
-        if (view == null)
-            return sf.Error.nullptrUnknownReason;
-
-        return Self{ .ptr = view.? };
+    pub fn fromCSFML(view: *const Sf.sfView) Self {
+        var ret: Self = undefined;
+        ret.center = sf.Vector2f.fromCSFML(Sf.sfView_getCenter(view));
+        ret.size = sf.Vector2f.fromCSFML(Sf.sfView_getSize(view));
+        return ret;
     }
 
-    pub fn deinit(self: Self) void {
-        Sf.sfView_destroy(self.ptr);
-    }
-
-    // Getters/setters
-
-    pub fn getSize(self: Self) Sf.sfVector2f {
-        return Sf.sfView_getSize(self.ptr);
-    }
-    pub fn setSize(self: Self, size: Sf.sfVector2f) void {
-        Sf.sfView_setSize(self.ptr, size);
-    }
-
-    pub fn getCenter(self: Self) Sf.sfVector2f {
-        return Sf.sfView_getCenter(self.ptr);
-    }
-    pub fn setCenter(self: Self, pos: Sf.sfVector2f) void {
-        Sf.sfView_setCenter(self.ptr, pos);
+    pub fn toCSFML(self: Self) *Sf.sfView {
+        var view = Sf.sfView_create().?;
+        Sf.sfView_setCenter(view, self.center.toCSFML());
+        Sf.sfView_setSize(view, self.size.toCSFML());
+        return view;
     }
 
     // Pointer to the csfml structure
-    ptr: *Sf.sfView
+    center: sf.Vector2f,
+    size: sf.Vector2f
 };
 
 const tst = @import("std").testing;
 
-test "view: sane getters and setters" {
-    var view = try View.init();
-    defer view.deinit();
+test "view: comparison with csfml views" {
+    var rect = Sf.sfFloatRect{.left = 10, .top = -15, .width = 700, .height = 600};
 
-    tst.expectEqual(Sf.sfVector2f{.x = 500, .y = 500}, view.getCenter());
-    tst.expectEqual(Sf.sfVector2f{.x = 1000, .y = 1000}, view.getSize());
+    var view = Sf.sfView_createFromRect(rect);
+    defer Sf.sfView_destroy(view);
 
-    var view2 = try View.initFromRect(Sf.sfFloatRect{.left = -10, .top = -10, .width = 20, .height = 20});
-    defer view2.deinit();
+    var view2 = View.fromRect(rect);
 
-    tst.expectEqual(Sf.sfVector2f{.x = 0, .y = 0}, view2.getCenter());
-    tst.expectEqual(Sf.sfVector2f{.x = 20, .y = 20}, view2.getSize());
+    var center = sf.Vector2f.fromCSFML(Sf.sfView_getCenter(view));
+    var size = sf.Vector2f.fromCSFML(Sf.sfView_getSize(view));
 
-    view2.setCenter(Sf.sfVector2f{.x = 30, .y = -15});
-    view2.setSize(Sf.sfVector2f{.x = 1200, .y = 1200});
-
-    tst.expectEqual(Sf.sfVector2f{.x = 30, .y = -15}, view2.getCenter());
-    tst.expectEqual(Sf.sfVector2f{.x = 1200, .y = 1200}, view2.getSize());
+    tst.expectWithinMargin(center.x, view2.center.x, 0.00001);
+    tst.expectWithinMargin(center.y, view2.center.y, 0.00001);
+    tst.expectWithinMargin(size.x, view2.size.x, 0.00001);
+    tst.expectWithinMargin(size.y, view2.size.y, 0.00001);
 }

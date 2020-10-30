@@ -22,7 +22,6 @@ pub fn main() anyerror!void {
     defer clock.deinit();
 
     var view = window.getDefaultView();
-    defer view.deinit();
 
     while (window.isOpen()) {
         //Event polling
@@ -37,7 +36,7 @@ pub fn main() anyerror!void {
         var total = clock.getElapsedSeconds();
         bob.setPosition(.{.x = 150.0 * std.math.cos(total), .y = 120.0 * std.math.sin(total)});
 
-        view.setCenter(bob.getPosition());
+        view.center = bob.getPosition();
         window.setView(view);
 
         //Drawing

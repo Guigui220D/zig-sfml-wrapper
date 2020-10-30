@@ -19,6 +19,18 @@ pub fn Vector2(comptime T: type) type {
             return Self{.x = vec.x, .y = vec.y};
         }
 
+        pub fn plus(self: Self, other: Self) Self {
+            return Self{.x = self.x + other.x, .y = self.y + other.y};
+        }
+
+        pub fn minus(self: Self, other: Self) Self {
+            return Self{.x = self.x - other.x, .y = self.y - other.y};
+        }
+
+        pub fn scale(self: Self, factor: T) Self {
+            return Self{.x = self.x * factor, .y = self.y * factor};
+        }
+
         x: T,
         y: T
     };

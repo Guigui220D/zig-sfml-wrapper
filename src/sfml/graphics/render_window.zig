@@ -68,15 +68,15 @@ pub const RenderWindow = struct {
 
     // Getters/setters
     pub fn getView(self: Self) sf.View {
-        var view = Sf.sfRenderWindow_getDefaultView(self.ptr);
-        return sf.View{.ptr = Sf.sfView_copy(view).?};
+        return sf.View.fromCSFML(Sf.sfRenderWindow_getView(self.ptr).?);
     }
     pub fn getDefaultView(self: Self) sf.View {
-        var view = Sf.sfRenderWindow_getView(self.ptr);
-        return sf.View{.ptr = Sf.sfView_copy(view).?};
+        return sf.View.fromCSFML(Sf.sfRenderWindow_getDefaultView(self.ptr).?);
     }
     pub fn setView(self: Self, view: sf.View) void {
-        Sf.sfRenderWindow_setView(self.ptr, view.ptr);
+        var cview = view.toCSFML();
+        defer Sf.sfView_destroy(cview);
+        Sf.sfRenderWindow_setView(self.ptr, cview);
     }
 
     pub fn getSize(self: Self) sf.Vector2u {
