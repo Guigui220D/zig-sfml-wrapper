@@ -6,6 +6,7 @@ usingnamespace @import("graphics/render_window.zig");
 usingnamespace @import("graphics/texture.zig");
 usingnamespace @import("graphics/circle_shape.zig");
 usingnamespace @import("graphics/rectangle_shape.zig");
+usingnamespace @import("graphics/rect.zig");
 usingnamespace @import("graphics/view.zig");
 
 usingnamespace @import("system/vector.zig");

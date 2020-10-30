@@ -7,10 +7,10 @@ pub const View = struct {
     const Self = @This();
     
     /// Creates a view from a rectangle
-    pub fn fromRect(rect: Sf.sfFloatRect) Self {
+    pub fn fromRect(rect: sf.FloatRect) Self {
         var ret: Self = undefined;
-        ret.center = .{.x = rect.left, .y = rect.top};
-        ret.size = .{.x = rect.width, .y = rect.height};
+        ret.center = rect.getCorner();
+        ret.size = rect.getSize();
         ret.center = ret.center.add(ret.size.scale(0.5));
         return ret;
     }
@@ -45,9 +45,9 @@ const tst = @import("std").testing;
 
 test "view: from rect" {
     // Testing if the view from rect initialization works
-    var rect = Sf.sfFloatRect{.left = 10, .top = -15, .width = 700, .height = 600};
+    var rect = sf.FloatRect.init(10, -15, 700, 600);
 
-    var view = Sf.sfView_createFromRect(rect);
+    var view = Sf.sfView_createFromRect(rect.toCSFML());
     defer Sf.sfView_destroy(view);
 
     var view2 = View.fromRect(rect);
