@@ -1,12 +1,17 @@
+///! This is an example use of the sfml
+
 const std = @import("std");
 
 usingnamespace @import("sfml/sfml_import.zig");
 const sf = @import("sfml/sfml.zig");
 
+// I only use things I've wrapped here, but the other csfml functions seem to work, just need to wrap them
 pub fn main() anyerror!void {
-    var window = try sf.RenderWindow.init(800, 600, 32, "This is zig!");
+    // Create a window
+    var window = try sf.RenderWindow.init(.{.x = 800, .y = 600}, 32, "This is zig!");
     defer window.deinit();
 
+    // Shapes creation
     var circle = try sf.CircleShape.init(100);
     defer circle.deinit();
     circle.setFillColor(Sf.sfGreen);
@@ -18,11 +23,13 @@ pub fn main() anyerror!void {
     bob.setFillColor(Sf.sfRed);
     bob.setOrigin(.{.x = 10, .y = 10});
 
+    // Clock
     var clock = try sf.Clock.init();
     defer clock.deinit();
 
     var view = window.getDefaultView();
 
+    // Game loop
     while (window.isOpen()) {
         //Event polling
         while (window.pollEvent()) |event| {

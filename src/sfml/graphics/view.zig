@@ -6,14 +6,17 @@ const sf = @import("../sfml.zig");
 pub const View = struct {
     const Self = @This();
     
+    /// Creates a view from a rectangle
     pub fn fromRect(rect: Sf.sfFloatRect) Self {
         var ret: Self = undefined;
         ret.center = .{.x = rect.left, .y = rect.top};
         ret.size = .{.x = rect.width, .y = rect.height};
-        ret.center = ret.center.plus(ret.size.scale(0.5));
+        ret.center = ret.center.add(ret.size.scale(0.5));
         return ret;
     }
-
+    
+    /// Creates a view from a CSFML object
+    /// This is mainly for the inner workings of this wrapper
     pub fn fromCSFML(view: *const Sf.sfView) Self {
         var ret: Self = undefined;
         ret.center = sf.Vector2f.fromCSFML(Sf.sfView_getCenter(view));
@@ -21,6 +24,8 @@ pub const View = struct {
         return ret;
     }
 
+    /// Creates a CSFML view from this view
+    /// This is mainly for the inner workings of this wrapper
     pub fn toCSFML(self: Self) *Sf.sfView {
         var view = Sf.sfView_create().?;
         Sf.sfView_setCenter(view, self.center.toCSFML());
@@ -28,14 +33,17 @@ pub const View = struct {
         return view;
     }
 
-    // Pointer to the csfml structure
+    // View variables
+    /// Center of the view, what this view "looks" at
     center: sf.Vector2f,
+    /// Width and height of the view
     size: sf.Vector2f
 };
 
 const tst = @import("std").testing;
 
-test "view: comparison with csfml views" {
+test "view: from rect" {
+    // Testing if the view from rect initialization works
     var rect = Sf.sfFloatRect{.left = 10, .top = -15, .width = 700, .height = 600};
 
     var view = Sf.sfView_createFromRect(rect);

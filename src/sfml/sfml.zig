@@ -1,3 +1,5 @@
+//! Import this to get all the sfml wrapper classes
+
 usingnamespace @import("sfml_errors.zig");
 
 usingnamespace @import("graphics/render_window.zig");

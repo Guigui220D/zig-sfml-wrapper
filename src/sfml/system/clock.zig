@@ -8,6 +8,8 @@ pub const Clock = struct {
     
     // Constructor/destructor
 
+    /// Inits a clock. The clock will have its time set at 0 at this point, and automatically starts
+    /// Std.time timer also is a good alternative
     pub fn init() !Self {
         var clock = Sf.sfClock_create();
         if (clock == null)
@@ -16,6 +18,7 @@ pub const Clock = struct {
         return Self{ .ptr = clock.? };
     }
 
+    /// Destroys this clock
     pub fn deinit(self: Self) void {
         Sf.sfClock_destroy(self.ptr);
     }
@@ -24,17 +27,19 @@ pub const Clock = struct {
     // TODO : use sfTime instead
     // the std's timer can be used too
 
+    /// Gets the elapsed seconds
     pub fn getElapsedSeconds(self: Self) f32 {
         var time = Sf.sfClock_getElapsedTime(self.ptr);
         return Sf.sfTime_asSeconds(time);
     }
 
+    /// Gets the elapsed seconds and restarts the timer
     pub fn restart(self: Self) f32 {
         var time = Sf.sfClock_restart(self.ptr);
         return Sf.sfTime_asSeconds(time);
     }
 
-    // Pointer to the csfml structure
+    /// Pointer to the csfml structure
     ptr: *Sf.sfClock
 };
 
@@ -42,6 +47,7 @@ const std = @import("std");
 const tst = std.testing;
 
 test "clock: sleep test" { 
+    // This tests just sleeps and check what the timer measured (not very accurate but eh)
     var clk = try Clock.init();
     defer clk.deinit();
 
