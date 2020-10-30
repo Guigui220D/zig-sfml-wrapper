@@ -122,6 +122,36 @@ pub const RenderWindow = struct {
         Sf.sfRenderWindow_setTitle(self.ptr, title);
     }
 
+    /// Sets the windows's framerate limit
+    pub fn setFramerateLimit(self: Self, fps: c_uint) void {
+        Sf.sfRenderWindow_setFramerateLimit(self.ptr, fps);
+    }
+    /// Enables or disables vertical sync
+    pub fn setVerticalSyncEnabled(self: Self, enabled: bool) void {
+        Sf.sfRenderWindow_setFramerateLimit(self.ptr, if (enabled) 1 else 0);
+    }
+
+    /// Convert a point from target coordinates to world coordinates, using the current view (or the specified view)
+    pub fn mapPixelToCoords(self: Self, pixel: sf.Vector2i, view: ?sf.View) sf.Vector2f {
+        if (view) |v| {
+            var cview = v.toCSFML();
+            defer Sf.sfView_destroy(cview);
+            return sf.Vector2f.fromCSFML(Sf.sfRenderWindow_mapPixelToCoords(self.ptr, pixel.toCSFML(), cview));
+        } else
+            return sf.Vector2f.fromCSFML(Sf.sfRenderWindow_mapPixelToCoords(self.ptr, pixel.toCSFML(), null));
+    }
+
+    /// Convert a point from world coordinates to target coordinates, using the current view (or the specified view)
+    pub fn mapCoordsToPixel(self: Self, coords: sf.Vector2f, view: ?sf.View) sf.Vector2i {
+        if (view) |v| {
+            var cview = v.toCSFML();
+            defer Sf.sfView_destroy(cview);
+            return sf.Vector2i.fromCSFML(Sf.sfRenderWindow_mapCoordsToPixel(self.ptr, coords.toCSFML(), cview));
+        } else
+            return sf.Vector2i.fromCSFML(Sf.sfRenderWindow_mapCoordsToPixel(self.ptr, coords.toCSFML(), null));
+        
+    }
+
     /// Pointer to the csfml structure
     ptr: *Sf.sfRenderWindow
 };

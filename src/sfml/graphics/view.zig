@@ -12,6 +12,7 @@ pub const View = struct {
         ret.center = rect.getCorner();
         ret.size = rect.getSize();
         ret.center = ret.center.add(ret.size.scale(0.5));
+        ret.viewport = sf.FloatRect.init(0, 0, 1, 1);
         return ret;
     }
     
@@ -21,6 +22,7 @@ pub const View = struct {
         var ret: Self = undefined;
         ret.center = sf.Vector2f.fromCSFML(Sf.sfView_getCenter(view));
         ret.size = sf.Vector2f.fromCSFML(Sf.sfView_getSize(view));
+        ret.viewport = sf.FloatRect.fromCSFML(Sf.sfView_getViewport(view));
         return ret;
     }
 
@@ -31,6 +33,7 @@ pub const View = struct {
         var view = Sf.sfView_create().?;
         Sf.sfView_setCenter(view, self.center.toCSFML());
         Sf.sfView_setSize(view, self.size.toCSFML());
+        Sf.sfView_setViewport(view, self.viewport.toCSFML());
         return view;
     }
 
@@ -38,7 +41,9 @@ pub const View = struct {
     /// Center of the view, what this view "looks" at
     center: sf.Vector2f,
     /// Width and height of the view
-    size: sf.Vector2f
+    size: sf.Vector2f,
+    /// The viewport of this view
+    viewport: sf.FloatRect
 };
 
 const tst = @import("std").testing;

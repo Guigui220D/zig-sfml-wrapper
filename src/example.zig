@@ -10,6 +10,8 @@ pub fn main() anyerror!void {
     // Create a window
     var window = try sf.RenderWindow.init(.{.x = 800, .y = 600}, 32, "This is zig!");
     defer window.deinit();
+    //window.setVerticalSyncEnabled(false);
+    window.setFramerateLimit(60);
 
     // Shapes creation
     var circle = try sf.CircleShape.init(100);
@@ -44,6 +46,15 @@ pub fn main() anyerror!void {
         while (window.pollEvent()) |event| {
             switch (event.type) {
                 Sf.sfEventType.sfEvtClosed => window.close(),
+                Sf.sfEventType.sfEvtMouseButtonPressed => {
+                    //std.debug.print("click\n", .{});
+                    var vec = sf.Vector2i{
+                        .x = event.mouseButton.x,
+                        .y = event.mouseButton.y
+                    };
+                    var coords = window.mapPixelToCoords(vec, null);
+                    rect.setPosition(coords);
+                },
                 else => {}
             }
         }
