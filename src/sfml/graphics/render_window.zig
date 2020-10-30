@@ -1,7 +1,7 @@
 //! Window that can serve as a target for 2D drawing. 
 
-usingnamespace @import("sfml_import.zig");
-const sf = @import("sfml.zig");
+usingnamespace @import("../sfml_import.zig");
+const sf = @import("../sfml.zig");
 
 pub const RenderWindow = struct {
     const Self = @This();
@@ -79,18 +79,18 @@ pub const RenderWindow = struct {
         Sf.sfRenderWindow_setView(self.ptr, view.ptr);
     }
 
-    pub fn getSize(self: Self) Sf.sfVector2u {
-        return Sf.sfRenderWindow_getSize(self.ptr);
+    pub fn getSize(self: Self) sf.Vector2u {
+        return  sf.Vector2u.fromCSFML(Sf.sfRenderWindow_getSize(self.ptr));
     }
-    pub fn setSize(self: Self, size: Sf.sfVector2u) void {
-        Sf.sfRenderWindow_setSize(self.ptr, size);
+    pub fn setSize(self: Self, size: sf.Vector2u) void {
+        Sf.sfRenderWindow_setSize(self.ptr, size.toCSFML());
     }
 
-    pub fn getPosition(self: Self) Sf.sfVector2i {
-        return Sf.sfRenderWindow_getPosition(self.ptr);
+    pub fn getPosition(self: Self) sf.Vector2u {
+        return sf.Vector2u.fromCSFML(Sf.sfRenderWindow_getPosition(self.ptr));
     }
-    pub fn setPosition(self: Self, pos: Sf.sfVector2i) void {
-        Sf.sfRenderWindow_setPosition(self.ptr, pos);
+    pub fn setPosition(self: Self, pos: sf.Vector2u) void {
+        Sf.sfRenderWindow_setPosition(self.ptr, pos.toCSFML());
     }
 
     pub fn setTitle(self: Self, title: [:0]const u8) void {

@@ -1,7 +1,7 @@
 //! 2D camera that defines what region is shown on screen.
 
-usingnamespace @import("sfml_import.zig");
-const sf = @import("sfml_errors.zig");
+usingnamespace @import("../sfml_import.zig");
+const sf = @import("../sfml_errors.zig");
 
 // TODO : some functions return const views, how to handle that?
 // Should this struct contain the view data (center and size) instead of a pointer to a csfml object?

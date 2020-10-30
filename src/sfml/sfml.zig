@@ -1,7 +1,8 @@
 usingnamespace @import("sfml_errors.zig");
 
-usingnamespace @import("render_window.zig");
-usingnamespace @import("view.zig");
-usingnamespace @import("clock.zig");
+usingnamespace @import("graphics/render_window.zig");
+usingnamespace @import("graphics/circle_shape.zig");
+usingnamespace @import("graphics/view.zig");
 
-usingnamespace @import("circle_shape.zig");
+usingnamespace @import("system/vector.zig");
+usingnamespace @import("system/clock.zig");

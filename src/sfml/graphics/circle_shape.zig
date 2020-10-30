@@ -1,7 +1,7 @@
 //! Specialized shape representing a circle. 
 
-usingnamespace @import("sfml_import.zig");
-const sf = @import("sfml_errors.zig");
+usingnamespace @import("../sfml_import.zig");
+const sf = @import("../sfml.zig");
 
 pub const CircleShape = struct {
     const Self = @This();
@@ -39,18 +39,18 @@ pub const CircleShape = struct {
         Sf.sfCircleShape_setRadius(self.ptr, radius);
     }
 
-    pub fn getPosition(self: Self) Sf.sfVector2f {
-        return Sf.sfCircleShape_getPosition(self.ptr);
+    pub fn getPosition(self: Self) sf.Vector2f {
+        return sf.Vector2f.fromCSFML(Sf.sfCircleShape_getPosition(self.ptr));
     }
-    pub fn setPosition(self: Self, pos: Sf.sfVector2f) void {
-        Sf.sfCircleShape_setPosition(self.ptr, pos);
+    pub fn setPosition(self: Self, pos: sf.Vector2f) void {
+        Sf.sfCircleShape_setPosition(self.ptr, pos.toCSFML());
     }
 
-    pub fn getOrigin(self: Self) Sf.sfVector2f {
-        return Sf.sfCircleShape_getOrigin(self.ptr);
+    pub fn getOrigin(self: Self) sf.Vector2f {
+        return sf.Vector2f.fromCSFML(Sf.sfCircleShape_getOrigin(self.ptr));
     }
-    pub fn setOrigin(self: Self, origin: Sf.sfVector2f) void {
-        Sf.sfCircleShape_setOrigin(self.ptr, origin);
+    pub fn setOrigin(self: Self, origin: sf.Vector2f) void {
+        Sf.sfCircleShape_setOrigin(self.ptr, origin.toCSFML());
     }
 
     // Pointer to the csfml structure
@@ -71,6 +71,6 @@ test "circle shape: sane getters and setters" {
     // TODO : find why that doesn't work
     //tst.expectEqual(Sf.sfYellow, circle.getFillColor()); 
     tst.expectEqual(@as(f32, 50.0), circle.getRadius());
-    tst.expectEqual(Sf.sfVector2f{.x = 1, .y = 2}, circle.getPosition());
-    tst.expectEqual(Sf.sfVector2f{.x = 20, .y = 25}, circle.getOrigin());
+    tst.expectEqual(sf.Vector2f{.x = 1, .y = 2}, circle.getPosition());
+    tst.expectEqual(sf.Vector2f{.x = 20, .y = 25}, circle.getOrigin());
 }
