@@ -13,3 +13,4 @@ usingnamespace @import("system/vector.zig");
 usingnamespace @import("system/time.zig");
 usingnamespace @import("system/clock.zig");
 
+usingnamespace @import("window/keyboard.zig");

@@ -84,6 +84,14 @@ pub const RectangleShape = struct {
     pub fn setTexture(self: Self, texture: sf.Texture) void {
         Sf.sfRectangleShape_setTexture(self.ptr, texture.get(), 0);
     }
+    /// Gets the sub-rectangle of the texture that the shape will display
+    pub fn getTextureRect(self: Self) sf.FloatRect {
+        return sf.FloatRect.fromCSFML(Sf.sfRectangleShape_getTextureRect(self.ptr));
+    }
+    /// Sets the sub-rectangle of the texture that the shape will display
+    pub fn setTextureRect(self: Self, rect: sf.FloatRect) void {
+        Sf.sfRectangleShape_getTextureRect(self.ptr, rect.toCSFML());
+    }
 
     /// Pointer to the csfml structure
     ptr: *Sf.sfRectangleShape
@@ -109,4 +117,5 @@ test "rectangle shape: sane getters and setters" {
     tst.expectEqual(@as(f32, 15), rect.getRotation());
     tst.expectEqual(sf.Vector2f{.x = 1, .y = 2}, rect.getPosition());
     tst.expectEqual(sf.Vector2f{.x = 20, .y = 25}, rect.getOrigin());
+    tst.expectEqual(@as(?sf.Texture, null), rect.getTexture());
 }

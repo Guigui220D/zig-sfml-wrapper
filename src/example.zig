@@ -66,7 +66,8 @@ pub fn main() anyerror!void {
         rect.setRotation(total * 12);
 
         view.center = bob.getPosition();
-        window.setView(view);
+        if (sf.Keyboard.isKeyPressed(.A))
+            window.setView(view);
 
         //Drawing
         window.clear(Sf.sfBlack);
