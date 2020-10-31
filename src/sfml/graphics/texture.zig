@@ -3,7 +3,12 @@
 usingnamespace @import("../sfml_import.zig");
 const sf = @import("../sfml.zig");
 
-pub const Texture = struct {
+const TextureType = enum {
+    ptr,
+    const_ptr
+};
+
+pub const Texture = union(TextureType) {
     const Self = @This();
 
     // Constructor/destructor
@@ -25,20 +30,40 @@ pub const Texture = struct {
             return sf.Error.resourceLoadingError;
         return Self{.ptr = tex.?};
     }
-
+    /// Destroys a texture
+    /// Be careful, you can only destroy non const textures
     pub fn deinit(self: Self) void {
+        // TODO : is it possible to detect that comptime?
+        // Should this panic?
+        if (self == .const_ptr)
+            @panic("Can't destroy a const texture pointer");
         Sf.sfTexture_destroy(self.ptr);
     }
 
     // Getters/Setters
+    /// Gets a const pointer to this texture
+    pub fn get(self: Self) *const Sf.sfTexture {
+        return switch (self) {
+            .ptr => self.ptr,
+            .const_ptr => self.const_ptr
+        };
+    } 
+    /// Clones this texture (the clone won't be const)
+    pub fn copy(self: Self) !Self {
+        var cpy = Sf.sfTexture_copy(self.get());
+        if (cpy == null)
+            return sf.Error.nullptrUnknownReason;
+        return Self{.ptr = cpy.?};
+    } 
 
     /// Gets the size of this image
     pub fn getSize(self: Self) sf.Vector2u {
-        return sf.Vector2u.fromCSFML(Sf.sfTexture_getSize(self.ptr));
+        return sf.Vector2u.fromCSFML(Sf.sfTexture_getSize(self.get()));
     }
 
     // TODO: many things
 
     /// Pointer to the csfml structure
-    ptr: *Sf.sfTexture
+    ptr: *Sf.sfTexture,
+    const_ptr: *const Sf.sfTexture
 };

@@ -72,9 +72,17 @@ pub const CircleShape = struct {
         Sf.sfCircleShape_setRotation(self.ptr, angle);
     }
 
+    /// Gets the texture of this shape
+    pub fn getTexture(self: Self) ?sf.Texture {
+        return sf.Texture{.const_ptr = Sf.sfCircleShape_getTexture(self.ptr)};
+    }
     /// Sets the texture of this shape
     pub fn setTexture(self: Self, texture: sf.Texture) void {
-        Sf.sfCircleShape_setTexture(self.ptr, texture.ptr, 0);
+        var t = Sf.sfCircleShape_setTexture(self.ptr);
+        if (t != null) {
+            return sf.Texture{.const_ptr = t.?};
+        } else
+            return null;
     }
 
     /// Pointer to the csfml structure

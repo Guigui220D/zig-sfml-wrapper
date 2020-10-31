@@ -34,6 +34,11 @@ pub fn main() anyerror!void {
     rect.setPosition(.{.x = 100, .y = 100});
     rect.setTexture(tex);
 
+    var tex2 = rect.getTexture().?;
+    //tex2.deinit();
+    var tex3 = try tex2.copy();
+    tex3.deinit();
+
     // Clock
     var clock = try sf.Clock.init();
     defer clock.deinit();
