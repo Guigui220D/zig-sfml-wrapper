@@ -60,8 +60,8 @@ pub const RenderWindow = struct {
     // Drawing functions
 
     /// Clears the drawing screen with a color
-    pub fn clear(self: Self, color: Sf.sfColor) void {
-        Sf.sfRenderWindow_clear(self.ptr, color);
+    pub fn clear(self: Self, color: sf.Color) void {
+        Sf.sfRenderWindow_clear(self.ptr, color.toCSFML());
     }
 
     /// Displays what has been drawn on the render area

@@ -16,13 +16,13 @@ pub fn main() anyerror!void {
     // Shapes creation
     var circle = try sf.CircleShape.init(100);
     defer circle.deinit();
-    circle.setFillColor(Sf.sfGreen);
+    circle.setFillColor(sf.Color.Green);
     circle.setPosition(.{.x = 0, .y = 0});
     circle.setOrigin(.{.x = 100, .y = 100});
 
     var bob = try sf.CircleShape.init(10);
     defer bob.deinit();
-    bob.setFillColor(Sf.sfRed);
+    bob.setFillColor(sf.Color.Red);
     bob.setOrigin(.{.x = 10, .y = 10});
 
     var tex = try sf.Texture.initFromFile("test.png");
@@ -30,7 +30,7 @@ pub fn main() anyerror!void {
 
     var rect = try sf.RectangleShape.init(.{.x = 50, .y = 70});
     defer rect.deinit();
-    rect.setFillColor(Sf.sfYellow);
+    rect.setFillColor(sf.Color.Yellow);
     rect.setPosition(.{.x = 100, .y = 100});
     rect.setTexture(tex);
 
@@ -70,7 +70,7 @@ pub fn main() anyerror!void {
             window.setView(view);
 
         //Drawing
-        window.clear(Sf.sfBlack);
+        window.clear(sf.Color.Black);
         window.draw(circle, null);
         window.draw(bob, null);
         window.draw(rect, null);

@@ -28,12 +28,12 @@ pub const CircleShape = struct {
     // Getters/setters
 
     /// Gets the fill color of this circle shape 
-    pub fn getFillColor(self: Self) Sf.sfColor {
-        return Sf.sfCircleShape_getFillColor(self.ptr);
+    pub fn getFillColor(self: Self) sf.Color{
+        return sf.Color.fromCSFML(Sf.sfCircleShape_getFillColor(self.ptr));
     }
     /// Sets the fill color of this circle shape
-    pub fn setFillColor(self: Self, color: Sf.sfColor) void {
-        Sf.sfCircleShape_setFillColor(self.ptr, color);
+    pub fn setFillColor(self: Self, color: sf.Color) void {
+        Sf.sfCircleShape_setFillColor(self.ptr, color.toCSFML());
     }
 
     /// Gets the radius of this circle shape
@@ -103,14 +103,14 @@ test "circle shape: sane getters and setters" {
     var circle = try CircleShape.init(30);
     defer circle.deinit();
 
-    circle.setFillColor(Sf.sfYellow);
+    circle.setFillColor(sf.Color.Yellow);
     circle.setRadius(50);
     circle.setRotation(15);
     circle.setPosition(.{.x = 1, .y = 2});
     circle.setOrigin(.{.x = 20, .y = 25});
 
-    // TODO : find why that doesn't work
-    //tst.expectEqual(Sf.sfYellow, circle.getFillColor()); 
+    // TODO : issue #2
+    //tst.expectEqual(sf.Color.Yellow, circle.getFillColor()); 
     tst.expectEqual(@as(f32, 50), circle.getRadius());
     tst.expectEqual(@as(f32, 15), circle.getRotation());
     tst.expectEqual(sf.Vector2f{.x = 1, .y = 2}, circle.getPosition());

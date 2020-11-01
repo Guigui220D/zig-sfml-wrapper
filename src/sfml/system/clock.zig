@@ -1,7 +1,7 @@
 //! Utility class that measures the elapsed time. 
 
 usingnamespace @import("../sfml_import.zig");
-const sf = @import("../sfml_errors.zig");
+const sf = @import("../sfml.zig");
 const Time = @import("time.zig").Time;
 
 pub const Clock = struct {
@@ -41,19 +41,18 @@ pub const Clock = struct {
     ptr: *Sf.sfClock
 };
 
-const std = @import("std");
-const tst = std.testing;
+const tst = @import("std").testing;
 
 test "clock: sleep test" { 
     // This tests just sleeps and check what the timer measured (not very accurate but eh)
     var clk = try Clock.init();
     defer clk.deinit();
 
-    std.time.sleep(500_000_000);  //500 ms
+    sf.Time.milliseconds(500).sleep();
 
     tst.expectWithinMargin(@as(f32, 0.5), clk.getElapsedTime().asSeconds(), 0.1);
 
-    std.time.sleep(200_000_000);  //200 ms
+    sf.Time.sleep(sf.Time.seconds(0.2));
 
     tst.expectWithinMargin(@as(f32, 0.7), clk.restart().asSeconds(), 0.1);
     tst.expectWithinMargin(@as(f32, 0), clk.getElapsedTime().asSeconds(), 0.01);
