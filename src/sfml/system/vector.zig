@@ -1,4 +1,4 @@
-//! Utility struct for manipulating 2-dimensional vectors. 
+//! Utility struct for manipulating 2-dimensional vectors.
 
 usingnamespace @import("../sfml_import.zig");
 
@@ -18,29 +18,29 @@ pub fn Vector2(comptime T: type) type {
         /// This is mainly for the inner workings of this wrapper
         pub fn toCSFML(self: Self) CsfmlEquivalent {
             if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return CsfmlEquivalent{.x = self.x, .y = self.y};
+            return CsfmlEquivalent{ .x = self.x, .y = self.y };
         }
 
         /// Creates a vector from a CSFML one (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
         pub fn fromCSFML(vec: CsfmlEquivalent) Self {
             if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return Self{.x = vec.x, .y = vec.y};
+            return Self{ .x = vec.x, .y = vec.y };
         }
 
         /// Adds two vectors
         pub fn add(self: Self, other: Self) Self {
-            return Self{.x = self.x + other.x, .y = self.y + other.y};
+            return Self{ .x = self.x + other.x, .y = self.y + other.y };
         }
 
         /// Substracts two vectors
         pub fn substract(self: Self, other: Self) Self {
-            return Self{.x = self.x - other.x, .y = self.y - other.y};
+            return Self{ .x = self.x - other.x, .y = self.y - other.y };
         }
 
         /// Scales a vector
         pub fn scale(self: Self, factor: T) Self {
-            return Self{.x = self.x * factor, .y = self.y * factor};
+            return Self{ .x = self.x * factor, .y = self.y * factor };
         }
 
         /// x component of the vector

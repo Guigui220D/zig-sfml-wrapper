@@ -9,21 +9,18 @@ pub const Time = struct {
 
     /// Creates a time object from a seconds count
     pub fn seconds(s: f32) Time {
-        return Self{
-            .us = @floatToInt(i64, s * 1_000) * 1_000
-        };
+        return Self{ .us = @floatToInt(i64, s * 1_000) * 1_000 };
     }
 
     /// Creates a time object from milliseconds
     pub fn milliseconds(ms: i32) Time {
-        return Self{.us = @intCast(i64, ms) * 1_000};
+        return Self{ .us = @intCast(i64, ms) * 1_000 };
     }
 
     /// Creates a time object from microseconds
     pub fn microseconds(us: i64) Time {
-        return Self{.us = us};
+        return Self{ .us = us };
     }
-
 
     // Getters
 
@@ -46,7 +43,7 @@ pub const Time = struct {
 
     /// Sleeps the amount of time specified
     pub fn sleep(time: Time) void {
-        Sf.sfSleep(Sf.sfTime{.microseconds = time.us});
+        Sf.sfSleep(Sf.sfTime{ .microseconds = time.us });
     }
 
     us: i64
@@ -54,7 +51,7 @@ pub const Time = struct {
 
 const tst = @import("std").testing;
 
-test "time: conversion" { 
+test "time: conversion" {
     var t = Time.microseconds(5_120_000);
 
     tst.expectEqual(@as(i32, 5_120), t.asMilliseconds());

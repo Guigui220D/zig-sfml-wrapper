@@ -1,4 +1,4 @@
-//! Specialized shape representing a circle. 
+//! Specialized shape representing a circle.
 
 usingnamespace @import("../sfml_import.zig");
 const sf = @import("../sfml.zig");
@@ -13,7 +13,7 @@ pub const CircleShape = struct {
         var circle = Sf.sfCircleShape_create();
         if (circle == null)
             return sf.Error.nullptrUnknownReason;
-        
+
         Sf.sfCircleShape_setFillColor(circle, Sf.sfWhite);
         Sf.sfCircleShape_setRadius(circle, radius);
 
@@ -27,8 +27,8 @@ pub const CircleShape = struct {
 
     // Getters/setters
 
-    /// Gets the fill color of this circle shape 
-    pub fn getFillColor(self: Self) sf.Color{
+    /// Gets the fill color of this circle shape
+    pub fn getFillColor(self: Self) sf.Color {
         return sf.Color.fromCSFML(Sf.sfCircleShape_getFillColor(self.ptr));
     }
     /// Sets the fill color of this circle shape
@@ -76,7 +76,7 @@ pub const CircleShape = struct {
     pub fn getTexture(self: Self) ?sf.Texture {
         var t = Sf.sfCircleShape_getTexture(self.ptr);
         if (t != null) {
-            return sf.Texture{.const_ptr = t.?};
+            return sf.Texture{ .const_ptr = t.? };
         } else
             return null;
     }
@@ -106,14 +106,14 @@ test "circle shape: sane getters and setters" {
     circle.setFillColor(sf.Color.Yellow);
     circle.setRadius(50);
     circle.setRotation(15);
-    circle.setPosition(.{.x = 1, .y = 2});
-    circle.setOrigin(.{.x = 20, .y = 25});
+    circle.setPosition(.{ .x = 1, .y = 2 });
+    circle.setOrigin(.{ .x = 20, .y = 25 });
 
     // TODO : issue #2
-    //tst.expectEqual(sf.Color.Yellow, circle.getFillColor()); 
+    //tst.expectEqual(sf.Color.Yellow, circle.getFillColor());
     tst.expectEqual(@as(f32, 50), circle.getRadius());
     tst.expectEqual(@as(f32, 15), circle.getRotation());
-    tst.expectEqual(sf.Vector2f{.x = 1, .y = 2}, circle.getPosition());
-    tst.expectEqual(sf.Vector2f{.x = 20, .y = 25}, circle.getOrigin());
+    tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, circle.getPosition());
+    tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, circle.getOrigin());
     tst.expectEqual(@as(?sf.Texture, null), circle.getTexture());
 }

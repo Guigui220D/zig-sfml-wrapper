@@ -1,5 +1,4 @@
 ///! This is an example use of the sfml
-
 const std = @import("std");
 
 usingnamespace @import("sfml/sfml_import.zig");
@@ -8,7 +7,7 @@ const sf = @import("sfml/sfml.zig");
 // I only use things I've wrapped here, but the other csfml functions seem to work, just need to wrap them
 pub fn main() anyerror!void {
     // Create a window
-    var window = try sf.RenderWindow.init(.{.x = 800, .y = 600}, 32, "This is zig!");
+    var window = try sf.RenderWindow.init(.{ .x = 800, .y = 600 }, 32, "This is zig!");
     defer window.deinit();
     //window.setVerticalSyncEnabled(false);
     window.setFramerateLimit(60);
@@ -17,21 +16,21 @@ pub fn main() anyerror!void {
     var circle = try sf.CircleShape.init(100);
     defer circle.deinit();
     circle.setFillColor(sf.Color.Green);
-    circle.setPosition(.{.x = 0, .y = 0});
-    circle.setOrigin(.{.x = 100, .y = 100});
+    circle.setPosition(.{ .x = 0, .y = 0 });
+    circle.setOrigin(.{ .x = 100, .y = 100 });
 
     var bob = try sf.CircleShape.init(10);
     defer bob.deinit();
     bob.setFillColor(sf.Color.Red);
-    bob.setOrigin(.{.x = 10, .y = 10});
+    bob.setOrigin(.{ .x = 10, .y = 10 });
 
     var tex = try sf.Texture.initFromFile("test.png");
     defer tex.deinit();
 
-    var rect = try sf.RectangleShape.init(.{.x = 50, .y = 70});
+    var rect = try sf.RectangleShape.init(.{ .x = 50, .y = 70 });
     defer rect.deinit();
     rect.setFillColor(sf.Color.Yellow);
-    rect.setPosition(.{.x = 100, .y = 100});
+    rect.setPosition(.{ .x = 100, .y = 100 });
     rect.setTexture(tex);
 
     // Clock
@@ -50,18 +49,18 @@ pub fn main() anyerror!void {
                     //std.debug.print("click\n", .{});
                     var vec = sf.Vector2i{
                         .x = event.mouseButton.x,
-                        .y = event.mouseButton.y
+                        .y = event.mouseButton.y,
                     };
                     var coords = window.mapPixelToCoords(vec, null);
                     rect.setPosition(coords);
                 },
-                else => {}
+                else => {},
             }
         }
 
         //Updating
         var total = clock.getElapsedTime().asSeconds();
-        bob.setPosition(.{.x = 150.0 * std.math.cos(total), .y = 120.0 * std.math.sin(total)});
+        bob.setPosition(.{ .x = 150.0 * std.math.cos(total), .y = 120.0 * std.math.sin(total) });
 
         rect.setRotation(total * 12);
 

@@ -4,8 +4,7 @@ usingnamespace @import("../sfml_import.zig");
 const sf = @import("../sfml.zig");
 
 const TextureType = enum {
-    ptr,
-    const_ptr
+    ptr, const_ptr
 };
 
 pub const Texture = union(TextureType) {
@@ -21,14 +20,14 @@ pub const Texture = union(TextureType) {
         var tex = Sf.sfTexture_create(@intCast(c_uint, size.x), @intCast(c_uint, size.y));
         if (tex == null)
             return sf.Error.nullptrUnknownReason;
-        return Self{.ptr = tex};
+        return Self{ .ptr = tex };
     }
     /// Loads a texture from a file
     pub fn initFromFile(path: [:0]const u8) !Self {
         var tex = Sf.sfTexture_createFromFile(path, null);
         if (tex == null)
             return sf.Error.resourceLoadingError;
-        return Self{.ptr = tex.?};
+        return Self{ .ptr = tex.? };
     }
     /// Destroys a texture
     /// Be careful, you can only destroy non const textures
@@ -45,16 +44,16 @@ pub const Texture = union(TextureType) {
     pub fn get(self: Self) *const Sf.sfTexture {
         return switch (self) {
             .ptr => self.ptr,
-            .const_ptr => self.const_ptr
+            .const_ptr => self.const_ptr,
         };
-    } 
+    }
     /// Clones this texture (the clone won't be const)
     pub fn copy(self: Self) !Self {
         var cpy = Sf.sfTexture_copy(self.get());
         if (cpy == null)
             return sf.Error.nullptrUnknownReason;
-        return Self{.ptr = cpy.?};
-    } 
+        return Self{ .ptr = cpy.? };
+    }
 
     /// Gets the size of this image
     pub fn getSize(self: Self) sf.Vector2u {

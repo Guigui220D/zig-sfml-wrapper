@@ -1,11 +1,11 @@
-//! Window that can serve as a target for 2D drawing. 
+//! Window that can serve as a target for 2D drawing.
 
 usingnamespace @import("../sfml_import.zig");
 const sf = @import("../sfml.zig");
 
 pub const RenderWindow = struct {
     const Self = @This();
-    
+
     // Constructor/destructor
 
     // TODO : choose style of window
@@ -14,10 +14,10 @@ pub const RenderWindow = struct {
     pub fn init(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !Self {
         var ret: Self = undefined;
 
-        var mode: Sf.sfVideoMode = .{ 
-            .width = @intCast(c_uint, size.x), 
-            .height = @intCast(c_uint, size.y), 
-            .bitsPerPixel = @intCast(c_uint, bpp)
+        var mode: Sf.sfVideoMode = .{
+            .width = @intCast(c_uint, size.x),
+            .height = @intCast(c_uint, size.y),
+            .bitsPerPixel = @intCast(c_uint, bpp),
         };
 
         var window = Sf.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), Sf.sfDefaultStyle, 0);
@@ -76,7 +76,7 @@ pub const RenderWindow = struct {
         switch (@TypeOf(to_draw)) {
             sf.CircleShape => Sf.sfRenderWindow_drawCircleShape(self.ptr, to_draw.ptr, states),
             sf.RectangleShape => Sf.sfRenderWindow_drawRectangleShape(self.ptr, to_draw.ptr, states),
-            else => @compileError("You must provide a drawable object")
+            else => @compileError("You must provide a drawable object"),
         }
     }
 
@@ -100,13 +100,13 @@ pub const RenderWindow = struct {
 
     /// Gets the size of this window
     pub fn getSize(self: Self) sf.Vector2u {
-        return  sf.Vector2u.fromCSFML(Sf.sfRenderWindow_getSize(self.ptr));
+        return sf.Vector2u.fromCSFML(Sf.sfRenderWindow_getSize(self.ptr));
     }
     /// Sets the size of this window
     pub fn setSize(self: Self, size: sf.Vector2u) void {
         Sf.sfRenderWindow_setSize(self.ptr, size.toCSFML());
     }
-    
+
     /// Gets the position of this window
     pub fn getPosition(self: Self) sf.Vector2u {
         return sf.Vector2u.fromCSFML(Sf.sfRenderWindow_getPosition(self.ptr));
@@ -149,7 +149,6 @@ pub const RenderWindow = struct {
             return sf.Vector2i.fromCSFML(Sf.sfRenderWindow_mapCoordsToPixel(self.ptr, coords.toCSFML(), cview));
         } else
             return sf.Vector2i.fromCSFML(Sf.sfRenderWindow_mapCoordsToPixel(self.ptr, coords.toCSFML(), null));
-        
     }
 
     /// Pointer to the csfml structure

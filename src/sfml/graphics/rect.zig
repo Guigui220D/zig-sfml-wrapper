@@ -1,4 +1,4 @@
-//! Utility class for manipulating 2D axis aligned rectangles. 
+//! Utility class for manipulating 2D axis aligned rectangles.
 
 usingnamespace @import("../sfml_import.zig");
 const sf = @import("../sfml.zig");
@@ -21,7 +21,7 @@ pub fn Rect(comptime T: type) type {
                 .left = left,
                 .top = top,
                 .width = width,
-                .height = height
+                .height = height,
             };
         }
 
@@ -33,7 +33,7 @@ pub fn Rect(comptime T: type) type {
                 .left = self.left,
                 .top = self.top,
                 .width = self.width,
-                .height = self.height
+                .height = self.height,
             };
         }
 
@@ -52,12 +52,10 @@ pub fn Rect(comptime T: type) type {
             var min_y: T = math.min(self.top, self.top + self.height);
             var max_y: T = math.max(self.top, self.top + self.height);
 
-            return (
-                vec.x >= min_x and 
-                vec.x < max_x and 
-                vec.y >= min_y and 
-                vec.y < max_y
-            );
+            return (vec.x >= min_x and
+                vec.x < max_x and
+                vec.y >= min_y and
+                vec.y < max_y);
         }
 
         /// Checks if two rectangles have a common intersection, if yes returns that zone, if not returns null
@@ -87,11 +85,11 @@ pub fn Rect(comptime T: type) type {
 
         /// Gets a vector with left and top components inside
         pub fn getCorner(self: Self) sf.Vector2(T) {
-            return sf.Vector2(T){.x = self.left, .y = self.top};
+            return sf.Vector2(T){ .x = self.left, .y = self.top };
         }
         /// Gets a vector with width and height components inside
         pub fn getSize(self: Self) sf.Vector2(T) {
-            return sf.Vector2(T){.x = self.width, .y = self.height};
+            return sf.Vector2(T){ .x = self.width, .y = self.height };
         }
 
         /// x component of the top left corner
@@ -131,8 +129,8 @@ test "rect: intersect" {
 test "rect: contains" {
     var r1 = FloatRect.init(0, 0, 10, 10);
 
-    tst.expect(r1.contains(.{.x = 0, .y = 0}));
-    tst.expect(r1.contains(.{.x = 9, .y = 9}));
-    tst.expect(!r1.contains(.{.x = 5, .y = -1}));
-    tst.expect(!r1.contains(.{.x = 10, .y = 5}));
+    tst.expect(r1.contains(.{ .x = 0, .y = 0 }));
+    tst.expect(r1.contains(.{ .x = 9, .y = 9 }));
+    tst.expect(!r1.contains(.{ .x = 5, .y = -1 }));
+    tst.expect(!r1.contains(.{ .x = 10, .y = 5 }));
 }

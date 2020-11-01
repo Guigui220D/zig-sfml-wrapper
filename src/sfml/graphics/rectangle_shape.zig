@@ -13,7 +13,7 @@ pub const RectangleShape = struct {
         var rect = Sf.sfRectangleShape_create();
         if (rect == null)
             return sf.Error.nullptrUnknownReason;
-        
+
         Sf.sfRectangleShape_setFillColor(rect, Sf.sfWhite);
         Sf.sfRectangleShape_setSize(rect, size.toCSFML());
 
@@ -28,7 +28,7 @@ pub const RectangleShape = struct {
     // Getters/setters
 
     /// Gets the fill color of this rectangle shape
-    pub fn getFillColor(self: Self) sf.Color{
+    pub fn getFillColor(self: Self) sf.Color {
         return sf.Color.fromCSFML(Sf.sfRectangleShape_getFillColor(self.ptr));
     }
     /// Sets the fill color of this rectangle shape
@@ -76,7 +76,7 @@ pub const RectangleShape = struct {
     pub fn getTexture(self: Self) ?sf.Texture {
         var t = Sf.sfRectangleShape_getTexture(self.ptr);
         if (t != null) {
-            return sf.Texture{.const_ptr = t.?};
+            return sf.Texture{ .const_ptr = t.? };
         } else
             return null;
     }
@@ -100,23 +100,23 @@ pub const RectangleShape = struct {
 const tst = @import("std").testing;
 
 test "rectangle shape: sane getters and setters" {
-    var rect = try RectangleShape.init(sf.Vector2f{.x = 30, .y = 50});
+    var rect = try RectangleShape.init(sf.Vector2f{ .x = 30, .y = 50 });
     defer rect.deinit();
 
-    tst.expectEqual(sf.Vector2f{.x = 30, .y = 50}, rect.getSize());
+    tst.expectEqual(sf.Vector2f{ .x = 30, .y = 50 }, rect.getSize());
 
     rect.setFillColor(sf.Color.Yellow);
-    rect.setSize(.{.x = 15, .y = 510});
+    rect.setSize(.{ .x = 15, .y = 510 });
     rect.setRotation(15);
-    rect.setPosition(.{.x = 1, .y = 2});
-    rect.setOrigin(.{.x = 20, .y = 25});
+    rect.setPosition(.{ .x = 1, .y = 2 });
+    rect.setOrigin(.{ .x = 20, .y = 25 });
 
     // TODO : issue #2
-    //tst.expectEqual(Sf.sfYellow, rect.getFillColor()); 
-    tst.expectEqual(sf.Vector2f{.x = 15, .y = 510}, rect.getSize());
+    //tst.expectEqual(Sf.sfYellow, rect.getFillColor());
+    tst.expectEqual(sf.Vector2f{ .x = 15, .y = 510 }, rect.getSize());
     tst.expectEqual(@as(f32, 15), rect.getRotation());
-    tst.expectEqual(sf.Vector2f{.x = 1, .y = 2}, rect.getPosition());
-    tst.expectEqual(sf.Vector2f{.x = 20, .y = 25}, rect.getOrigin());
+    tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, rect.getPosition());
+    tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, rect.getOrigin());
     // TODO : find why that doesn't work
     //tst.expectEqual(@as(?sf.Texture, null), rect.getTexture());
 }

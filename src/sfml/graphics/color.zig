@@ -11,7 +11,7 @@ pub const Color = struct {
             .r = col.r,
             .g = col.g,
             .b = col.b,
-            .a = col.a
+            .a = col.a,
         };
     }
 
@@ -21,7 +21,7 @@ pub const Color = struct {
             .r = self.r,
             .g = self.g,
             .b = self.b,
-            .a = self.a
+            .a = self.a,
         };
     }
 
@@ -31,7 +31,7 @@ pub const Color = struct {
             .r = red,
             .g = green,
             .b = blue,
-            .a = 0xff
+            .a = 0xff,
         };
     }
 
@@ -41,7 +41,7 @@ pub const Color = struct {
             .r = red,
             .g = green,
             .b = blue,
-            .a = alpha
+            .a = alpha,
         };
     }
 
@@ -51,14 +51,13 @@ pub const Color = struct {
             .r = @truncate(u8, (int & 0xff000000) >> 24),
             .g = @truncate(u8, (int & 0x00ff0000) >> 16),
             .b = @truncate(u8, (int & 0x0000ff00) >> 8),
-            .a = @truncate(u8, (int & 0x000000ff) >> 0)
+            .a = @truncate(u8, (int & 0x000000ff) >> 0),
         };
     }
 
     /// Gets a 32 bit integer representing the color
     pub fn toInteger(self: Self) u32 {
-        return
-            (@intCast(u32, self.r) << 24) |
+        return (@intCast(u32, self.r) << 24) |
             (@intCast(u32, self.g) << 16) |
             (@intCast(u32, self.b) << 8) |
             (@intCast(u32, self.a) << 0);

@@ -5,7 +5,7 @@ const sf = @import("../sfml.zig");
 
 pub const View = struct {
     const Self = @This();
-    
+
     /// Creates a view from a rectangle
     pub fn fromRect(rect: sf.FloatRect) Self {
         var ret: Self = undefined;
@@ -15,7 +15,7 @@ pub const View = struct {
         ret.viewport = sf.FloatRect.init(0, 0, 1, 1);
         return ret;
     }
-    
+
     /// Creates a view from a CSFML object
     /// This is mainly for the inner workings of this wrapper
     pub fn fromCSFML(view: *const Sf.sfView) Self {
