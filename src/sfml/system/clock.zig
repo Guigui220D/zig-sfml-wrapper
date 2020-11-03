@@ -1,8 +1,6 @@
 //! Utility class that measures the elapsed time.
 
-usingnamespace @import("../sfml_import.zig");
 const sf = @import("../sfml.zig");
-const Time = @import("time.zig").Time;
 
 pub const Clock = struct {
     const Self = @This();
@@ -12,7 +10,7 @@ pub const Clock = struct {
     /// Inits a clock. The clock will have its time set at 0 at this point, and automatically starts
     /// Std.time timer also is a good alternative
     pub fn init() !Self {
-        var clock = Sf.sfClock_create();
+        var clock = sf.c.sfClock_create();
         if (clock == null)
             return sf.Error.nullptrUnknownReason;
 
@@ -21,24 +19,24 @@ pub const Clock = struct {
 
     /// Destroys this clock
     pub fn deinit(self: Self) void {
-        Sf.sfClock_destroy(self.ptr);
+        sf.c.sfClock_destroy(self.ptr);
     }
 
     // Clock control
     /// Gets the elapsed seconds
-    pub fn getElapsedTime(self: Self) Time {
-        var time = Sf.sfClock_getElapsedTime(self.ptr).microseconds;
-        return Time{ .us = time };
+    pub fn getElapsedTime(self: Self) sf.Time {
+        var time = sf.c.sfClock_getElapsedTime(self.ptr).microseconds;
+        return sf.Time{ .us = time };
     }
 
     /// Gets the elapsed seconds and restarts the timer
-    pub fn restart(self: Self) Time {
-        var time = Sf.sfClock_restart(self.ptr).microseconds;
-        return Time{ .us = time };
+    pub fn restart(self: Self) sf.Time {
+        var time = sf.c.sfClock_restart(self.ptr).microseconds;
+        return sf.Time{ .us = time };
     }
 
     /// Pointer to the csfml structure
-    ptr: *Sf.sfClock
+    ptr: *sf.c.sfClock
 };
 
 const tst = @import("std").testing;

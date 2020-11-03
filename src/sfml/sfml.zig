@@ -1,5 +1,7 @@
 //! Import this to get all the sfml wrapper classes
 
+usingnamespace @import("sfml_import.zig");
+
 usingnamespace @import("sfml_errors.zig");
 
 usingnamespace @import("graphics/color.zig");

@@ -1,6 +1,6 @@
 //! Utility struct for manipulating 2-dimensional vectors.
 
-usingnamespace @import("../sfml_import.zig");
+const sf = @import("../sfml_import.zig");
 
 pub fn Vector2(comptime T: type) type {
     return struct {
@@ -8,9 +8,9 @@ pub fn Vector2(comptime T: type) type {
 
         /// The CSFML vector type equivalent
         const CsfmlEquivalent = switch (T) {
-            u32 => Sf.sfVector2u,
-            i32 => Sf.sfVector2i,
-            f32 => Sf.sfVector2f,
+            u32 => sf.c.sfVector2u,
+            i32 => sf.c.sfVector2i,
+            f32 => sf.c.sfVector2f,
             else => void,
         };
 

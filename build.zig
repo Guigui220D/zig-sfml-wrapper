@@ -5,8 +5,9 @@ pub fn build(b: *Builder) void {
     const target = b.standardTargetOptions(.{});
     const mode = b.standardReleaseOptions();
 
-    const exe = b.addExecutable("sfml", "src/example.zig");
+    const exe = b.addExecutable("sfml", "src/examples/my_tests.zig");
     exe.linkLibC();
+    exe.addPackagePath("sfml", "src/sfml/sfml.zig");
     exe.addLibPath("csfml/lib/msvc/");
     exe.linkSystemLibrary("csfml-graphics");
     exe.linkSystemLibrary("csfml-system");

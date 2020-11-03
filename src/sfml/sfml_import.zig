@@ -1,6 +1,6 @@
 //! Imports the csfml c headers
 
-pub const Sf = @cImport({
+pub const c = @cImport({
     @cInclude("SFML/Graphics.h");
     @cInclude("SFML/Window.h");
     @cInclude("SFML/System.h");

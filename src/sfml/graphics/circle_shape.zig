@@ -1,6 +1,5 @@
 //! Specialized shape representing a circle.
 
-usingnamespace @import("../sfml_import.zig");
 const sf = @import("../sfml.zig");
 
 pub const CircleShape = struct {
@@ -10,71 +9,71 @@ pub const CircleShape = struct {
 
     /// Inits a circle shape with a radius. The circle will be white and have 30 points
     pub fn init(radius: f32) !Self {
-        var circle = Sf.sfCircleShape_create();
+        var circle = sf.c.sfCircleShape_create();
         if (circle == null)
             return sf.Error.nullptrUnknownReason;
 
-        Sf.sfCircleShape_setFillColor(circle, Sf.sfWhite);
-        Sf.sfCircleShape_setRadius(circle, radius);
+        sf.c.sfCircleShape_setFillColor(circle, sf.c.sfWhite);
+        sf.c.sfCircleShape_setRadius(circle, radius);
 
         return Self{ .ptr = circle.? };
     }
 
     /// Destroys a circle shape
     pub fn deinit(self: Self) void {
-        Sf.sfCircleShape_destroy(self.ptr);
+        sf.c.sfCircleShape_destroy(self.ptr);
     }
 
     // Getters/setters
 
     /// Gets the fill color of this circle shape
     pub fn getFillColor(self: Self) sf.Color {
-        return sf.Color.fromCSFML(Sf.sfCircleShape_getFillColor(self.ptr));
+        return sf.Color.fromCSFML(sf.c.sfCircleShape_getFillColor(self.ptr));
     }
     /// Sets the fill color of this circle shape
     pub fn setFillColor(self: Self, color: sf.Color) void {
-        Sf.sfCircleShape_setFillColor(self.ptr, color.toCSFML());
+        sf.c.sfCircleShape_setFillColor(self.ptr, color.toCSFML());
     }
 
     /// Gets the radius of this circle shape
     pub fn getRadius(self: Self) f32 {
-        return Sf.sfCircleShape_getRadius(self.ptr);
+        return sf.c.sfCircleShape_getRadius(self.ptr);
     }
     /// Sets the radius of this circle shape
     pub fn setRadius(self: Self, radius: f32) void {
-        Sf.sfCircleShape_setRadius(self.ptr, radius);
+        sf.c.sfCircleShape_setRadius(self.ptr, radius);
     }
 
     /// Gets the position of this circle shape
     pub fn getPosition(self: Self) sf.Vector2f {
-        return sf.Vector2f.fromCSFML(Sf.sfCircleShape_getPosition(self.ptr));
+        return sf.Vector2f.fromCSFML(sf.c.sfCircleShape_getPosition(self.ptr));
     }
     /// Sets the position of this circle shape
     pub fn setPosition(self: Self, pos: sf.Vector2f) void {
-        Sf.sfCircleShape_setPosition(self.ptr, pos.toCSFML());
+        sf.c.sfCircleShape_setPosition(self.ptr, pos.toCSFML());
     }
 
     /// Gets the origin of this circle shape
     pub fn getOrigin(self: Self) sf.Vector2f {
-        return sf.Vector2f.fromCSFML(Sf.sfCircleShape_getOrigin(self.ptr));
+        return sf.Vector2f.fromCSFML(sf.c.sfCircleShape_getOrigin(self.ptr));
     }
     /// Sets the origin of this circle shape
     pub fn setOrigin(self: Self, origin: sf.Vector2f) void {
-        Sf.sfCircleShape_setOrigin(self.ptr, origin.toCSFML());
+        sf.c.sfCircleShape_setOrigin(self.ptr, origin.toCSFML());
     }
 
     /// Gets the rotation of this circle shape
     pub fn getRotation(self: Self) f32 {
-        return Sf.sfCircleShape_getRotation(self.ptr);
+        return sf.c.sfCircleShape_getRotation(self.ptr);
     }
     /// Sets the rotation of this circle shape
     pub fn setRotation(self: Self, angle: f32) void {
-        Sf.sfCircleShape_setRotation(self.ptr, angle);
+        sf.c.sfCircleShape_setRotation(self.ptr, angle);
     }
 
     /// Gets the texture of this shape
     pub fn getTexture(self: Self) ?sf.Texture {
-        var t = Sf.sfCircleShape_getTexture(self.ptr);
+        var t = sf.c.sfCircleShape_getTexture(self.ptr);
         if (t != null) {
             return sf.Texture{ .const_ptr = t.? };
         } else
@@ -82,19 +81,19 @@ pub const CircleShape = struct {
     }
     /// Sets the texture of this shape
     pub fn setTexture(self: Self, texture: sf.Texture) void {
-        Sf.sfCircleShape_setTexture(self.ptr, texture.get(), 0);
+        sf.c.sfCircleShape_setTexture(self.ptr, texture.get(), 0);
     }
     /// Gets the sub-rectangle of the texture that the shape will display
     pub fn getTextureRect(self: Self) sf.FloatRect {
-        return sf.FloatRect.fromCSFML(Sf.sfCircleShape_getTextureRect(self.ptr));
+        return sf.FloatRect.fromCSFML(sf.c.sfCircleShape_getTextureRect(self.ptr));
     }
     /// Sets the sub-rectangle of the texture that the shape will display
     pub fn setTextureRect(self: Self, rect: sf.FloatRect) void {
-        Sf.sfRectangleShape_getCircleRect(self.ptr, rect.toCSFML());
+        sf.c.sfRectangleShape_getCircleRect(self.ptr, rect.toCSFML());
     }
 
     /// Pointer to the csfml structure
-    ptr: *Sf.sfCircleShape
+    ptr: *sf.c.sfCircleShape
 };
 
 const tst = @import("std").testing;

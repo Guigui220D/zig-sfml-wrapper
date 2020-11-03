@@ -1,6 +1,6 @@
 //! Give access to the real-time state of the keyboard.
 
-usingnamespace @import("../sfml_import.zig");
+const sf = @import("../sfml_import.zig");
 
 pub const Keyboard = struct {
     /// Keycodes
@@ -10,6 +10,6 @@ pub const Keyboard = struct {
 
     /// Returns true if the specified key is pressed
     pub fn isKeyPressed(key: KeyCodes) bool {
-        return Sf.sfKeyboard_isKeyPressed(@intToEnum(Sf.sfKeyCode, @enumToInt(key))) == 1;
+        return sf.c.sfKeyboard_isKeyPressed(@intToEnum(sf.c.sfKeyCode, @enumToInt(key))) == 1;
     }
 };

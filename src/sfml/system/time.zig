@@ -1,6 +1,6 @@
 //! Represents a time value.
 
-usingnamespace @import("../sfml_import.zig");
+const sf = @import("../sfml_import.zig");
 
 pub const Time = struct {
     const Self = @This();
@@ -43,7 +43,7 @@ pub const Time = struct {
 
     /// Sleeps the amount of time specified
     pub fn sleep(time: Time) void {
-        Sf.sfSleep(Sf.sfTime{ .microseconds = time.us });
+        sf.c.sfSleep(sf.c.sfTime{ .microseconds = time.us });
     }
 
     us: i64

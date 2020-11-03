@@ -1,8 +1,7 @@
 ///! This is an example use of the sfml
 const std = @import("std");
 
-usingnamespace @import("sfml/sfml_import.zig");
-const sf = @import("sfml/sfml.zig");
+const sf = @import("sfml");
 
 // I only use things I've wrapped here, but the other csfml functions seem to work, just need to wrap them
 pub fn main() anyerror!void {
@@ -44,8 +43,8 @@ pub fn main() anyerror!void {
         //Event polling
         while (window.pollEvent()) |event| {
             switch (event.type) {
-                Sf.sfEventType.sfEvtClosed => window.close(),
-                Sf.sfEventType.sfEvtMouseButtonPressed => {
+                sf.c.sfEventType.sfEvtClosed => window.close(),
+                sf.c.sfEventType.sfEvtMouseButtonPressed => {
                     //std.debug.print("click\n", .{});
                     var vec = sf.Vector2i{
                         .x = event.mouseButton.x,

@@ -1,13 +1,13 @@
 //! Utility class for manipulating RGBA colors.
 
-usingnamespace @import("../sfml_import.zig");
+const sf = @import("../sfml_import.zig");
 const math = @import("std").math;
 
 pub const Color = struct {
     const Self = @This();
 
     /// Converts a color from a csfml object
-    pub fn fromCSFML(col: Sf.sfColor) Self {
+    pub fn fromCSFML(col: sf.c.sfColor) Self {
         return Self{
             .r = col.r,
             .g = col.g,
@@ -17,8 +17,8 @@ pub const Color = struct {
     }
 
     /// Converts this color to a csfml one
-    pub fn toCSFML(self: Self) Sf.sfColor {
-        return Sf.sfColor{
+    pub fn toCSFML(self: Self) sf.c.sfColor {
+        return sf.c.sfColor{
             .r = self.r,
             .g = self.g,
             .b = self.b,
@@ -143,7 +143,7 @@ test "color: conversions" {
     tst.expectEqual(Color.rgb(75, 218, 156), col);
     tst.expectEqual(code, col.toInteger());
 
-    var csfml_col = Sf.sfColor_fromInteger(@as(c_uint, code));
+    var csfml_col = sf.c.sfColor_fromInteger(@as(c_uint, code));
 
     // TODO : issue #2
     //tst.expectEqual(Color.fromCSFML(csfml_col), col);
@@ -151,6 +151,6 @@ test "color: conversions" {
 
 test "color: hsv to rgb" {
     var col = Color.fromHSVA(240, 100, 100, 255);
-    
+
     tst.expectEqual(Color.Blue, col);
 }

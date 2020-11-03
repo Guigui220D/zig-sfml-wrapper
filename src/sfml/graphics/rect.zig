@@ -1,6 +1,5 @@
 //! Utility class for manipulating 2D axis aligned rectangles.
 
-usingnamespace @import("../sfml_import.zig");
 const sf = @import("../sfml.zig");
 const math = @import("std").math;
 
@@ -10,8 +9,8 @@ pub fn Rect(comptime T: type) type {
 
         /// The CSFML vector type equivalent
         const CsfmlEquivalent = switch (T) {
-            i32 => Sf.sfIntRect,
-            f32 => Sf.sfFloatRect,
+            i32 => sf.c.sfIntRect,
+            f32 => sf.c.sfFloatRect,
             else => void,
         };
 
@@ -116,11 +115,11 @@ test "rect: intersect" {
 
     tst.expectEqual(@as(?IntRect, null), r2.intersects(r3));
 
-    var inter1: Sf.sfIntRect = undefined;
-    var inter2: Sf.sfIntRect = undefined;
+    var inter1: sf.c.sfIntRect = undefined;
+    var inter2: sf.c.sfIntRect = undefined;
 
-    tst.expectEqual(Sf.sfIntRect_intersects(&r1.toCSFML(), &r2.toCSFML(), &inter1), 1);
-    tst.expectEqual(Sf.sfIntRect_intersects(&r1.toCSFML(), &r3.toCSFML(), &inter2), 1);
+    tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r2.toCSFML(), &inter1), 1);
+    tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r3.toCSFML(), &inter2), 1);
 
     tst.expectEqual(IntRect.fromCSFML(inter1), r1.intersects(r2).?);
     tst.expectEqual(IntRect.fromCSFML(inter2), r1.intersects(r3).?);
