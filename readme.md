@@ -27,31 +27,26 @@ Use `zig build test` to run the tests (which arent that useful)
 This is how you get started :
 
 ```zig
-const std = @import("std");
+//! This is a translation of the c++ code the sfml website gives you to test if SFML works
 
-usingnamespace @import("sfml/sfml_import.zig");
-const sf = @import("sfml/sfml.zig");
+const sf = @import("sfml");
 
 pub fn main() !void {
-    //Create a window
-    var window = try sf.RenderWindow.init(.{.x = 800, .y = 600}, 32, "This is zig!");
+    var window = try sf.RenderWindow.init(.{.x = 200, .y = 200}, 32, "SFML works!");
     defer window.deinit();
 
-    // Game loop
+    var shape = try sf.CircleShape.init(100.0);
+    defer shape.deinit();
+    shape.setFillColor(sf.Color.Green);
+
     while (window.isOpen()) {
-        // Event polling
         while (window.pollEvent()) |event| {
-            switch (event.type) {
-                Sf.sfEventType.sfEvtClosed => window.close(),
-                else => {}
-            }
+            if (event.type == sf.c.sfEventType.sfEvtClosed) //TODO : events
+                window.close();
         }
 
-        // Update your game here
-
-        // Drawing
-        window.clear(Sf.sfBlack);
-            // Draw stuff here
+        window.clear(sf.Color.Black);
+        window.draw(shape, null);
         window.display();
     }
 }
