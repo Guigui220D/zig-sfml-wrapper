@@ -1,6 +1,7 @@
 //! Utility class for manipulating RGBA colors.
 
 usingnamespace @import("../sfml_import.zig");
+const math = @import("std").math;
 
 pub const Color = struct {
     const Self = @This();
@@ -63,6 +64,46 @@ pub const Color = struct {
             (@intCast(u32, self.a) << 0);
     }
 
+    fn fromFloats(red: f32, green: f32, blue: f32, alpha: f32) Self {
+        return Self{
+            .r = @floatToInt(u8, math.clamp(red, 0.0, 1.0) * 255.0),
+            .g = @floatToInt(u8, math.clamp(green, 0.0, 1.0) * 255.0),
+            .b = @floatToInt(u8, math.clamp(blue, 0.0, 1.0) * 255.0),
+            .a = @floatToInt(u8, math.clamp(alpha, 0.0, 1.0) * 255.0),
+        };
+    }
+
+    /// Creates a color from HSV and transparency components (this is not part of the SFML)
+    pub fn fromHSVA(hue: f32, saturation: f32, value: f32, alpha: f32) Self {
+        const h = hue;
+        const s = saturation;
+        const v = value;
+
+        var hh: f32 = h;
+
+        if (v <= 0.0)
+            return fromFloats(0, 0, 0, alpha);
+
+        if (hh >= 360.0)
+            hh = 0;
+        hh /= 60.0;
+
+        var ff: f32 = hh - math.floor(hh);
+
+        var p: f32 = v * (1.0 - s);
+        var q: f32 = v * (1.0 - (s * ff));
+        var t: f32 = v * (1.0 - (s * (1.0 - ff)));
+
+        return switch (@floatToInt(usize, hh)) {
+            0 => fromFloats(v, t, p, alpha),
+            1 => fromFloats(q, v, p, alpha),
+            2 => fromFloats(p, v, t, alpha),
+            3 => fromFloats(p, q, v, alpha),
+            4 => fromFloats(t, p, v, alpha),
+            else => fromFloats(v, p, q, alpha),
+        };
+    }
+
     // Colors
     /// Black color
     pub const Black = Self.rgb(0, 0, 0);
@@ -82,8 +123,6 @@ pub const Color = struct {
     pub const Cyan = Self.rgb(0, 255, 255);
     /// Transparent color
     pub const Transparent = Self.rgba(0, 0, 0, 0);
-
-    // TODO : color from HSV?
 
     /// Red component
     r: u8,
@@ -108,4 +147,10 @@ test "color: conversions" {
 
     // TODO : issue #2
     //tst.expectEqual(Color.fromCSFML(csfml_col), col);
+}
+
+test "color: hsv to rgb" {
+    var col = Color.fromHSVA(240, 100, 100, 255);
+    
+    tst.expectEqual(Color.Blue, col);
 }
