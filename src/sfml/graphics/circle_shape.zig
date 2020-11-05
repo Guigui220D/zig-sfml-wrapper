@@ -52,6 +52,10 @@ pub const CircleShape = struct {
     pub fn setPosition(self: Self, pos: sf.Vector2f) void {
         sf.c.sfCircleShape_setPosition(self.ptr, pos.toCSFML());
     }
+    /// Adds the offset to this shape's position
+    pub fn move(self: Self, offset: sf.Vector2f) void {
+        sf.c.sfCircleShape_move(self.ptr, offset.toCSFML());
+    }
 
     /// Gets the origin of this circle shape
     pub fn getOrigin(self: Self) sf.Vector2f {
@@ -69,6 +73,10 @@ pub const CircleShape = struct {
     /// Sets the rotation of this circle shape
     pub fn setRotation(self: Self, angle: f32) void {
         sf.c.sfCircleShape_setRotation(self.ptr, angle);
+    }
+    /// Rotates this shape by a given amount
+    pub fn rotate(self: Self, angle: f32) void {
+        sf.c.sfCircleShape_rotate(self.ptr, angle);
     }
 
     /// Gets the texture of this shape
@@ -115,4 +123,10 @@ test "circle shape: sane getters and setters" {
     tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, circle.getPosition());
     tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, circle.getOrigin());
     tst.expectEqual(@as(?sf.Texture, null), circle.getTexture());
+
+    circle.rotate(5);
+    circle.move(.{.x = -5, .y = 5});
+
+    tst.expectEqual(@as(f32, 20), circle.getRotation());
+    tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, circle.getPosition());
 }

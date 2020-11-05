@@ -36,6 +36,7 @@ fn example(b: *Builder, targ: anytype, comptime name: []const u8) void {
     exe.setTarget(targ);
     exe.setBuildMode(mode);
     exe.install();
+    //exe.emit_docs = true;
 
     const run_step = b.step("run-" ++ name, "Run the " ++ name ++ " test");
     run_step.dependOn(&exe.run().step);

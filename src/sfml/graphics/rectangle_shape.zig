@@ -52,6 +52,10 @@ pub const RectangleShape = struct {
     pub fn setPosition(self: Self, pos: sf.Vector2f) void {
         sf.c.sfRectangleShape_setPosition(self.ptr, pos.toCSFML());
     }
+    /// Adds the offset to this shape's position
+    pub fn move(self: Self, offset: sf.Vector2f) void {
+        sf.c.sfRectangleShape_move(self.ptr, offset.toCSFML());
+    }
 
     /// Gets the origin of this rectangle shape
     pub fn getOrigin(self: Self) sf.Vector2f {
@@ -69,6 +73,10 @@ pub const RectangleShape = struct {
     /// Sets the rotation of this rectangle shape
     pub fn setRotation(self: Self, angle: f32) void {
         sf.c.sfRectangleShape_setRotation(self.ptr, angle);
+    }
+    /// Rotates this shape by a given amount
+    pub fn rotate(self: Self, angle: f32) void {
+        sf.c.sfRectangleShape_rotate(self.ptr, angle);
     }
 
     /// Gets the texture of this shape
@@ -118,4 +126,10 @@ test "rectangle shape: sane getters and setters" {
     tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, rect.getOrigin());
     // TODO : find why that doesn't work
     //tst.expectEqual(@as(?sf.Texture, null), rect.getTexture());
+
+    rect.rotate(5);
+    rect.move(.{.x = -5, .y = 5});
+
+    tst.expectEqual(@as(f32, 20), rect.getRotation());
+    tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, rect.getPosition());
 }
