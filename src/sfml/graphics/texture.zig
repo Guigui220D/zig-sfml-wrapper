@@ -39,6 +39,7 @@ pub const Texture = union(TextureType) {
     }
 
     // Getters/Setters
+    
     /// Gets a const pointer to this texture
     pub fn get(self: Self) *const sf.c.sfTexture {
         return switch (self) {
@@ -61,7 +62,8 @@ pub const Texture = union(TextureType) {
 
     // TODO: many things
 
-    /// Pointer to the csfml structure
+    /// Pointer to the csfml texture
     ptr: *sf.c.sfTexture,
+    /// Const pointer to the csfml texture
     const_ptr: *const sf.c.sfTexture
 };

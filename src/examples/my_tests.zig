@@ -23,7 +23,7 @@ pub fn main() anyerror!void {
     bob.setFillColor(sf.Color.Red);
     bob.setOrigin(.{ .x = 10, .y = 10 });
 
-    var tex = try sf.Texture.initFromFile("test.png");
+    var tex = try sf.Texture.initFromFile("cute_image.png");
     defer tex.deinit();
 
     var rect = try sf.RectangleShape.init(.{ .x = 50, .y = 70 });

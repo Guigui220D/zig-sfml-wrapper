@@ -16,6 +16,11 @@ pub fn main() !void {
     var sprite = try sf.Sprite.initFromTexture(texture);
     defer sprite.deinit();
 
+    // Loads a music to play
+    var music = try sf.Music.initFromFile("nice_music.ogg");
+    defer music.deinit();
+    music.play();
+
     // Start the game loop
     while (window.isOpen()) {
         // Process events
