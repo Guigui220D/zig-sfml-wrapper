@@ -18,8 +18,9 @@ pub fn build(b: *Builder) void {
     const test_step = b.step("test", "Runs the test suite.");
     test_step.dependOn(&test_runner.step);
 
-    example(b, target, "my_tests");
+    example(b, target, "sfml_example");
     example(b, target, "green_circle");
+    example(b, target, "my_tests");
 }
 
 fn example(b: *Builder, targ: anytype, comptime name: []const u8) void {

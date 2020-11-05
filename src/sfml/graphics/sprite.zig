@@ -16,6 +16,17 @@ pub const Sprite = struct {
         return Self{ .ptr = sprite.? };
     }
 
+    /// Inits a sprite with a texture
+    pub fn initFromTexture(texture: sf.Texture) !Self {
+        var sprite = sf.c.sfSprite_create();
+        if (sprite == null)
+            return sf.Error.nullptrUnknownReason;
+
+        sf.c.sfSprite_setTexture(sprite, texture.get(), 1);
+
+        return Self{ .ptr = sprite.? };
+    }
+
     /// Destroys this sprite
     pub fn deinit(self: Self) void {
         sf.c.sfSprite_destroy(self.ptr);
@@ -90,7 +101,7 @@ pub const Sprite = struct {
     }
     /// Sets this sprite's texture (the sprite will take the texture's dimensions)
     pub fn setTexture(self: Self, texture: sf.Texture) void {
-        sf.c.sfSprite_setTexture(self.ptr, texture.get(), 0);
+        sf.c.sfSprite_setTexture(self.ptr, texture.get(), 1);
     }
     /// Gets the sub-rectangle of the texture that the sprite will display
     pub fn getTextureRect(self: Self) sf.FloatRect {
