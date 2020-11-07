@@ -39,7 +39,7 @@ pub const Texture = union(TextureType) {
     }
 
     // Getters/Setters
-    
+
     /// Gets a const pointer to this texture
     pub fn get(self: Self) *const sf.c.sfTexture {
         return switch (self) {

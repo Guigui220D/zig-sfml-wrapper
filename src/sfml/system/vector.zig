@@ -54,3 +54,26 @@ pub fn Vector2(comptime T: type) type {
 pub const Vector2u = Vector2(u32);
 pub const Vector2i = Vector2(i32);
 pub const Vector2f = Vector2(f32);
+
+pub const Vector3f = struct {
+    const Self = @This();
+
+    /// Makes a CSFML vector with this vector (only if the corresponding type exists)
+    /// This is mainly for the inner workings of this wrapper
+    pub fn toCSFML(self: Self) sf.c.sfVector3f {
+        return sf.c.sfVector3f{ .x = self.x, .y = self.y, .z = self.z };
+    }
+
+    /// Creates a vector from a CSFML one (only if the corresponding type exists)
+    /// This is mainly for the inner workings of this wrapper
+    pub fn fromCSFML(vec: sf.c.sfVector3f) Self {
+        return Self{ .x = vec.x, .y = vec.y, .z = vec.z };
+    }
+
+    /// x component of the vector
+    x: f32,
+    /// y component of the vector
+    y: f32,
+    /// z component of the vector
+    z: f32,
+};

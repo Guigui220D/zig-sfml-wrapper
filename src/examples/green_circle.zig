@@ -3,7 +3,7 @@
 const sf = @import("sfml");
 
 pub fn main() !void {
-    var window = try sf.RenderWindow.init(.{.x = 200, .y = 200}, 32, "SFML works!");
+    var window = try sf.RenderWindow.init(.{ .x = 200, .y = 200 }, 32, "SFML works!");
     defer window.deinit();
 
     var shape = try sf.CircleShape.init(100.0);
@@ -12,7 +12,7 @@ pub fn main() !void {
 
     while (window.isOpen()) {
         while (window.pollEvent()) |event| {
-            if (event.type == sf.c.sfEventType.sfEvtClosed) //TODO : events
+            if (event == .closed)
                 window.close();
         }
 

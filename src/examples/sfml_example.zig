@@ -7,7 +7,7 @@ pub fn main() !void {
     // WIP
 
     // Create the main window
-    var window = try sf.RenderWindow.init(.{.x = 800, .y = 600}, 32, "SFML window");
+    var window = try sf.RenderWindow.init(.{ .x = 800, .y = 600 }, 32, "SFML window");
     defer window.deinit();
 
     // Load a sprite to display
@@ -26,7 +26,7 @@ pub fn main() !void {
         // Process events
         while (window.pollEvent()) |event| {
             // Close window: exit
-            if (event.type == sf.c.sfEventType.sfEvtClosed) //TODO : events
+            if (event == .closed)
                 window.close();
         }
 

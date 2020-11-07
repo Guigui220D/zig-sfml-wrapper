@@ -42,15 +42,10 @@ pub fn main() anyerror!void {
     while (window.isOpen()) {
         //Event polling
         while (window.pollEvent()) |event| {
-            switch (event.type) {
-                sf.c.sfEventType.sfEvtClosed => window.close(),
-                sf.c.sfEventType.sfEvtMouseButtonPressed => {
-                    //std.debug.print("click\n", .{});
-                    var vec = sf.Vector2i{
-                        .x = event.mouseButton.x,
-                        .y = event.mouseButton.y,
-                    };
-                    var coords = window.mapPixelToCoords(vec, null);
+            switch (event) {
+                .closed => window.close(),
+                .mouseButtonPressed => |e| {
+                    var coords = window.mapPixelToCoords(e.pos, null);
                     rect.setPosition(coords);
                 },
                 else => {},

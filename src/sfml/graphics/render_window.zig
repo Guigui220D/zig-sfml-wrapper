@@ -49,11 +49,11 @@ pub const RenderWindow = struct {
 
     /// Gets an event from the queue, returns null is theres none
     /// Use while on this to get all the events in your game loop
-    pub fn pollEvent(self: Self) ?sf.c.sfEvent {
+    pub fn pollEvent(self: Self) ?sf.Event {
         var event: sf.c.sfEvent = undefined;
         if (sf.c.sfRenderWindow_pollEvent(self.ptr, &event) == 0)
             return null;
-        return event;
+        return sf.Event.fromCSFML(event);
     }
 
     // Drawing functions

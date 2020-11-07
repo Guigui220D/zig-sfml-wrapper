@@ -1,4 +1,4 @@
-//! Drawable representation of a texture, with its own transformations, color, etc. 
+//! Drawable representation of a texture, with its own transformations, color, etc.
 
 const sf = @import("../sfml.zig");
 
@@ -126,7 +126,7 @@ test "sprite: sane getters and setters" {
     spr.setRotation(15);
     spr.setPosition(.{ .x = 1, .y = 2 });
     spr.setOrigin(.{ .x = 20, .y = 25 });
-    spr.setScale(.{.x = 2, .y = 2});
+    spr.setScale(.{ .x = 2, .y = 2 });
 
     // TODO : issue #2
     //tst.expectEqual(sf.Color.Yellow, spr.getColor());
@@ -136,8 +136,8 @@ test "sprite: sane getters and setters" {
     tst.expectEqual(sf.Vector2f{ .x = 2, .y = 2 }, spr.getScale());
 
     spr.rotate(5);
-    spr.move(.{.x = -5, .y = 5});
-    spr.scale(.{.x = 5, .y = 5});
+    spr.move(.{ .x = -5, .y = 5 });
+    spr.scale(.{ .x = 5, .y = 5 });
 
     tst.expectEqual(@as(f32, 20), spr.getRotation());
     tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, spr.getPosition());

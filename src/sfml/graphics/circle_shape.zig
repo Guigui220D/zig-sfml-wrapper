@@ -125,7 +125,7 @@ test "circle shape: sane getters and setters" {
     tst.expectEqual(@as(?sf.Texture, null), circle.getTexture());
 
     circle.rotate(5);
-    circle.move(.{.x = -5, .y = 5});
+    circle.move(.{ .x = -5, .y = 5 });
 
     tst.expectEqual(@as(f32, 20), circle.getRotation());
     tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, circle.getPosition());
