@@ -7,6 +7,7 @@ pub const Color = struct {
     const Self = @This();
 
     /// Converts a color from a csfml object
+    /// For inner workings
     pub fn fromCSFML(col: sf.c.sfColor) Self {
         return Self{
             .r = col.r,
@@ -17,6 +18,7 @@ pub const Color = struct {
     }
 
     /// Converts this color to a csfml one
+    /// For inner workings
     pub fn toCSFML(self: Self) sf.c.sfColor {
         return sf.c.sfColor{
             .r = self.r,

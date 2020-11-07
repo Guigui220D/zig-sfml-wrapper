@@ -1,11 +1,23 @@
 //! Represents a time value.
 
-const sf = @import("../sfml_import.zig");
+const sf = @import("../sfml.zig");
 
 pub const Time = struct {
     const Self = @This();
 
     // Constructors
+
+    /// Converts a time from a csfml object
+    /// For inner workings
+    pub fn fromCSFML(time: sf.c.sfTime) Self {
+        return Self{ .us = time.microseconds };
+    }
+
+    /// Converts a time to a csfml object
+    /// For inner workings
+    pub fn toCSFML(self: Self) sf.c.sfTime {
+        return sf.c.sfTime{ .microseconds = self.us };
+    }
 
     /// Creates a time object from a seconds count
     pub fn seconds(s: f32) Time {
@@ -43,10 +55,49 @@ pub const Time = struct {
 
     /// Sleeps the amount of time specified
     pub fn sleep(time: Time) void {
-        sf.c.sfSleep(sf.c.sfTime{ .microseconds = time.us });
+        sf.c.sfSleep(time.toCSFML());
     }
 
+    pub const Zero = microseconds(0);
+
     us: i64
+};
+
+pub const TimeSpan = struct {
+    const Self = @This();
+
+    // Constructors
+
+    /// Construcs a time span
+    pub fn init(begin: Time, length: Time) Self {
+        return Self{
+            .offset = begin,
+            .length = length,
+        };
+    }
+
+    /// Converts a timespan from a csfml object
+    /// For inner workings
+    pub fn fromCSFML(span: sf.c.sfTimeSpan) Self {
+        return Self{ 
+            .offset = sf.Time.fromCSFML(span.offset),
+            .length = sf.Time.fromCSFML(span.length),
+        };
+    }
+
+    /// Converts a timespan to a csfml object
+    /// For inner workings
+    pub fn toCSFML(self: Self) sf.c.sfTimeSpan {
+        return sf.c.sfTimeSpan{ 
+            .offset = self.offset.toCSFML(),
+            .length = self.length.toCSFML(),
+        };
+    }
+
+    /// The beginning of this span
+    offset: Time,
+    /// The length of this time span
+    length: Time,
 };
 
 const tst = @import("std").testing;
