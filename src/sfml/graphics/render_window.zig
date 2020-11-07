@@ -76,6 +76,7 @@ pub const RenderWindow = struct {
             sf.Sprite => sf.c.sfRenderWindow_drawSprite(self.ptr, to_draw.ptr, states),
             sf.CircleShape => sf.c.sfRenderWindow_drawCircleShape(self.ptr, to_draw.ptr, states),
             sf.RectangleShape => sf.c.sfRenderWindow_drawRectangleShape(self.ptr, to_draw.ptr, states),
+            sf.Text => sf.c.sfRenderWindow_drawText(self.ptr, to_draw.ptr, states),
             else => @compileError("You must provide a drawable object"),
         }
     }

@@ -12,6 +12,8 @@ usingnamespace @import("graphics/circle_shape.zig");
 usingnamespace @import("graphics/rectangle_shape.zig");
 usingnamespace @import("graphics/rect.zig");
 usingnamespace @import("graphics/view.zig");
+usingnamespace @import("graphics/font.zig");
+usingnamespace @import("graphics/text.zig");
 
 usingnamespace @import("system/vector.zig");
 usingnamespace @import("system/time.zig");

@@ -11,9 +11,6 @@ pub const Texture = union(TextureType) {
 
     // Constructor/destructor
 
-    // TODO : create from image
-    // TODO : create from stream
-    // TODO : create from memory
     /// Creates a texture from nothing
     pub fn init(size: sf.Vector2u) !Self {
         var tex = sf.c.sfTexture_create(@intCast(c_uint, size.x), @intCast(c_uint, size.y));
