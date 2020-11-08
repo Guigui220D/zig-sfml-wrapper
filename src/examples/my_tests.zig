@@ -3,6 +3,8 @@ const std = @import("std");
 
 const sf = @import("sfml");
 
+const allocator = std.heap.page_allocator;
+
 // I only use things I've wrapped here, but the other csfml functions seem to work, just need to wrap them
 pub fn main() anyerror!void {
     // Create a window
@@ -23,12 +25,19 @@ pub fn main() anyerror!void {
     bob.setFillColor(sf.Color.Red);
     bob.setOrigin(.{ .x = 10, .y = 10 });
 
-    var tex = try sf.Texture.initFromFile("cute_image.png");
+    var tex = try sf.Texture.init(.{.x = 12, .y = 10});
     defer tex.deinit();
+    std.debug.print("{} * {} = ", .{tex.getSize().x, tex.getSize().y});
+    std.debug.print("{}\n", .{tex.getPixelCount()});
+    var pixel_data = try allocator.alloc(sf.Color, 120);
+    defer allocator.free(pixel_data);
+    for (pixel_data) |c, i| {
+        pixel_data[i] = sf.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
+    }
+    try tex.updateFromPixels(pixel_data, null);
 
     var rect = try sf.RectangleShape.init(.{ .x = 50, .y = 70 });
     defer rect.deinit();
-    rect.setFillColor(sf.Color.Yellow);
     rect.setPosition(.{ .x = 100, .y = 100 });
     rect.setTexture(tex);
 

@@ -3,7 +3,7 @@
 const sf = @import("../sfml_import.zig");
 const math = @import("std").math;
 
-pub const Color = struct {
+pub const Color = packed struct {
     const Self = @This();
 
     /// Converts a color from a csfml object
@@ -66,6 +66,7 @@ pub const Color = struct {
             (@intCast(u32, self.a) << 0);
     }
 
+    /// Creates a color with rgba floats from 0 to 1
     fn fromFloats(red: f32, green: f32, blue: f32, alpha: f32) Self {
         return Self{
             .r = @floatToInt(u8, math.clamp(red, 0.0, 1.0) * 255.0),
@@ -76,15 +77,17 @@ pub const Color = struct {
     }
 
     /// Creates a color from HSV and transparency components (this is not part of the SFML)
+    /// hue is in degrees, saturation and value are in percents
     pub fn fromHSVA(hue: f32, saturation: f32, value: f32, alpha: f32) Self {
         const h = hue;
-        const s = saturation;
-        const v = value;
+        const s = saturation / 100;
+        const v = value / 100;
+        const a = alpha;
 
         var hh: f32 = h;
 
         if (v <= 0.0)
-            return fromFloats(0, 0, 0, alpha);
+            return fromFloats(0, 0, 0, a);
 
         if (hh >= 360.0)
             hh = 0;
@@ -97,12 +100,12 @@ pub const Color = struct {
         var t: f32 = v * (1.0 - (s * (1.0 - ff)));
 
         return switch (@floatToInt(usize, hh)) {
-            0 => fromFloats(v, t, p, alpha),
-            1 => fromFloats(q, v, p, alpha),
-            2 => fromFloats(p, v, t, alpha),
-            3 => fromFloats(p, q, v, alpha),
-            4 => fromFloats(t, p, v, alpha),
-            else => fromFloats(v, p, q, alpha),
+            0 => fromFloats(v, t, p, a),
+            1 => fromFloats(q, v, p, a),
+            2 => fromFloats(p, v, t, a),
+            3 => fromFloats(p, q, v, a),
+            4 => fromFloats(t, p, v, a),
+            else => fromFloats(v, p, q, a),
         };
     }
 
@@ -152,7 +155,7 @@ test "color: conversions" {
 }
 
 test "color: hsv to rgb" {
-    var col = Color.fromHSVA(240, 100, 100, 255);
+    var col = Color.fromHSVA(10, 20, 100, 255);
 
-    tst.expectEqual(Color.Blue, col);
+    tst.expectEqual(Color.rgb(255, 212, 204), col);
 }

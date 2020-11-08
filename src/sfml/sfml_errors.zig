@@ -1,3 +1,3 @@
 //! Errors for the wrapper
 
-pub const Error = error{ nullptrUnknownReason, windowCreationFailed, resourceLoadingError };
+pub const Error = error{ nullptrUnknownReason, windowCreationFailed, resourceLoadingError, notEnoughData, areaDoesNotFit };

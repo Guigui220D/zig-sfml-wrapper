@@ -82,9 +82,23 @@ pub fn Rect(comptime T: type) type {
             }
         }
 
+        /// Checks if two rectangles are the same
+        pub fn equals(self: Self, other: Self) bool {
+            return (
+                self.left == other.left and
+                self.top == other.top and
+                self.width == other.width and
+                self.height == other.height
+            );
+        }
+
         /// Gets a vector with left and top components inside
         pub fn getCorner(self: Self) sf.Vector2(T) {
             return sf.Vector2(T){ .x = self.left, .y = self.top };
+        }
+        /// Gets a vector with the bottom right corner coordinates
+        pub fn getOtherCorner(self: Self) sf.Vector2(T) {
+            return self.getCorner().add(self.getSize());
         }
         /// Gets a vector with width and height components inside
         pub fn getSize(self: Self) sf.Vector2(T) {
@@ -104,6 +118,7 @@ pub fn Rect(comptime T: type) type {
 
 // Common rect types
 pub const IntRect = Rect(i32);
+pub const UintRect = Rect(u32);
 pub const FloatRect = Rect(f32);
 
 const tst = @import("std").testing;
