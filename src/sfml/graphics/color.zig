@@ -29,7 +29,7 @@ pub const Color = packed struct {
     }
 
     /// Inits a color with rgb components
-    pub fn rgb(red: u8, green: u8, blue: u8) Self {
+    pub fn fromRGB(red: u8, green: u8, blue: u8) Self {
         return Self{
             .r = red,
             .g = green,
@@ -39,7 +39,7 @@ pub const Color = packed struct {
     }
 
     /// Inits a color with rgba components
-    pub fn rgba(red: u8, green: u8, blue: u8, alpha: u8) Self {
+    pub fn fromRGBA(red: u8, green: u8, blue: u8, alpha: u8) Self {
         return Self{
             .r = red,
             .g = green,
@@ -111,23 +111,23 @@ pub const Color = packed struct {
 
     // Colors
     /// Black color
-    pub const Black = Self.rgb(0, 0, 0);
+    pub const Black = Self.fromRGB(0, 0, 0);
     /// White color
-    pub const White = Self.rgb(255, 255, 255);
+    pub const White = Self.fromRGB(255, 255, 255);
     /// Red color
-    pub const Red = Self.rgb(255, 0, 0);
+    pub const Red = Self.fromRGB(255, 0, 0);
     /// Green color
-    pub const Green = Self.rgb(0, 255, 0);
+    pub const Green = Self.fromRGB(0, 255, 0);
     /// Blue color
-    pub const Blue = Self.rgb(0, 0, 255);
+    pub const Blue = Self.fromRGB(0, 0, 255);
     /// Yellow color
-    pub const Yellow = Self.rgb(255, 255, 0);
+    pub const Yellow = Self.fromRGB(255, 255, 0);
     /// Magenta color
-    pub const Magenta = Self.rgb(255, 0, 255);
+    pub const Magenta = Self.fromRGB(255, 0, 255);
     /// Cyan color
-    pub const Cyan = Self.rgb(0, 255, 255);
+    pub const Cyan = Self.fromRGB(0, 255, 255);
     /// Transparent color
-    pub const Transparent = Self.rgba(0, 0, 0, 0);
+    pub const Transparent = Self.fromRGBA(0, 0, 0, 0);
 
     /// Red component
     r: u8,
@@ -145,7 +145,7 @@ test "color: conversions" {
     var code: u32 = 0x4BDA9CFF;
     var col = Color.fromInteger(code);
 
-    tst.expectEqual(Color.rgb(75, 218, 156), col);
+    tst.expectEqual(Color.fromRGB(75, 218, 156), col);
     tst.expectEqual(code, col.toInteger());
 
     var csfml_col = sf.c.sfColor_fromInteger(@as(c_uint, code));
@@ -157,5 +157,5 @@ test "color: conversions" {
 test "color: hsv to rgb" {
     var col = Color.fromHSVA(10, 20, 100, 255);
 
-    tst.expectEqual(Color.rgb(255, 212, 204), col);
+    tst.expectEqual(Color.fromRGB(255, 212, 204), col);
 }
