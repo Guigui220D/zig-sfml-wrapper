@@ -5,8 +5,6 @@ const sf = @import("../sfml.zig");
 pub const Music = struct {
     const Self = @This();
 
-    // TODO : Very incomplete
-
     // Constructor/destructor
 
     /// Loads music from a file

@@ -66,6 +66,43 @@ pub fn main() !void {
         _ = sf.Event.getEventCount();
     }
     {
-        
+        var mus = try sf.Music.initFromFile("");
+        defer mus.deinit();
+        mus.play();
+        mus.pause();
+        mus.stop();
+        _ = mus.getDuration();
+        _ = mus.getPlayingOffset();
+        _ = mus.getLoopPoints();
+        _ = mus.getLoop();
+        _ = mus.getPitch();
+        _ = mus.getVolume();
+        mus.setVolume(1);
+        mus.setPitch(1);
+        mus.setLoop(true);
+        mus.setLoopPoints(sf.TimeSpan.init(sf.Time.Zero, sf.Time.seconds(1)));
+        mus.setPlayingOffset(sf.Time.Zero);
+    }
+    {
+        var win = try sf.RenderWindow.init(.{.x = 0, .y = 0}, 0, "");
+        defer win.deinit();
+        defer win.close();
+        _ = win.pollEvent();
+        _ = win.isOpen();
+        win.clear(sf.Color.Black);
+        win.draw(@as(sf.CircleShape, undefined), null);
+        win.display();
+        _ = win.getView();
+        _ = win.getDefaultView();
+        _ = win.getSize();
+        _ = win.getPosition();
+        win.setView(@as(sf.View, undefined));
+        win.setSize(.{ .x = 0, .y = 0 });
+        win.setPosition(.{ .x = 0, .y = 0 });
+        win.setTitle("");
+        win.setFramerateLimit(0);
+        win.setVerticalSyncEnabled(true);
+        _ = win.mapPixelToCoords(.{ .x = 0, .y = 0 }, null);
+        _ = win.mapCoordsToPixel(.{ .x = 0, .y = 0 }, null);
     }
 }

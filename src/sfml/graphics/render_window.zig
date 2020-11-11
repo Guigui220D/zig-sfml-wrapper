@@ -109,11 +109,11 @@ pub const RenderWindow = struct {
     }
 
     /// Gets the position of this window
-    pub fn getPosition(self: Self) sf.Vector2u {
-        return sf.Vector2u.fromCSFML(sf.c.sfRenderWindow_getPosition(self.ptr));
+    pub fn getPosition(self: Self) sf.Vector2i {
+        return sf.Vector2i.fromCSFML(sf.c.sfRenderWindow_getPosition(self.ptr));
     }
     /// Sets the position of this window
-    pub fn setPosition(self: Self, pos: sf.Vector2u) void {
+    pub fn setPosition(self: Self, pos: sf.Vector2i) void {
         sf.c.sfRenderWindow_setPosition(self.ptr, pos.toCSFML());
     }
 
