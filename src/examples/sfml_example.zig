@@ -24,7 +24,7 @@ pub fn main() !void {
     var music = try sf.Music.initFromFile("nice_music.ogg");
     defer music.deinit();
     music.play();
-    
+
     // Start the game loop
     while (window.isOpen()) {
         // Process events

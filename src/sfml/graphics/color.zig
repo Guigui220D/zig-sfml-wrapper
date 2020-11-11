@@ -159,3 +159,4 @@ test "color: hsv to rgb" {
 
     tst.expectEqual(Color.fromRGB(255, 212, 204), col);
 }
+

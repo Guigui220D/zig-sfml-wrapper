@@ -1,4 +1,4 @@
-//! Graphical text that can be drawn to a render target. 
+//! Graphical text that can be drawn to a render target.
 
 const sf = @import("../sfml.zig");
 

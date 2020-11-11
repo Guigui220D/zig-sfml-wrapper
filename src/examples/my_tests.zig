@@ -25,9 +25,9 @@ pub fn main() anyerror!void {
     bob.setFillColor(sf.Color.Red);
     bob.setOrigin(.{ .x = 10, .y = 10 });
 
-    var tex = try sf.Texture.init(.{.x = 12, .y = 10});
+    var tex = try sf.Texture.init(.{ .x = 12, .y = 10 });
     defer tex.deinit();
-    std.debug.print("{} * {} = ", .{tex.getSize().x, tex.getSize().y});
+    std.debug.print("{} * {} = ", .{ tex.getSize().x, tex.getSize().y });
     std.debug.print("{}\n", .{tex.getPixelCount()});
     var pixel_data = try allocator.alloc(sf.Color, 120);
     defer allocator.free(pixel_data);

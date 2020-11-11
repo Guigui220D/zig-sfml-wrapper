@@ -66,6 +66,73 @@ pub const Event = union(Event.Type) {
         return @enumToInt(sf.c.sfEventType.sfEvtCount);
     }
 
+    /// Size events parameters
+    pub const SizeEvent = struct {
+        size: sf.Vector2u,
+    };
+
+    /// Keyboard event parameters
+    pub const KeyEvent = struct {
+        code: sf.Keyboard.KeyCode,
+        alt: bool,
+        control: bool,
+        shift: bool,
+        system: bool,
+    };
+
+    /// Text event parameters
+    pub const TextEvent = struct {
+        unicode: u32,
+    };
+
+    /// Mouse move event parameters
+    pub const MouseMoveEvent = struct {
+        pos: sf.Vector2i,
+    };
+
+    /// Mouse buttons events parameters
+    pub const MouseButtonEvent = struct {
+        button: sf.c.sfMouseButton,
+        pos: sf.Vector2i,
+    };
+
+    /// Mouse wheel events parameters
+    pub const MouseWheelScrollEvent = struct {
+        wheel: sf.c.sfMouseWheel,
+        delta: f32,
+        pos: sf.Vector2i,
+    };
+
+    /// Joystick axis move event parameters
+    pub const JoystickMoveEvent = struct {
+        joystickId: c_uint,
+        axis: sf.c.sfJoystickAxis,
+        position: f32,
+    };
+
+    /// Joystick buttons events parameters
+    pub const JoystickButtonEvent = struct {
+        joystickId: c_uint,
+        button: c_uint,
+    };
+
+    /// Joystick connection/disconnection event parameters
+    pub const JoystickConnectEvent = struct {
+        joystickId: c_uint,
+    };
+
+    /// Touch events parameters
+    pub const TouchEvent = struct {
+        finger: c_uint,
+        pos: sf.Vector2i,
+    };
+
+    /// Sensor event parameters
+    pub const SensorEvent = struct {
+        sensorType: sf.c.sfSensorType,
+        vector: sf.Vector3f,
+    };
+
     // An event is one of those
     closed: void,
     resized: SizeEvent,
@@ -89,71 +156,4 @@ pub const Event = union(Event.Type) {
     touchMoved: TouchEvent,
     touchEnded: TouchEvent,
     sensorChanged: SensorEvent,
-};
-
-/// Size events parameters
-pub const SizeEvent = struct {
-    size: sf.Vector2u,
-};
-
-/// Keyboard event parameters
-pub const KeyEvent = struct {
-    code: sf.Keyboard.KeyCode,
-    alt: bool,
-    control: bool,
-    shift: bool,
-    system: bool,
-};
-
-/// Text event parameters
-pub const TextEvent = struct {
-    unicode: u32,
-};
-
-/// Mouse move event parameters
-pub const MouseMoveEvent = struct {
-    pos: sf.Vector2i,
-};
-
-/// Mouse buttons events parameters
-pub const MouseButtonEvent = struct {
-    button: sf.c.sfMouseButton,
-    pos: sf.Vector2i,
-};
-
-/// Mouse wheel events parameters
-pub const MouseWheelScrollEvent = struct {
-    wheel: sf.c.sfMouseWheel,
-    delta: f32,
-    pos: sf.Vector2i,
-};
-
-/// Joystick axis move event parameters
-pub const JoystickMoveEvent = struct {
-    joystickId: c_uint,
-    axis: sf.c.sfJoystickAxis,
-    position: f32,
-};
-
-/// Joystick buttons events parameters
-pub const JoystickButtonEvent = struct {
-    joystickId: c_uint,
-    button: c_uint,
-};
-
-/// Joystick connection/disconnection event parameters
-pub const JoystickConnectEvent = struct {
-    joystickId: c_uint,
-};
-
-/// Touch events parameters
-pub const TouchEvent = struct {
-    finger: c_uint,
-    pos: sf.Vector2i,
-};
-
-/// Sensor event parameters
-pub const SensorEvent = struct {
-    sensorType: sf.c.sfSensorType,
-    vector: sf.Vector3f,
 };

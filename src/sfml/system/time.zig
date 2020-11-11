@@ -58,6 +58,7 @@ pub const Time = struct {
         sf.c.sfSleep(time.toCSFML());
     }
 
+    /// A time of zero
     pub const Zero = microseconds(0);
 
     us: i64
@@ -79,7 +80,7 @@ pub const TimeSpan = struct {
     /// Converts a timespan from a csfml object
     /// For inner workings
     pub fn fromCSFML(span: sf.c.sfTimeSpan) Self {
-        return Self{ 
+        return Self{
             .offset = sf.Time.fromCSFML(span.offset),
             .length = sf.Time.fromCSFML(span.length),
         };
@@ -88,7 +89,7 @@ pub const TimeSpan = struct {
     /// Converts a timespan to a csfml object
     /// For inner workings
     pub fn toCSFML(self: Self) sf.c.sfTimeSpan {
-        return sf.c.sfTimeSpan{ 
+        return sf.c.sfTimeSpan{
             .offset = self.offset.toCSFML(),
             .length = self.length.toCSFML(),
         };

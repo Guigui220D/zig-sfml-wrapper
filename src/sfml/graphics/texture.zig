@@ -54,7 +54,7 @@ pub const Texture = union(TextureType) {
     /// Makes this texture constant (I don't know why you would do that)
     pub fn makeConst(self: *Self) void {
         var ptr = self.get();
-        self.* = Self{.const_ptr = self.get()};
+        self.* = Self{ .const_ptr = self.get() };
     }
 
     /// Gets the size of this image
@@ -67,7 +67,7 @@ pub const Texture = union(TextureType) {
         );
         var x: u32 = @truncate(u32, (rax & 0x00000000FFFFFFFF) >> 00);
         var y: u32 = @truncate(u32, (rax & 0xFFFFFFFF00000000) >> 32);
-        return sf.Vector2u{.x = x, .y = y};
+        return sf.Vector2u{ .x = x, .y = y };
     }
     /// Gets the pixel count of this image
     pub fn getPixelCount(self: Self) usize {
@@ -92,13 +92,11 @@ pub const Texture = union(TextureType) {
             if (intersection) |i| {
                 if (!i.equals(z))
                     return sf.Error.areaDoesNotFit;
-            }
-            else 
+            } else
                 return sf.Error.areaDoesNotFit;
 
             real_zone = z;
-        }
-        else {
+        } else {
             real_zone.left = 0;
             real_zone.top = 0;
             real_zone.width = size.x;
@@ -107,8 +105,8 @@ pub const Texture = union(TextureType) {
         // Check if there is enough data
         if (pixels.len < real_zone.width * real_zone.height)
             return sf.Error.notEnoughData;
-        
-        sf.c.sfTexture_updateFromPixels(self.ptr, @ptrCast([*]const u8, pixels.ptr), real_zone.width, real_zone.height, real_zone.left, real_zone.top); 
+
+        sf.c.sfTexture_updateFromPixels(self.ptr, @ptrCast([*]const u8, pixels.ptr), real_zone.width, real_zone.height, real_zone.left, real_zone.top);
     }
 
     /// Tells whether or not this texture is to be smoothed
@@ -119,7 +117,7 @@ pub const Texture = union(TextureType) {
     pub fn setSmooth(self: Self, smooth: bool) void {
         if (self == .const_ptr)
             @panic("Can't set properties on a const texture");
-        
+
         sf.c.sfTexture_setSmooth(self.ptr, if (smooth) 1 else 0);
     }
 
@@ -135,7 +133,7 @@ pub const Texture = union(TextureType) {
         sf.c.sfTexture_setRepeated(self.ptr, if (repeated) 1 else 0);
     }
 
-    /// Tells whether or not this texture has colors in the SRGB format 
+    /// Tells whether or not this texture has colors in the SRGB format
     /// SRGB functions arent implemented yet
     pub fn isSrgb(self: Self) bool {
         return sf.c.sfTexture_isSrgb(self.ptr) != 0;
@@ -169,7 +167,7 @@ const tst = std.testing;
 const allocator = std.heap.page_allocator;
 
 test "texture: sane getters and setters" {
-    var tex = try sf.Texture.init(.{.x = 12, .y = 10});
+    var tex = try sf.Texture.init(.{ .x = 12, .y = 10 });
     defer tex.deinit();
 
     var size = tex.getSize();
@@ -202,7 +200,7 @@ test "texture: sane getters and setters" {
 
     tst.expectEqual(@as(usize, 120), copy.getPixelCount());
 
-    var tex2 = try sf.Texture.init(.{.x = 100, .y = 100});
+    var tex2 = try sf.Texture.init(.{ .x = 100, .y = 100 });
 
     copy.swap(tex2);
 

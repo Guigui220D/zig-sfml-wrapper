@@ -84,12 +84,10 @@ pub fn Rect(comptime T: type) type {
 
         /// Checks if two rectangles are the same
         pub fn equals(self: Self, other: Self) bool {
-            return (
-                self.left == other.left and
+            return (self.left == other.left and
                 self.top == other.top and
                 self.width == other.width and
-                self.height == other.height
-            );
+                self.height == other.height);
         }
 
         /// Gets a vector with left and top components inside
