@@ -25,6 +25,18 @@ pub const Texture = union(TextureType) {
             return sf.Error.resourceLoadingError;
         return Self{ .ptr = tex.? };
     }
+    /// Creates an texture from an image
+    pub fn initFromImage(image: sf.Image, area: ?sf.IntRect) !Self {
+        var tex = if (area) |a|
+            sf.c.sfTexture_createFromImage(image.ptr, &a.toCSFML())
+        else
+            sf.c.sfTexture_createFromImage(image.ptr, null);
+
+        if (tex == null)
+            return sf.Error.nullptrUnknownReason;
+        return Self{ .ptr = tex.? };
+    }
+
     /// Destroys a texture
     /// Be careful, you can only destroy non const textures
     pub fn deinit(self: Self) void {

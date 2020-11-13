@@ -13,6 +13,7 @@ usingnamespace @import("window/keyboard.zig");
 
 usingnamespace @import("graphics/color.zig");
 usingnamespace @import("graphics/render_window.zig");
+usingnamespace @import("graphics/image.zig");
 usingnamespace @import("graphics/texture.zig");
 usingnamespace @import("graphics/sprite.zig");
 usingnamespace @import("graphics/circle_shape.zig");
