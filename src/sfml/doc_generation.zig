@@ -105,4 +105,34 @@ pub fn main() !void {
         _ = win.mapPixelToCoords(.{ .x = 0, .y = 0 }, null);
         _ = win.mapCoordsToPixel(.{ .x = 0, .y = 0 }, null);
     }
+    {
+        var tex = try sf.Texture.init(.{ .x = 10, .y = 10});
+        tex = try sf.Texture.initFromFile("");
+        tex = try sf.Texture.initFromImage(@as(sf.Image, undefined), null);
+        defer tex.deinit();
+        _ = tex.get();
+        tex.makeConst();
+        _ = try tex.copy();
+        _ = tex.getSize();
+        _ = tex.getPixelCount();
+        _ = try tex.updateFromPixels(@as([]const sf.Color, undefined), null);
+        _ = tex.updateFromImage(@as(sf.Image, undefined), null);
+        _ = tex.updateFromTexture(@as(sf.Texture, undefined), null);
+        _ = tex.isSmooth();
+        _ = tex.isRepeated();
+        _ = tex.isSrgb();
+        _ = tex.swap(@as(sf.Texture, undefined));
+        tex.setSmooth(true);
+        tex.setSrgb(true);
+        tex.setRepeated(true);
+    }
+    {
+        var img = try sf.Image.init(.{ .x = 10, .y = 10}, sf.Color.Red);
+        img = try sf.Image.initFromFile("");
+        img = try sf.Image.initFromPixels(.{ .x = 10, .y = 10}, @as([]const sf.Color, undefined));
+        defer img.deinit();
+        //var fct = sf.Image.getPixel;
+        img.setPixel(.{ .x = 1, .y = 1}, sf.Color.Blue);
+        _ = img.getSize();
+    }
 }

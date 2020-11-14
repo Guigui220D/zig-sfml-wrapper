@@ -28,7 +28,18 @@ pub const CircleShape = struct {
 
     /// Gets the fill color of this circle shape
     pub fn getFillColor(self: Self) sf.Color {
-        return sf.Color.fromCSFML(sf.c.sfCircleShape_getFillColor(self.ptr));
+        _ = sf.c.sfCircleShape_getFillColor(self.ptr);
+
+        // Register Rax holds the return val of function calls that can fit in a register
+        const rax: usize = asm volatile (""
+            : [ret] "={rax}" (-> usize)
+        );
+
+        std.debug.print("{}\n", rax);
+        
+        var x: u32 = @truncate(u32, (rax & 0x00000000FFFFFFFF) >> 00);
+        var y: u32 = @truncate(u32, (rax & 0xFFFFFFFF00000000) >> 32);
+        return sf.Color.fromInteger(x);
     }
     /// Sets the fill color of this circle shape
     pub fn setFillColor(self: Self, color: sf.Color) void {
@@ -97,7 +108,17 @@ pub const CircleShape = struct {
     }
     /// Sets the sub-rectangle of the texture that the shape will display
     pub fn setTextureRect(self: Self, rect: sf.FloatRect) void {
-        sf.c.sfRectangleShape_getCircleRect(self.ptr, rect.toCSFML());
+        sf.c.sfCircleShape_getCircleRect(self.ptr, rect.toCSFML());
+    }
+
+    /// Gets the bounds in the local coordinates system
+    pub fn getLocalBounds(self: Self) sf.FloatRect {
+        return sf.FloatRect.fromCSFML(sf.c.sfCircleShape_getLocalBounds(self.ptr));
+    }
+
+    /// Gets the bounds in the global coordinates
+    pub fn getGlobalBounds(self: Self) sf.FloatRect {
+        return sf.FloatRect.fromCSFML(sf.c.sfCircleShape_getGlobalBounds(self.ptr));
     }
 
     /// Pointer to the csfml structure

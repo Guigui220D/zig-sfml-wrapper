@@ -1,6 +1,8 @@
 //! Image living on the graphics card that can be used for drawing.
 
 const sf = @import("../sfml.zig");
+const std = @import("std");
+const assert = std.debug.assert;
 
 const TextureType = enum {
     ptr, const_ptr
@@ -120,6 +122,26 @@ pub const Texture = union(TextureType) {
 
         sf.c.sfTexture_updateFromPixels(self.ptr, @ptrCast([*]const u8, pixels.ptr), real_zone.width, real_zone.height, real_zone.left, real_zone.top);
     }
+    /// Updates the pixels of the image from an other texture
+    pub fn updateFromTexture(self: Self, other: Texture, copy_pos: ?sf.Vector2u) void {
+        var pos = if (copy_pos) |a| a else sf.Vector2u{.x = 0, .y = 0};
+        var max = other.getSize().add(pos);
+        var size = self.getSize();
+
+        assert(max.x < size.x and max.y < size.y);
+
+        sf.c.sfTexture_updateFromTexture(self.ptr, other.get(), pos.x, pos.y);
+    }
+    /// Updates the pixels of the image from an image
+    pub fn updateFromImage(self: Self, image: sf.Image, copy_pos: ?sf.Vector2u) void {
+        var pos = if (copy_pos) |a| a else sf.Vector2u{.x = 0, .y = 0};
+        var max = image.getSize().add(pos);
+        var size = self.getSize();
+
+        assert(max.x < size.x and max.y < size.y);
+
+        sf.c.sfTexture_updateFromImage(self.ptr, image.ptr, pos.x, pos.y);
+    }
 
     /// Tells whether or not this texture is to be smoothed
     pub fn isSmooth(self: Self) bool {
@@ -174,7 +196,6 @@ pub const Texture = union(TextureType) {
     const_ptr: *const sf.c.sfTexture
 };
 
-const std = @import("std");
 const tst = std.testing;
 const allocator = std.heap.page_allocator;
 

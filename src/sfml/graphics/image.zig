@@ -14,7 +14,7 @@ pub const Image = struct {
         var img = sf.c.sfImage_createFromColor(size.x, size.y, color.toCSFML());
         if (img == null)
             return sf.Error.nullptrUnknownReason;
-        return Self{ .img = tex.? };
+        return Self{ .ptr = img.? };
     }
 
     /// Creates an image from a pixel array

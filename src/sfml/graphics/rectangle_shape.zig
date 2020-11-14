@@ -100,6 +100,16 @@ pub const RectangleShape = struct {
         sf.c.sfRectangleShape_getTextureRect(self.ptr, rect.toCSFML());
     }
 
+    /// Gets the bounds in the local coordinates system
+    pub fn getLocalBounds(self: Self) sf.FloatRect {
+        return sf.FloatRect.fromCSFML(sf.c.sfRectangleShape_getLocalBounds(self.ptr));
+    }
+
+    /// Gets the bounds in the global coordinates
+    pub fn getGlobalBounds(self: Self) sf.FloatRect {
+        return sf.FloatRect.fromCSFML(sf.c.sfRectangleShape_getGlobalBounds(self.ptr));
+    }
+
     /// Pointer to the csfml structure
     ptr: *sf.c.sfRectangleShape
 };
