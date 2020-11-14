@@ -63,13 +63,16 @@ pub fn main() anyerror!void {
 
         //Updating
         var total = clock.getElapsedTime().asSeconds();
-        bob.setPosition(.{ .x = 150.0 * std.math.cos(total), .y = 120.0 * std.math.sin(total) });
 
         rect.setRotation(total * 12);
 
         view.center = bob.getPosition();
         if (sf.Keyboard.isKeyPressed(.A))
             window.setView(view);
+
+        bob.setPosition(window.mapPixelToCoords(sf.Mouse.getPosition(window), null));
+
+        //std.debug.print("{}\n", .{sf.Mouse.getPosition(window)});
 
         //Drawing
         window.clear(sf.Color.Black);

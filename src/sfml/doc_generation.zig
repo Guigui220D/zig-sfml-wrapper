@@ -61,6 +61,11 @@ pub fn main() !void {
         _ = sf.Keyboard.isKeyPressed(.A);
     }
     {
+        _ = sf.Mouse.isButtonPressed(.Left);
+        _ = sf.Mouse.getPosition(null);
+        sf.Mouse.setPosition(.{.x = 3, .y = 3}, null);
+    }
+    {
         var evt: sf.Event = undefined;
         evt.resized = .{.size = .{.x = 3, .y = 3}};
         _ = sf.Event.getEventCount();

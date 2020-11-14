@@ -10,6 +10,7 @@ usingnamespace @import("system/clock.zig");
 
 usingnamespace @import("window/event.zig");
 usingnamespace @import("window/keyboard.zig");
+usingnamespace @import("window/mouse.zig");
 
 usingnamespace @import("graphics/color.zig");
 usingnamespace @import("graphics/render_window.zig");

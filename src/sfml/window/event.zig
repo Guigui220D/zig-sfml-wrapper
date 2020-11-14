@@ -41,9 +41,9 @@ pub const Event = union(Event.Type) {
             sf.c.sfEventType.sfEvtTextEntered => .{ .textEntered = .{ .unicode = event.text.unicode } },
             sf.c.sfEventType.sfEvtKeyPressed => .{ .keyPressed = .{ .code = @intToEnum(sf.Keyboard.KeyCode, @enumToInt(event.key.code)), .alt = (event.key.alt != 0), .control = (event.key.control != 0), .shift = (event.key.shift != 0), .system = (event.key.system != 0) } },
             sf.c.sfEventType.sfEvtKeyReleased => .{ .keyReleased = .{ .code = @intToEnum(sf.Keyboard.KeyCode, @enumToInt(event.key.code)), .alt = (event.key.alt != 0), .control = (event.key.control != 0), .shift = (event.key.shift != 0), .system = (event.key.system != 0) } },
-            sf.c.sfEventType.sfEvtMouseWheelMoved, sf.c.sfEventType.sfEvtMouseWheelScrolled => .{ .mouseWheelScrolled = .{ .wheel = event.mouseWheelScroll.wheel, .delta = event.mouseWheelScroll.delta, .pos = .{ .x = event.mouseWheelScroll.x, .y = event.mouseWheelScroll.y } } },
-            sf.c.sfEventType.sfEvtMouseButtonPressed => .{ .mouseButtonPressed = .{ .button = event.mouseButton.button, .pos = .{ .x = event.mouseButton.x, .y = event.mouseButton.y } } },
-            sf.c.sfEventType.sfEvtMouseButtonReleased => .{ .mouseButtonReleased = .{ .button = event.mouseButton.button, .pos = .{ .x = event.mouseButton.x, .y = event.mouseButton.y } } },
+            sf.c.sfEventType.sfEvtMouseWheelMoved, sf.c.sfEventType.sfEvtMouseWheelScrolled => .{ .mouseWheelScrolled = .{ .wheel = @intToEnum(sf.Mouse.Wheel, @enumToInt(event.mouseWheelScroll.wheel)), .delta = event.mouseWheelScroll.delta, .pos = .{ .x = event.mouseWheelScroll.x, .y = event.mouseWheelScroll.y } } },
+            sf.c.sfEventType.sfEvtMouseButtonPressed => .{ .mouseButtonPressed = .{ .button = @intToEnum(sf.Mouse.Button, @enumToInt(event.mouseButton.button)), .pos = .{ .x = event.mouseButton.x, .y = event.mouseButton.y } } },
+            sf.c.sfEventType.sfEvtMouseButtonReleased => .{ .mouseButtonReleased = .{ .button = @intToEnum(sf.Mouse.Button, @enumToInt(event.mouseButton.button)), .pos = .{ .x = event.mouseButton.x, .y = event.mouseButton.y } } },
             sf.c.sfEventType.sfEvtMouseMoved => .{ .mouseMoved = .{ .pos = .{ .x = event.mouseMove.x, .y = event.mouseMove.y } } },
             sf.c.sfEventType.sfEvtMouseEntered => .{ .mouseEntered = {} },
             sf.c.sfEventType.sfEvtMouseLeft => .{ .mouseLeft = {} },
@@ -92,13 +92,13 @@ pub const Event = union(Event.Type) {
 
     /// Mouse buttons events parameters
     pub const MouseButtonEvent = struct {
-        button: sf.c.sfMouseButton,
+        button: sf.Mouse.Button,
         pos: sf.Vector2i,
     };
 
     /// Mouse wheel events parameters
     pub const MouseWheelScrollEvent = struct {
-        wheel: sf.c.sfMouseWheel,
+        wheel: sf.Mouse.Wheel,
         delta: f32,
         pos: sf.Vector2i,
     };
