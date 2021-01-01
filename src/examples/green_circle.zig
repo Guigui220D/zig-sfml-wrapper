@@ -1,4 +1,5 @@
 //! This is a translation of the c++ code the sfml website gives you to test if SFML works
+//! for instance, in this page: https://www.sfml-dev.org/tutorials/2.5/start-vc.php
 
 const sf = @import("sfml");
 

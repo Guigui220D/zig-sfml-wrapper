@@ -119,9 +119,9 @@ pub const IntRect = Rect(i32);
 pub const UintRect = Rect(u32);
 pub const FloatRect = Rect(f32);
 
-const tst = @import("std").testing;
-
 test "rect: intersect" {
+    const tst = @import("std").testing;
+
     var r1 = IntRect.init(0, 0, 10, 10);
     var r2 = IntRect.init(6, 6, 20, 20);
     var r3 = IntRect.init(-5, -5, 10, 10);
@@ -139,6 +139,8 @@ test "rect: intersect" {
 }
 
 test "rect: contains" {
+    const tst = @import("std").testing;
+    
     var r1 = FloatRect.init(0, 0, 10, 10);
 
     tst.expect(r1.contains(.{ .x = 0, .y = 0 }));

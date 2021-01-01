@@ -116,9 +116,9 @@ pub const Sprite = struct {
     ptr: *sf.c.sfSprite
 };
 
-const tst = @import("std").testing;
-
 test "sprite: sane getters and setters" {
+    const tst = @import("std").testing;
+    
     var spr = try Sprite.init();
     defer spr.deinit();
 

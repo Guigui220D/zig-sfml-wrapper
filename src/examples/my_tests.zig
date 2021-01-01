@@ -1,6 +1,6 @@
 ///! This is an example use of the sfml
-const std = @import("std");
 
+const std = @import("std");
 const sf = @import("sfml");
 
 const allocator = std.heap.page_allocator;

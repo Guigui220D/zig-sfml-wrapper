@@ -36,6 +36,15 @@ pub const View = struct {
         return view;
     }
 
+    pub fn getRect(self: Self) sf.FloatRect {
+        return sf.FloatRect.init(
+            self.center.x - self.size.x / 2,
+            self.center.y - self.size.y / 2,
+            self.size.x,
+            self.size.y
+        );
+    }
+
     // View variables
     /// Center of the view, what this view "looks" at
     center: sf.Vector2f,
@@ -45,9 +54,9 @@ pub const View = struct {
     viewport: sf.FloatRect
 };
 
-const tst = @import("std").testing;
-
 test "view: from rect" {
+    const tst = @import("std").testing;
+
     // Testing if the view from rect initialization works
     var rect = sf.FloatRect.init(10, -15, 700, 600);
 
@@ -63,4 +72,11 @@ test "view: from rect" {
     tst.expectWithinMargin(center.y, view2.center.y, 0.00001);
     tst.expectWithinMargin(size.x, view2.size.x, 0.00001);
     tst.expectWithinMargin(size.y, view2.size.y, 0.00001);
+
+    var rect_ret = view2.getRect();
+    
+    tst.expectWithinMargin(rect.left, rect_ret.left, 0.00001);
+    tst.expectWithinMargin(rect.top, rect_ret.top, 0.00001);
+    tst.expectWithinMargin(rect.width, rect_ret.width, 0.00001);
+    tst.expectWithinMargin(rect.height, rect_ret.height, 0.00001);
 }

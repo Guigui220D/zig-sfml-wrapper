@@ -196,10 +196,10 @@ pub const Texture = union(TextureType) {
     const_ptr: *const sf.c.sfTexture
 };
 
-const tst = std.testing;
-const allocator = std.heap.page_allocator;
-
 test "texture: sane getters and setters" {
+    const tst = std.testing;
+    const allocator = std.heap.page_allocator;
+    
     var tex = try sf.Texture.init(.{ .x = 12, .y = 10 });
     defer tex.deinit();
 

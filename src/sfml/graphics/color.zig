@@ -139,9 +139,9 @@ pub const Color = packed struct {
     a: u8
 };
 
-const tst = @import("std").testing;
-
 test "color: conversions" {
+    const tst = @import("std").testing;
+
     var code: u32 = 0x4BDA9CFF;
     var col = Color.fromInteger(code);
 
@@ -155,6 +155,8 @@ test "color: conversions" {
 }
 
 test "color: hsv to rgb" {
+    const tst = @import("std").testing;
+    
     var col = Color.fromHSVA(10, 20, 100, 255);
 
     tst.expectEqual(Color.fromRGB(255, 212, 204), col);

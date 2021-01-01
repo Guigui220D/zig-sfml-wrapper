@@ -114,9 +114,9 @@ pub const RectangleShape = struct {
     ptr: *sf.c.sfRectangleShape
 };
 
-const tst = @import("std").testing;
-
 test "rectangle shape: sane getters and setters" {
+    const tst = @import("std").testing;
+    
     var rect = try RectangleShape.init(sf.Vector2f{ .x = 30, .y = 50 });
     defer rect.deinit();
 

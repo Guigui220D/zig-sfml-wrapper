@@ -25,3 +25,4 @@ usingnamespace @import("graphics/font.zig");
 usingnamespace @import("graphics/text.zig");
 
 usingnamespace @import("audio/music.zig");
+usingnamespace @import("audio/sound_buffer.zig");

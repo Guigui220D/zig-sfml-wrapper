@@ -39,9 +39,9 @@ pub const Clock = struct {
     ptr: *sf.c.sfClock
 };
 
-const tst = @import("std").testing;
-
 test "clock: sleep test" {
+    const tst = @import("std").testing;
+    
     // This tests just sleeps and check what the timer measured (not very accurate but eh)
     var clk = try Clock.init();
     defer clk.deinit();

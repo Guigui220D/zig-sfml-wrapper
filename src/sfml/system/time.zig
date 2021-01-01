@@ -101,9 +101,9 @@ pub const TimeSpan = struct {
     length: Time,
 };
 
-const tst = @import("std").testing;
-
 test "time: conversion" {
+    const tst = @import("std").testing;
+    
     var t = Time.microseconds(5_120_000);
 
     tst.expectEqual(@as(i32, 5_120), t.asMilliseconds());

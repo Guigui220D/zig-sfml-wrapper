@@ -22,6 +22,7 @@ pub fn build(b: *Builder) void {
     example(b, target, "sfml_example");
     example(b, target, "green_circle");
     example(b, target, "my_tests");
+    example(b, target, "sound_experiments");
 
     const doc = b.addObject("sfml", "src/sfml/doc_generation.zig");
     doc.linkLibC();

@@ -79,10 +79,10 @@ pub const Image = struct {
     ptr: *sf.c.sfImage
 };
 
-const tst = std.testing;
-const allocator = std.heap.page_allocator;
-
 test "image: sane getters and setters" {
+    const tst = std.testing;
+    const allocator = std.heap.page_allocator;
+
     var pixel_data = try allocator.alloc(sf.Color, 30);
     defer allocator.free(pixel_data);
 
