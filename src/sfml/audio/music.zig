@@ -60,7 +60,7 @@ pub const Music = struct {
         sf.c.sfMusic_setLoopPoints(self.ptr, span.toCSFML());
     }
 
-    /// Tells whether or not this stream is in loop more
+    /// Tells whether or not this stream is in loop mode
     pub fn getLoop(self: Self) bool {
         return sf.c.sfMusic_getLoop(self.ptr) != 0;
     }
@@ -87,6 +87,6 @@ pub const Music = struct {
         sf.c.sfMusic_setVolume(self.ptr, volume);
     }
 
-    /// Pointer to the csfml texture
+    /// Pointer to the csfml music
     ptr: *sf.c.sfMusic,
 };

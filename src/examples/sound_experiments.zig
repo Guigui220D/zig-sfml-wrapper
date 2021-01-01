@@ -9,7 +9,7 @@ pub fn main() !void {
     const channel_count: usize = 1;     //Mono
 
     //Allocation of samples
-    var samples = try allocator.alloc(i16, sample_rate * 5);
+    var samples = try allocator.alloc(i16, sample_rate * 1);
     defer allocator.free(samples);
 
     //Generation of samples
@@ -20,4 +20,15 @@ pub fn main() !void {
     //Sound buffer initialization
     var sound_buffer = try sf.SoundBuffer.initFromSamples(samples, channel_count, sample_rate);
     defer sound_buffer.deinit();
+
+    //Sound initializaion
+    var sound = try sf.Sound.initFromBuffer(sound_buffer);
+    defer sound.deinit();
+
+    //Playing the sound
+    sound.setVolume(10);    //So it doesn't break your ears
+    sound.setPitch(2);
+    sound.play();
+
+    sf.Time.sleep(sound_buffer.getDuration());
 }

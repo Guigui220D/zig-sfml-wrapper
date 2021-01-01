@@ -125,9 +125,9 @@ pub const CircleShape = struct {
     ptr: *sf.c.sfCircleShape
 };
 
-const tst = @import("std").testing;
-
 test "circle shape: sane getters and setters" {
+    const tst = @import("std").testing;
+    
     var circle = try CircleShape.init(30);
     defer circle.deinit();
 
