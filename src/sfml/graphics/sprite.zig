@@ -100,8 +100,9 @@ pub const Sprite = struct {
             return null;
     }
     /// Sets this sprite's texture (the sprite will take the texture's dimensions)
-    pub fn setTexture(self: Self, texture: sf.Texture) void {
-        sf.c.sfSprite_setTexture(self.ptr, texture.get(), 1);
+    pub fn setTexture(self: Self, texture: ?sf.Texture) void {
+        var tex = if (texture) |t| t.get() else null;
+        sf.c.sfSprite_setTexture(self.ptr, tex, 1);
     }
     /// Gets the sub-rectangle of the texture that the sprite will display
     pub fn getTextureRect(self: Self) sf.FloatRect {

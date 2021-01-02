@@ -19,6 +19,7 @@ pub fn main() anyerror!void {
     circle.setFillColor(sf.Color.Green);
     circle.setPosition(.{ .x = 0, .y = 0 });
     circle.setOrigin(.{ .x = 100, .y = 100 });
+    circle.setTexture(null);
 
     var bob = try sf.CircleShape.init(10);
     defer bob.deinit();

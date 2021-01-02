@@ -99,8 +99,9 @@ pub const CircleShape = struct {
             return null;
     }
     /// Sets the texture of this shape
-    pub fn setTexture(self: Self, texture: sf.Texture) void {
-        sf.c.sfCircleShape_setTexture(self.ptr, texture.get(), 0);
+    pub fn setTexture(self: Self, texture: ?sf.Texture) void {
+        var tex = if (texture) |t| t.get() else null;
+        sf.c.sfCircleShape_setTexture(self.ptr, tex, 0);
     }
     /// Gets the sub-rectangle of the texture that the shape will display
     pub fn getTextureRect(self: Self) sf.FloatRect {

@@ -12,7 +12,7 @@ pub const Mouse = struct {
         Vertical, Horizontal
     };
 
-    /// Returns true if the specified key is pressed
+    /// Returns true if the specified mouse button is pressed
     pub fn isButtonPressed(button: Button) bool {
         return sf.c.sfMouse_isButtonPressed(@intToEnum(sf.c.sfMouseButton, @enumToInt(button))) == 1;
     }
