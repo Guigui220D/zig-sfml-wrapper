@@ -93,6 +93,14 @@ pub const Sound = struct {
         sf.c.sfSound_setVolume(self.ptr, volume);
     }
 
+    pub const getStatus = @compileError("Function is not implemented yet.");
+    pub const setRelativeToListener = @compileError("Function is not implemented yet.");
+    pub const isRelativeToListener = @compileError("Function is not implemented yet.");
+    pub const setMinDistance = @compileError("Function is not implemented yet.");
+    pub const setAttenuation = @compileError("Function is not implemented yet.");
+    pub const getMinDistance = @compileError("Function is not implemented yet.");
+    pub const getAttenuation = @compileError("Function is not implemented yet.");
+
     /// Pointer to the csfml sound
     ptr: *sf.c.sfSound,
 };

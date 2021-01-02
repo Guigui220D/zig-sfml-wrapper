@@ -15,6 +15,9 @@ pub const Music = struct {
         return Self{ .ptr = music.? };
     }
 
+    pub const initFromMemory = @compileError("Function is not implemented yet.");
+    pub const initFromStream = @compileError("Function is not implemented yet.");
+
     /// Destroys this music object
     pub fn deinit(self: Self) void {
         sf.c.sfMusic_destroy(self.ptr);
@@ -86,6 +89,24 @@ pub const Music = struct {
     pub fn setVolume(self: Self, volume: f32) void {
         sf.c.sfMusic_setVolume(self.ptr, volume);
     }
+
+    /// Gets the sample rate of this music
+    pub fn getSampleRate(self: Self) usize {
+        return @intCast(usize, sf.c.sfMusic_getSampleRate(self.ptr));
+    }
+
+    /// Gets the channel count of the music
+    pub fn getChannelCount(self: Self) usize {
+        return @intCast(usize, sf.c.sfMusic_getChannelCount(self.ptr));
+    }
+
+    pub const getStatus = @compileError("Function is not implemented yet.");
+    pub const setRelativeToListener = @compileError("Function is not implemented yet.");
+    pub const isRelativeToListener = @compileError("Function is not implemented yet.");
+    pub const setMinDistance = @compileError("Function is not implemented yet.");
+    pub const setAttenuation = @compileError("Function is not implemented yet.");
+    pub const getMinDistance = @compileError("Function is not implemented yet.");
+    pub const getAttenuation = @compileError("Function is not implemented yet.");
 
     /// Pointer to the csfml music
     ptr: *sf.c.sfMusic,

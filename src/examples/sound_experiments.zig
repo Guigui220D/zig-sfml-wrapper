@@ -13,7 +13,7 @@ pub fn main() !void {
     defer allocator.free(samples);
 
     //Generation of samples
-    sin_wave(samples, 44100, 20000, 440);
+    sineWave(samples, 44100, 20000, 440);
 
     //Sound buffer initialization
     var sound_buffer = try sf.SoundBuffer.initFromSamples(samples, channel_count, sample_rate);
@@ -29,12 +29,12 @@ pub fn main() !void {
     sound.play();
 
     sf.Time.sleep(sound_buffer.getDuration());
+
+    try sound_buffer.saveToFile("test.wav");
 }
 
-pub fn sin_wave(buffer: []i16, sample_rate: u32, height : u16, freq : f32) void
-{
-    for (buffer) |*sample, index|
-    {
-        sample.* = @floatToInt(u16, (1.0 + @sin(@intToFloat(f32, index)/@intToFloat(f32, sample_rate) * 2*3.1415 * freq)) / 2.0 * @intToFloat(f32, height));
+pub fn sineWave(buffer: []i16, sample_rate: u32, height: f32, freq: f32) void {
+    for (buffer) |*sample, index| {
+        sample.* = @floatToInt(i16, (1.0 + @sin(@intToFloat(f32, index) / @intToFloat(f32, sample_rate) * 2*3.1415 * freq) / 2.0 * height));
     }
 }

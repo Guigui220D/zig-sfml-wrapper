@@ -21,6 +21,9 @@ pub const SoundBuffer = struct {
         return Self{ .ptr = sound.? };
     }
 
+    pub const initFromMemory = @compileError("Function is not implemented yet.");
+    pub const initFromStream = @compileError("Function is not implemented yet.");
+
     /// Destroys this music object
     pub fn deinit(self: Self) void {
         sf.c.sfSoundBuffer_destroy(self.ptr);
@@ -47,6 +50,22 @@ pub const SoundBuffer = struct {
     pub fn getChannelCount(self: Self) usize {
         return @intCast(usize, sf.c.sfSoundBuffer_getChannelCount(self.ptr));
     }
+
+    // Misc
+
+    /// Save the sound buffer to an audio file
+    pub fn saveToFile(self: Self, path: [:0]const u8) !void {
+        if (sf.c.sfSoundBuffer_saveToFile(self.ptr, path) != 1)
+            return sf.Error.savingInFileFailed;
+    }
+
+    pub const getStatus = @compileError("Function is not implemented yet.");
+    pub const setRelativeToListener = @compileError("Function is not implemented yet.");
+    pub const isRelativeToListener = @compileError("Function is not implemented yet.");
+    pub const setMinDistance = @compileError("Function is not implemented yet.");
+    pub const setAttenuation = @compileError("Function is not implemented yet.");
+    pub const getMinDistance = @compileError("Function is not implemented yet.");
+    pub const getAttenuation = @compileError("Function is not implemented yet.");
 
     /// Pointer to the csfml texture
     ptr: *sf.c.sfSoundBuffer,
