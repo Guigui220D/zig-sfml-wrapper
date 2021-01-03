@@ -129,7 +129,7 @@ pub const Text = struct {
     pub fn getLetterSpacing(self: Self) f32 {
         return sf.c.sfText_getLetterSpacing(self.ptr);
     } 
-    /// Gets the letter spacing factor
+    /// Sets the letter spacing factor
     pub fn setLetterSpacing(self: Self, spacing_factor: f32) void {
         sf.c.sfText_setLetterSpacing(self.ptr, spacing_factor);
     } 
@@ -138,10 +138,19 @@ pub const Text = struct {
     pub fn getLineSpacing(self: Self) f32 {
         return sf.c.sfText_getLineSpacing(self.ptr);
     } 
-    /// Gets the line spacing factor
+    /// Sets the line spacing factor
     pub fn setLineSpacing(self: Self, spacing_factor: f32) void {
         sf.c.sfText_setLineSpacing(self.ptr, spacing_factor);
     } 
+
+    /// Gets the local bounding rectangle of the text
+    pub fn getLocalBounds(self: Self) sf.FloatRect {
+        return sf.FloatRect.fromCSFML(sf.c.sfText_getLocalBounds(self.ptr));
+    }
+    /// Gets the global bounding rectangle of the text
+    pub fn getGlobalBounds(self: Self) sf.FloatRect {
+        return sf.FloatRect.fromCSFML(sf.c.sfText_getGlobalBounds(self.ptr));
+    }
 
     pub const getTransform = @compileError("Function is not implemented yet.");
     pub const getInverseTransform = @compileError("Function is not implemented yet.");
@@ -177,4 +186,7 @@ test "text: sane getters and setters" {
     tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, text.getPosition());
     tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, text.getOrigin());
     tst.expectEqual(sf.Vector2f{ .x = 4, .y = 6 }, text.getScale());
+
+    _ = text.getLocalBounds();
+    _ = text.getGlobalBounds();
 }
