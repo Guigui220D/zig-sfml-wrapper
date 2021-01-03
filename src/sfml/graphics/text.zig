@@ -120,6 +120,32 @@ pub const Text = struct {
         sf.c.sfText_scale(self.ptr, factor.toCSFML());
     }
 
+    /// return the position of the index-th character
+    pub fn findCharacterPos(self: Self, index: usize) sf.Vector2f {
+        return sf.Vector2f.fromCSFML(sf.c.sfText_findCharacterPos(self.ptr));
+    }
+
+    /// Gets the letter spacing factor
+    pub fn getLetterSpacing(self: Self) f32 {
+        return sf.c.sfText_getLetterSpacing(self.ptr);
+    } 
+    /// Gets the letter spacing factor
+    pub fn setLetterSpacing(self: Self, spacing_factor: f32) void {
+        sf.c.sfText_setLetterSpacing(self.ptr, spacing_factor);
+    } 
+
+    /// Gets the line spacing factor
+    pub fn getLineSpacing(self: Self) f32 {
+        return sf.c.sfText_getLineSpacing(self.ptr);
+    } 
+    /// Gets the line spacing factor
+    pub fn setLineSpacing(self: Self, spacing_factor: f32) void {
+        sf.c.sfText_setLineSpacing(self.ptr, spacing_factor);
+    } 
+
+    pub const getTransform = @compileError("Function is not implemented yet.");
+    pub const getInverseTransform = @compileError("Function is not implemented yet.");
+
     /// Pointer to the csfml font
     ptr: *sf.c.sfText,
 };

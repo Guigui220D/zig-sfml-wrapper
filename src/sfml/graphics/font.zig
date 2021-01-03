@@ -19,6 +19,9 @@ pub const Font = struct {
         sf.c.sfFont_destroy(self.ptr);
     }
 
+    pub const initFromMemory = @compileError("Function is not implemented yet.");
+    pub const initFromStream = @compileError("Function is not implemented yet.");
+
     /// Pointer to the csfml font
     ptr: *sf.c.sfFont,
 };
