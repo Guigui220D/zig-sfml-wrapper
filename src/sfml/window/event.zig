@@ -35,7 +35,7 @@ pub const Event = union(Event.Type) {
     pub fn fromCSFML(event: sf.c.sfEvent) Self {
         return switch (event.type) {
             sf.c.sfEventType.sfEvtClosed => .{ .closed = {} },
-            sf.c.sfEventType.sfEvtResized => .{ .resized = .{ .size = .{ .x = event.size.height, .y = event.size.width } } },
+            sf.c.sfEventType.sfEvtResized => .{ .resized = .{ .size = .{ .x = event.size.width, .y = event.size.height } } },
             sf.c.sfEventType.sfEvtLostFocus => .{ .lostFocus = {} },
             sf.c.sfEventType.sfEvtGainedFocus => .{ .gainedFocus = {} },
             sf.c.sfEventType.sfEvtTextEntered => .{ .textEntered = .{ .unicode = event.text.unicode } },
