@@ -40,7 +40,7 @@ pub fn Rect(comptime T: type) type {
         /// This is mainly for the inner workings of this wrapper
         pub fn fromCSFML(rect: CsfmlEquivalent) Self {
             if (CsfmlEquivalent == void) @compileError("This rectangle type doesn't have a CSFML equivalent.");
-            return Self.init(rect.left, rect.top, rect.width, rect.width);
+            return Self.init(rect.left, rect.top, rect.width, rect.height);
         }
 
         /// Checks if a point is inside this recangle
