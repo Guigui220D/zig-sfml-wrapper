@@ -12,7 +12,7 @@ const Self = @This();
 
 /// Inits a clock. The clock will have its time set at 0 at this point, and automatically starts
 /// Std.time timer also is a good alternative
-pub fn init() !Self {
+pub fn create() !Self {
     var clock = sf.c.sfClock_create();
     if (clock == null)
         return sf.Error.nullptrUnknownReason;
@@ -21,7 +21,7 @@ pub fn init() !Self {
 }
 
 /// Destroys this clock
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfClock_destroy(self.ptr);
 }
 

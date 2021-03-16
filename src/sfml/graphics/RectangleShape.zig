@@ -11,7 +11,7 @@ const Self = @This();
 // Constructor/destructor
 
 /// Creates a rectangle shape with a size. The rectangle will be white
-pub fn init(size: sf.Vector2f) !Self {
+pub fn create(size: sf.Vector2f) !Self {
     var rect = sf.c.sfRectangleShape_create();
     if (rect == null)
         return sf.Error.nullptrUnknownReason;
@@ -23,7 +23,7 @@ pub fn init(size: sf.Vector2f) !Self {
 }
 
 /// Destroys a rectangle shape
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfRectangleShape_destroy(self.ptr);
 }
 

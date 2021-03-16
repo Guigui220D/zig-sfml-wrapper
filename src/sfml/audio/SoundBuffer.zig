@@ -6,14 +6,14 @@ const Self = @This();
 
 // Constructor/destructor
 /// Loads music from a file
-pub fn initFromFile(path: [:0]const u8) !Self {
+pub fn createFromFile(path: [:0]const u8) !Self {
     var sound = sf.c.sfSoundBuffer_createFromFile(path);
     if (sound == null)
         return sf.Error.resourceLoadingError;
     return Self{ .ptr = sound.? };
 }
 /// Creates a sound buffer from sample data
-pub fn initFromSamples(samples: []const i16, channel_count: usize, sample_rate: usize) !Self {
+pub fn createFromSamples(samples: []const i16, channel_count: usize, sample_rate: usize) !Self {
     var sound = sf.c.sfSoundBuffer_createFromSamples(@ptrCast([*c]const c_short, samples.ptr), samples.len, @intCast(c_uint, channel_count), @intCast(c_uint, sample_rate));
     if (sound == null)
         return sf.Error.resourceLoadingError;
@@ -24,7 +24,7 @@ pub const initFromMemory = @compileError("Function is not implemented yet.");
 pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Destroys this music object
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfSoundBuffer_destroy(self.ptr);
 }
 

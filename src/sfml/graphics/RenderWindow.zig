@@ -13,7 +13,7 @@ const Self = @This();
 // TODO : choose style of window
 /// Inits a render window with a size, a bits per pixel (most put 32) and a title
 /// The window will have the default style
-pub fn init(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !Self {
+pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !Self {
     var ret: Self = undefined;
 
     var mode: sf.c.sfVideoMode = .{
@@ -34,7 +34,7 @@ pub fn init(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !Self {
 }
 
 /// Destroys this window object
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfRenderWindow_destroy(self.ptr);
 }
 

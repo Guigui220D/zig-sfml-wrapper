@@ -7,7 +7,7 @@ const Self = @This();
 // Constructor/destructor
 
 /// Loads music from a file
-pub fn initFromFile(path: [:0]const u8) !Self {
+pub fn createFromFile(path: [:0]const u8) !Self {
     var music = sf.c.sfMusic_createFromFile(path);
     if (music == null)
         return sf.Error.resourceLoadingError;
@@ -18,7 +18,7 @@ pub const initFromMemory = @compileError("Function is not implemented yet.");
 pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Destroys this music object
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfMusic_destroy(self.ptr);
 }
 

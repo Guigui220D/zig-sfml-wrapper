@@ -11,7 +11,7 @@ const Self = @This();
 // Constructor/destructor
 
 /// Inits a sprite with no texture
-pub fn init() !Self {
+pub fn create() !Self {
     var sprite = sf.c.sfSprite_create();
     if (sprite == null)
         return sf.Error.nullptrUnknownReason;
@@ -20,7 +20,7 @@ pub fn init() !Self {
 }
 
 /// Inits a sprite with a texture
-pub fn initFromTexture(texture: sf.Texture) !Self {
+pub fn createFromTexture(texture: sf.Texture) !Self {
     var sprite = sf.c.sfSprite_create();
     if (sprite == null)
         return sf.Error.nullptrUnknownReason;
@@ -31,7 +31,7 @@ pub fn initFromTexture(texture: sf.Texture) !Self {
 }
 
 /// Destroys this sprite
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfSprite_destroy(self.ptr);
 }
 

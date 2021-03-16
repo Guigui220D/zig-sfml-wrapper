@@ -10,7 +10,7 @@ const Self = @This();
 // Constructor/destructor
 
 /// Inits an empty sound
-pub fn init() !Self {
+pub fn create() !Self {
     var sound = sf.c.sfSound_create();
     if (sound == null)
         return sf.Error.nullptrUnknownReason;
@@ -18,14 +18,14 @@ pub fn init() !Self {
 }
 
 /// Inits a sound with a SoundBuffer object
-pub fn initFromBuffer(buffer: sf.SoundBuffer) !Self {
-    var sound = try Self.init();
+pub fn createFromBuffer(buffer: sf.SoundBuffer) !Self {
+    var sound = try Self.create();
     sound.setBuffer(buffer);
     return sound;
 }
 
 /// Destroys this sound object
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfSound_destroy(self.ptr);
 }
 

@@ -8,11 +8,11 @@ const sf = struct {
 };
 
 pub fn main() !void {
-    var window = try sf.RenderWindow.init(.{ .x = 200, .y = 200 }, 32, "SFML works!");
-    defer window.deinit();
+    var window = try sf.RenderWindow.create(.{ .x = 200, .y = 200 }, 32, "SFML works!");
+    defer window.destroy();
 
-    var shape = try sf.CircleShape.init(100.0);
-    defer shape.deinit();
+    var shape = try sf.CircleShape.create(100.0);
+    defer shape.destroy();
     shape.setFillColor(sf.Color.Green);
 
     while (window.isOpen()) {

@@ -9,7 +9,7 @@ const Self = @This();
 // Constructor/destructor
 
 /// Creates a new image
-pub fn init(size: sf.Vector2u, color: sf.Color) !Self {
+pub fn create(size: sf.Vector2u, color: sf.Color) !Self {
     var img = sf.c.sfImage_createFromColor(size.x, size.y, color.toCSFML());
     if (img == null)
         return sf.Error.nullptrUnknownReason;
@@ -17,7 +17,7 @@ pub fn init(size: sf.Vector2u, color: sf.Color) !Self {
 }
 
 /// Creates an image from a pixel array
-pub fn initFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Self {
+pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Self {
     // Check if there is enough data
     if (pixels.len < size.x * size.y)
         return sf.Error.notEnoughData;
@@ -30,7 +30,7 @@ pub fn initFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Self {
 }
 
 /// Loads an image from a file
-pub fn initFromFile(path: [:0]const u8) !Self {
+pub fn createFromFile(path: [:0]const u8) !Self {
     var img = sf.c.sfImage_createFromFile(path);
     if (img == null)
         return sf.Error.resourceLoadingError;
@@ -38,7 +38,7 @@ pub fn initFromFile(path: [:0]const u8) !Self {
 }
 
 /// Destroys an image
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfImage_destroy(self.ptr);
 }
 

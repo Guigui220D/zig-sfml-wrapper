@@ -8,26 +8,26 @@ const allocator = std.heap.page_allocator;
 // I only use things I've wrapped here, but the other csfml functions seem to work, just need to wrap them
 pub fn main() anyerror!void {
     // Create a window
-    var window = try sf.graphics.RenderWindow.init(.{ .x = 800, .y = 600 }, 32, "This is zig!");
-    defer window.deinit();
+    var window = try sf.graphics.RenderWindow.create(.{ .x = 800, .y = 600 }, 32, "This is zig!");
+    defer window.destroy();
     //window.setVerticalSyncEnabled(false);
     window.setFramerateLimit(60);
 
     // Shapes creation
-    var circle = try sf.graphics.CircleShape.init(100);
-    defer circle.deinit();
+    var circle = try sf.graphics.CircleShape.create(100);
+    defer circle.destroy();
     circle.setFillColor(sf.graphics.Color.Green);
     circle.setPosition(.{ .x = 0, .y = 0 });
     circle.setOrigin(.{ .x = 100, .y = 100 });
     circle.setTexture(null);
 
-    var bob = try sf.graphics.CircleShape.init(10);
-    defer bob.deinit();
+    var bob = try sf.graphics.CircleShape.create(10);
+    defer bob.destroy();
     bob.setFillColor(sf.graphics.Color.Red);
     bob.setOrigin(.{ .x = 10, .y = 10 });
 
-    var tex = try sf.graphics.Texture.init(.{ .x = 12, .y = 10 });
-    defer tex.deinit();
+    var tex = try sf.graphics.Texture.create(.{ .x = 12, .y = 10 });
+    defer tex.destroy();
     std.debug.print("{} * {} = ", .{ tex.getSize().x, tex.getSize().y });
     std.debug.print("{}\n", .{tex.getPixelCount()});
     var pixel_data = try allocator.alloc(sf.graphics.Color, 120);
@@ -37,14 +37,14 @@ pub fn main() anyerror!void {
     }
     try tex.updateFromPixels(pixel_data, null);
 
-    var rect = try sf.graphics.RectangleShape.init(.{ .x = 50, .y = 70 });
-    defer rect.deinit();
+    var rect = try sf.graphics.RectangleShape.create(.{ .x = 50, .y = 70 });
+    defer rect.destroy();
     rect.setPosition(.{ .x = 100, .y = 100 });
     rect.setTexture(tex);
 
     // Clock
-    var clock = try sf.system.Clock.init();
-    defer clock.deinit();
+    var clock = try sf.system.Clock.create();
+    defer clock.destroy();
 
     var view = window.getDefaultView();
 

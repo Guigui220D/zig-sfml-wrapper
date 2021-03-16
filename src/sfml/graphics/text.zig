@@ -11,14 +11,14 @@ const Self = @This();
 // Constructor/destructor
 
 /// Inits an empty text
-pub fn init() !Self {
+pub fn create() !Self {
     var text = sf.c.sfText_create();
     if (text == null)
         return sf.Error.nullptrUnknownReason;
     return Self{ .ptr = text.? };
 }
 /// Inits a text with content
-pub fn initWithText(string: [:0]const u8, font: sf.Font, character_size: usize) !Self {
+pub fn createWithText(string: [:0]const u8, font: sf.Font, character_size: usize) !Self {
     var text = sf.c.sfText_create();
     if (text == null)
         return sf.Error.nullptrUnknownReason;
@@ -28,7 +28,7 @@ pub fn initWithText(string: [:0]const u8, font: sf.Font, character_size: usize) 
     return Self{ .ptr = text.? };
 }
 /// Destroys a text
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfText_destroy(self.ptr);
 }
 

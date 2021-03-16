@@ -11,7 +11,7 @@ const Self = @This();
 // Constructor/destructor
 
 /// Inits a circle shape with a radius. The circle will be white and have 30 points
-pub fn init(radius: f32) !Self {
+pub fn create(radius: f32) !Self {
     var circle = sf.c.sfCircleShape_create();
     if (circle == null)
         return sf.Error.nullptrUnknownReason;
@@ -23,7 +23,7 @@ pub fn init(radius: f32) !Self {
 }
 
 /// Destroys a circle shape
-pub fn deinit(self: Self) void {
+pub fn destroy(self: Self) void {
     sf.c.sfCircleShape_destroy(self.ptr);
 }
 
