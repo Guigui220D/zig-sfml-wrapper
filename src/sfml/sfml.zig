@@ -1,29 +1,37 @@
 //! Import this to get all the sfml wrapper classes
 
-usingnamespace @import("sfml_import.zig");
+pub const c = @import("sfml_import.zig").c;
 
-usingnamespace @import("sfml_errors.zig");
+pub const Error = @import("sfml_errors.zig").Error;
 
-usingnamespace @import("system/vector.zig");
-usingnamespace @import("system/time.zig");
-usingnamespace @import("system/clock.zig");
+pub const system = struct {
+    pub usingnamespace @import("system/vector.zig");
+    pub const Time = @import("system/Time.zig");
+    pub const Clock = @import("system/Clock.zig");
+};
 
-usingnamespace @import("window/event.zig");
-usingnamespace @import("window/keyboard.zig");
-usingnamespace @import("window/mouse.zig");
+pub const window = struct {
+    usingnamespace @import("window/event.zig");
+    pub const keyboard = @import("window/Keyboard.zig");
+    pub const mouse = @import("window/Mouse.zig");
+};
 
-usingnamespace @import("graphics/color.zig");
-usingnamespace @import("graphics/render_window.zig");
-usingnamespace @import("graphics/image.zig");
-usingnamespace @import("graphics/texture.zig");
-usingnamespace @import("graphics/sprite.zig");
-usingnamespace @import("graphics/circle_shape.zig");
-usingnamespace @import("graphics/rectangle_shape.zig");
-usingnamespace @import("graphics/rect.zig");
-usingnamespace @import("graphics/view.zig");
-usingnamespace @import("graphics/font.zig");
-usingnamespace @import("graphics/text.zig");
+pub const graphics = struct {
+    pub const Color = @import("graphics/Color.zig");
+    pub const RenderWindow = @import("graphics/RenderWindow.zig");
+    pub const Image = @import("graphics/Image.zig");
+    pub const Texture = @import("graphics/texture.zig").Texture;
+    pub const Sprite = @import("graphics/Sprite.zig");
+    pub const CircleShape = @import("graphics/CircleShape.zig");
+    pub const RectangleShape = @import("graphics/RectangleShape.zig");
+    pub usingnamespace @import("graphics/rect.zig");
+    pub const View = @import("graphics/View.zig");
+    pub const Font = @import("graphics/Font.zig");
+    pub const Text = @import("graphics/Text.zig");
+};
 
-usingnamespace @import("audio/music.zig");
-usingnamespace @import("audio/sound_buffer.zig");
-usingnamespace @import("audio/sound.zig");
+pub const audio = struct {
+    pub const Music = @import("audio/Music.zig");
+    pub const SoundBuffer = @import("audio/SoundBuffer.zig");
+    pub const Sound = @import("audio/Sound.zig");
+};

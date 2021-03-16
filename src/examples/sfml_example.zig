@@ -1,7 +1,13 @@
 //! This the same example as presented on the sfml website
 //! https://www.sfml-dev.org/documentation/2.5.1/
 
-const sf = @import("sfml");
+const sf = struct {
+    pub usingnamespace @import("sfml");
+    pub usingnamespace system;
+    pub usingnamespace graphics;
+    pub usingnamespace audio;
+    pub usingnamespace window;
+};
 
 pub fn main() !void {
     // Create the main window

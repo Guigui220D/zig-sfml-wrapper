@@ -1,12 +1,15 @@
 //! Image living on the graphics card that can be used for drawing.
 
-const sf = @import("../sfml.zig");
+const sf = struct {
+    pub usingnamespace @import("../sfml.zig");
+    pub usingnamespace system;
+    pub usingnamespace graphics;
+};
+
 const std = @import("std");
 const assert = std.debug.assert;
 
-const TextureType = enum {
-    ptr, const_ptr
-};
+const TextureType = enum { ptr, const_ptr };
 
 pub const Texture = union(TextureType) {
     const Self = @This();
@@ -200,7 +203,7 @@ test "texture: sane getters and setters" {
     const tst = std.testing;
     const allocator = std.heap.page_allocator;
     
-    var tex = try sf.Texture.init(.{ .x = 12, .y = 10 });
+    var tex = try Texture.init(.{ .x = 12, .y = 10 });
     defer tex.deinit();
 
     var size = tex.getSize();
@@ -217,7 +220,7 @@ test "texture: sane getters and setters" {
     defer allocator.free(pixel_data);
 
     for (pixel_data) |c, i| {
-        pixel_data[i] = sf.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
+        pixel_data[i] = sf.graphics.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
     }
 
     try tex.updateFromPixels(pixel_data, null);
@@ -233,7 +236,7 @@ test "texture: sane getters and setters" {
 
     tst.expectEqual(@as(usize, 120), copy.getPixelCount());
 
-    var tex2 = try sf.Texture.init(.{ .x = 100, .y = 100 });
+    var tex2 = try Texture.init(.{ .x = 100, .y = 100 });
 
     copy.swap(tex2);
 

@@ -1,6 +1,9 @@
 //! Utility class for manipulating 2D axis aligned rectangles.
 
-const sf = @import("../sfml.zig");
+const sf = struct {
+    pub usingnamespace @import("../sfml.zig");
+    pub usingnamespace system;
+};
 const math = @import("std").math;
 
 pub fn Rect(comptime T: type) type {

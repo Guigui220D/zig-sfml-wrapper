@@ -1,7 +1,11 @@
 //! This is a translation of the c++ code the sfml website gives you to test if SFML works
 //! for instance, in this page: https://www.sfml-dev.org/tutorials/2.5/start-vc.php
 
-const sf = @import("sfml");
+const sf = struct {
+    pub usingnamespace @import("sfml");
+    pub usingnamespace graphics;
+    pub usingnamespace window;
+};
 
 pub fn main() !void {
     var window = try sf.RenderWindow.init(.{ .x = 200, .y = 200 }, 32, "SFML works!");

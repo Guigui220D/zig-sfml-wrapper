@@ -2,26 +2,24 @@
 
 const sf = @import("../sfml.zig");
 
-pub const Font = struct {
-    const Self = @This();
+const Self = @This();
 
-    // Constructor/destructor
+// Constructor/destructor
 
-    /// Loads a font from a file
-    pub fn initFromFile(path: [:0]const u8) !Self {
-        var font = sf.c.sfFont_createFromFile(path);
-        if (font == null)
-            return sf.Error.resourceLoadingError;
-        return Self{ .ptr = font.? };
-    }
-    /// Destroys a font
-    pub fn deinit(self: Self) void {
-        sf.c.sfFont_destroy(self.ptr);
-    }
+/// Loads a font from a file
+pub fn initFromFile(path: [:0]const u8) !Self {
+    var font = sf.c.sfFont_createFromFile(path);
+    if (font == null)
+        return sf.Error.resourceLoadingError;
+    return Self{ .ptr = font.? };
+}
+/// Destroys a font
+pub fn deinit(self: Self) void {
+    sf.c.sfFont_destroy(self.ptr);
+}
 
-    pub const initFromMemory = @compileError("Function is not implemented yet.");
-    pub const initFromStream = @compileError("Function is not implemented yet.");
+pub const initFromMemory = @compileError("Function is not implemented yet.");
+pub const initFromStream = @compileError("Function is not implemented yet.");
 
-    /// Pointer to the csfml font
-    ptr: *sf.c.sfFont,
-};
+/// Pointer to the csfml font
+ptr: *sf.c.sfFont,

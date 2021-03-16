@@ -16,11 +16,11 @@ pub fn main() !void {
     sineWave(samples, 44100, 20000, 440);
 
     //Sound buffer initialization
-    var sound_buffer = try sf.SoundBuffer.initFromSamples(samples, channel_count, sample_rate);
+    var sound_buffer = try sf.audio.SoundBuffer.initFromSamples(samples, channel_count, sample_rate);
     defer sound_buffer.deinit();
 
     //Sound initializaion
-    var sound = try sf.Sound.initFromBuffer(sound_buffer);
+    var sound = try sf.audio.Sound.initFromBuffer(sound_buffer);
     defer sound.deinit();
 
     //Playing the sound
@@ -28,7 +28,7 @@ pub fn main() !void {
     sound.setPitch(2);
     sound.play();
 
-    sf.Time.sleep(sound_buffer.getDuration());
+    sf.system.Time.sleep(sound_buffer.getDuration());
 
     try sound_buffer.saveToFile("test.wav");
 }
