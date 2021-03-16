@@ -105,12 +105,12 @@ pub const Sprite = struct {
         sf.c.sfSprite_setTexture(self.ptr, tex, 1);
     }
     /// Gets the sub-rectangle of the texture that the sprite will display
-    pub fn getTextureRect(self: Self) sf.FloatRect {
-        return sf.FloatRect.fromCSFML(sf.c.sfSprite_getTextureRect(self.ptr));
+    pub fn getTextureRect(self: Self) sf.IntRect {
+        return sf.IntRect.fromCSFML(sf.c.sfSprite_getTextureRect(self.ptr));
     }
     /// Sets the sub-rectangle of the texture that the sprite will display
-    pub fn setTextureRect(self: Self, rect: sf.FloatRect) void {
-        sf.c.sfSprite_getCircleRect(self.ptr, rect.toCSFML());
+    pub fn setTextureRect(self: Self, rect: sf.IntRect) void {
+        sf.c.sfSprite_setTextureRect(self.ptr, rect.toCSFML());
     }
 
     /// Pointer to the csfml structure
