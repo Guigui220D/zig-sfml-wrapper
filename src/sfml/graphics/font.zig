@@ -2,19 +2,19 @@
 
 const sf = @import("../sfml.zig");
 
-const Self = @This();
+const Font = @This();
 
 // Constructor/destructor
 
 /// Loads a font from a file
-pub fn createFromFile(path: [:0]const u8) !Self {
+pub fn createFromFile(path: [:0]const u8) !Font {
     var font = sf.c.sfFont_createFromFile(path);
     if (font == null)
         return sf.Error.resourceLoadingError;
-    return Self{ .ptr = font.? };
+    return Font{ .ptr = font.? };
 }
 /// Destroys a font
-pub fn destroy(self: Self) void {
+pub fn destroy(self: Font) void {
     sf.c.sfFont_destroy(self.ptr);
 }
 

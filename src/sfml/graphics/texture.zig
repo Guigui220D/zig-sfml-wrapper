@@ -203,8 +203,8 @@ test "texture: sane getters and setters" {
     const tst = std.testing;
     const allocator = std.heap.page_allocator;
     
-    var tex = try Texture.init(.{ .x = 12, .y = 10 });
-    defer tex.deinit();
+    var tex = try Texture.create(.{ .x = 12, .y = 10 });
+    defer tex.destroy();
 
     var size = tex.getSize();
 
@@ -236,7 +236,8 @@ test "texture: sane getters and setters" {
 
     tst.expectEqual(@as(usize, 120), copy.getPixelCount());
 
-    var tex2 = try Texture.init(.{ .x = 100, .y = 100 });
+    var tex2 = try Texture.create(.{ .x = 100, .y = 100 });
+    defer tex2.destroy();
 
     copy.swap(tex2);
 

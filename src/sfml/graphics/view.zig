@@ -6,11 +6,11 @@ const sf = struct {
     pub usingnamespace graphics;
 };
 
-const Self = @This();
+const View = @This();
 
 /// Creates a view from a rectangle
-pub fn fromRect(rect: sf.FloatRect) Self {
-    var ret: Self = undefined;
+pub fn fromRect(rect: sf.FloatRect) View {
+    var ret: View = undefined;
     ret.center = rect.getCorner();
     ret.size = rect.getSize();
     ret.center = ret.center.add(ret.size.scale(0.5));
@@ -20,8 +20,8 @@ pub fn fromRect(rect: sf.FloatRect) Self {
 
 /// Creates a view from a CSFML object
 /// This is mainly for the inner workings of this wrapper
-pub fn fromCSFML(view: *const sf.c.sfView) Self {
-    var ret: Self = undefined;
+pub fn fromCSFML(view: *const sf.c.sfView) View {
+    var ret: View = undefined;
     ret.center = sf.Vector2f.fromCSFML(sf.c.sfView_getCenter(view));
     ret.size = sf.Vector2f.fromCSFML(sf.c.sfView_getSize(view));
     ret.viewport = sf.FloatRect.fromCSFML(sf.c.sfView_getViewport(view));
@@ -31,7 +31,7 @@ pub fn fromCSFML(view: *const sf.c.sfView) Self {
 /// Creates a CSFML view from this view
 /// This is mainly for the inner workings of this wrapper
 /// The resulting view must be destroyed!
-pub fn toCSFML(self: Self) *sf.c.sfView {
+pub fn toCSFML(self: View) *sf.c.sfView {
     var view = sf.c.sfView_create().?;
     sf.c.sfView_setCenter(view, self.center.toCSFML());
     sf.c.sfView_setSize(view, self.size.toCSFML());
@@ -39,7 +39,7 @@ pub fn toCSFML(self: Self) *sf.c.sfView {
     return view;
 }
 
-pub fn getRect(self: Self) sf.FloatRect {
+pub fn getRect(self: View) sf.FloatRect {
     return sf.FloatRect.init(
         self.center.x - self.size.x / 2,
         self.center.y - self.size.y / 2,

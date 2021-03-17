@@ -1,23 +1,28 @@
 //! Class for loading, manipulating and saving images.
 
-const sf = @import("../sfml.zig");
+const sf = struct {
+    pub usingnamespace @import("../sfml.zig");
+    pub usingnamespace system;
+    pub usingnamespace graphics;
+};
+
 const std = @import("std");
 const assert = std.debug.assert;
 
-const Self = @This();
+const Image = @This();
 
 // Constructor/destructor
 
 /// Creates a new image
-pub fn create(size: sf.Vector2u, color: sf.Color) !Self {
+pub fn create(size: sf.Vector2u, color: sf.Color) !Image {
     var img = sf.c.sfImage_createFromColor(size.x, size.y, color.toCSFML());
     if (img == null)
         return sf.Error.nullptrUnknownReason;
-    return Self{ .ptr = img.? };
+    return Image{ .ptr = img.? };
 }
 
 /// Creates an image from a pixel array
-pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Self {
+pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Image {
     // Check if there is enough data
     if (pixels.len < size.x * size.y)
         return sf.Error.notEnoughData;
@@ -26,26 +31,26 @@ pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Self {
 
     if (img == null)
         return sf.Error.nullptrUnknownReason;
-    return Self{ .ptr = img.? };
+    return Image{ .ptr = img.? };
 }
 
 /// Loads an image from a file
-pub fn createFromFile(path: [:0]const u8) !Self {
+pub fn createFromFile(path: [:0]const u8) !Image {
     var img = sf.c.sfImage_createFromFile(path);
     if (img == null)
         return sf.Error.resourceLoadingError;
-    return Self{ .ptr = img.? };
+    return Image{ .ptr = img.? };
 }
 
 /// Destroys an image
-pub fn destroy(self: Self) void {
+pub fn destroy(self: Image) void {
     sf.c.sfImage_destroy(self.ptr);
 }
 
 // Getters/setters
 
 /// Gets a pixel from this image (bounds are only checked in an assertion)
-pub fn getPixel(self: Self, pixel_pos: sf.Vector2u) sf.Color {
+pub fn getPixel(self: Image, pixel_pos: sf.Vector2u) sf.Color {
     @compileError("This function causes a segfault, comment this out if you thing it will work (issue #2)");
 
     const size = self.getSize();
@@ -54,7 +59,7 @@ pub fn getPixel(self: Self, pixel_pos: sf.Vector2u) sf.Color {
     return sf.Color.fromCSFML(sf.c.sfImage_getPixel(self.ptr, pixel_pos.x, pixel_pos.y));
 }
 /// Sets a pixel on this image (bounds are only checked in an assertion)
-pub fn setPixel(self: Self, pixel_pos: sf.Vector2u, color: sf.Color) void {
+pub fn setPixel(self: Image, pixel_pos: sf.Vector2u, color: sf.Color) void {
     const size = self.getSize();
     assert(pixel_pos.x < size.x and pixel_pos.y < size.y);
 
@@ -62,7 +67,7 @@ pub fn setPixel(self: Self, pixel_pos: sf.Vector2u, color: sf.Color) void {
 }
 
 /// Gets the size of this image
-pub fn getSize(self: Self) sf.Vector2u {
+pub fn getSize(self: Image) sf.Vector2u {
     // This is a hack
     _ = sf.c.sfImage_getSize(self.ptr);
     // Register Rax holds the return val of function calls that can fit in a register
@@ -75,7 +80,7 @@ pub fn getSize(self: Self) sf.Vector2u {
 }
 
 /// Pointer to the csfml texture
-ptr: *sf.c.sfImage
+ptr: *sf.c.sfImage,
 
 test "image: sane getters and setters" {
     const tst = std.testing;
@@ -88,14 +93,14 @@ test "image: sane getters and setters" {
         pixel_data[i] = sf.Color.fromHSVA(@intToFloat(f32, i) / 30 * 360, 100, 100, 1);
     }
 
-    var img = try sf.Image.initFromPixels(.{.x = 5, .y = 6}, pixel_data);
-    defer img.deinit();
+    var img = try Image.createFromPixels(.{.x = 5, .y = 6}, pixel_data);
+    defer img.destroy();
 
     tst.expectEqual(sf.Vector2u{.x = 5, .y = 6}, img.getSize());
 
     img.setPixel(.{.x = 1, .y = 2}, sf.Color.Cyan);
     //tst.expectEqual(sf.Color.Cyan, img.getPixel(.{.x = 1, .y = 2}));
 
-    var tex = try sf.Texture.initFromImage(img, null);
-    defer tex.deinit();
+    var tex = try sf.Texture.createFromImage(img, null);
+    defer tex.destroy();
 }

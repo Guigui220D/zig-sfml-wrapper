@@ -3,12 +3,12 @@
 const sf = @import("../sfml_import.zig");
 const math = @import("std").math;
 
-const Self = @This();
+const Color = @This();
 
 /// Converts a color from a csfml object
 /// For inner workings
-pub fn fromCSFML(col: sf.c.sfColor) Self {
-    return Self{
+pub fn fromCSFML(col: sf.c.sfColor) Color {
+    return Color{
         .r = col.r,
         .g = col.g,
         .b = col.b,
@@ -18,7 +18,7 @@ pub fn fromCSFML(col: sf.c.sfColor) Self {
 
 /// Converts this color to a csfml one
 /// For inner workings
-pub fn toCSFML(self: Self) sf.c.sfColor {
+pub fn toCSFML(self: Color) sf.c.sfColor {
     return sf.c.sfColor{
         .r = self.r,
         .g = self.g,
@@ -28,8 +28,8 @@ pub fn toCSFML(self: Self) sf.c.sfColor {
 }
 
 /// Inits a color with rgb components
-pub fn fromRGB(red: u8, green: u8, blue: u8) Self {
-    return Self{
+pub fn fromRGB(red: u8, green: u8, blue: u8) Color {
+    return Color{
         .r = red,
         .g = green,
         .b = blue,
@@ -38,8 +38,8 @@ pub fn fromRGB(red: u8, green: u8, blue: u8) Self {
 }
 
 /// Inits a color with rgba components
-pub fn fromRGBA(red: u8, green: u8, blue: u8, alpha: u8) Self {
-    return Self{
+pub fn fromRGBA(red: u8, green: u8, blue: u8, alpha: u8) Color {
+    return Color{
         .r = red,
         .g = green,
         .b = blue,
@@ -48,8 +48,8 @@ pub fn fromRGBA(red: u8, green: u8, blue: u8, alpha: u8) Self {
 }
 
 /// Inits a color from a 32bits value (RGBA in that order)
-pub fn fromInteger(int: u32) Self {
-    return Self{
+pub fn fromInteger(int: u32) Color {
+    return Color{
         .r = @truncate(u8, (int & 0xff000000) >> 24),
         .g = @truncate(u8, (int & 0x00ff0000) >> 16),
         .b = @truncate(u8, (int & 0x0000ff00) >> 8),
@@ -58,7 +58,7 @@ pub fn fromInteger(int: u32) Self {
 }
 
 /// Gets a 32 bit integer representing the color
-pub fn toInteger(self: Self) u32 {
+pub fn toInteger(self: Color) u32 {
     return (@intCast(u32, self.r) << 24) |
         (@intCast(u32, self.g) << 16) |
         (@intCast(u32, self.b) << 8) |
@@ -66,8 +66,8 @@ pub fn toInteger(self: Self) u32 {
 }
 
 /// Creates a color with rgba floats from 0 to 1
-fn fromFloats(red: f32, green: f32, blue: f32, alpha: f32) Self {
-    return Self{
+fn fromFloats(red: f32, green: f32, blue: f32, alpha: f32) Color {
+    return Color{
         .r = @floatToInt(u8, math.clamp(red, 0.0, 1.0) * 255.0),
         .g = @floatToInt(u8, math.clamp(green, 0.0, 1.0) * 255.0),
         .b = @floatToInt(u8, math.clamp(blue, 0.0, 1.0) * 255.0),
@@ -77,7 +77,7 @@ fn fromFloats(red: f32, green: f32, blue: f32, alpha: f32) Self {
 
 /// Creates a color from HSV and transparency components (this is not part of the SFML)
 /// hue is in degrees, saturation and value are in percents
-pub fn fromHSVA(hue: f32, saturation: f32, value: f32, alpha: f32) Self {
+pub fn fromHSVA(hue: f32, saturation: f32, value: f32, alpha: f32) Color {
     const h = hue;
     const s = saturation / 100;
     const v = value / 100;
@@ -110,23 +110,23 @@ pub fn fromHSVA(hue: f32, saturation: f32, value: f32, alpha: f32) Self {
 
 // Colors
 /// Black color
-pub const Black = Self.fromRGB(0, 0, 0);
+pub const Black = Color.fromRGB(0, 0, 0);
 /// White color
-pub const White = Self.fromRGB(255, 255, 255);
+pub const White = Color.fromRGB(255, 255, 255);
 /// Red color
-pub const Red = Self.fromRGB(255, 0, 0);
+pub const Red = Color.fromRGB(255, 0, 0);
 /// Green color
-pub const Green = Self.fromRGB(0, 255, 0);
+pub const Green = Color.fromRGB(0, 255, 0);
 /// Blue color
-pub const Blue = Self.fromRGB(0, 0, 255);
+pub const Blue = Color.fromRGB(0, 0, 255);
 /// Yellow color
-pub const Yellow = Self.fromRGB(255, 255, 0);
+pub const Yellow = Color.fromRGB(255, 255, 0);
 /// Magenta color
-pub const Magenta = Self.fromRGB(255, 0, 255);
+pub const Magenta = Color.fromRGB(255, 0, 255);
 /// Cyan color
-pub const Cyan = Self.fromRGB(0, 255, 255);
+pub const Cyan = Color.fromRGB(0, 255, 255);
 /// Transparent color
-pub const Transparent = Self.fromRGBA(0, 0, 0, 0);
+pub const Transparent = Color.fromRGBA(0, 0, 0, 0);
 
 /// Red component
 r: u8,
@@ -141,9 +141,9 @@ test "color: conversions" {
     const tst = @import("std").testing;
 
     var code: u32 = 0x4BDA9CFF;
-    var col = Self.fromInteger(code);
+    var col = Color.fromInteger(code);
 
-    tst.expectEqual(Self.fromRGB(75, 218, 156), col);
+    tst.expectEqual(Color.fromRGB(75, 218, 156), col);
     tst.expectEqual(code, col.toInteger());
 
     var csfml_col = sf.c.sfColor_fromInteger(@as(c_uint, code));
@@ -155,8 +155,8 @@ test "color: conversions" {
 test "color: hsv to rgb" {
     const tst = @import("std").testing;
     
-    var col = Self.fromHSVA(10, 20, 100, 255);
+    var col = Color.fromHSVA(10, 20, 100, 255);
 
-    tst.expectEqual(Self.fromRGB(255, 212, 204), col);
+    tst.expectEqual(Color.fromRGB(255, 212, 204), col);
 }
 

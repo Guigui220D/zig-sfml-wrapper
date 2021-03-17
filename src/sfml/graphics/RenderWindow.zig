@@ -6,15 +6,15 @@ const sf = struct {
     pub usingnamespace graphics;
 };
 
-const Self = @This();
+const RenderWindow = @This();
 
 // Constructor/destructor
 
 // TODO : choose style of window
 /// Inits a render window with a size, a bits per pixel (most put 32) and a title
 /// The window will have the default style
-pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !Self {
-    var ret: Self = undefined;
+pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !RenderWindow {
+    var ret: RenderWindow = undefined;
 
     var mode: sf.c.sfVideoMode = .{
         .width = @intCast(c_uint, size.x),
@@ -34,25 +34,25 @@ pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !Self {
 }
 
 /// Destroys this window object
-pub fn destroy(self: Self) void {
+pub fn destroy(self: RenderWindow) void {
     sf.c.sfRenderWindow_destroy(self.ptr);
 }
 
 // Event related
 
 /// Returns true if this window is still open
-pub fn isOpen(self: Self) bool {
+pub fn isOpen(self: RenderWindow) bool {
     return sf.c.sfRenderWindow_isOpen(self.ptr) != 0;
 }
 
 /// Closes this window
-pub fn close(self: Self) void {
+pub fn close(self: RenderWindow) void {
     sf.c.sfRenderWindow_close(self.ptr);
 }
 
 /// Gets an event from the queue, returns null is theres none
 /// Use while on this to get all the events in your game loop
-pub fn pollEvent(self: Self) ?sf.window.Event {
+pub fn pollEvent(self: RenderWindow) ?sf.window.Event {
     var event: sf.c.sfEvent = undefined;
     if (sf.c.sfRenderWindow_pollEvent(self.ptr, &event) == 0)
         return null;
@@ -62,19 +62,19 @@ pub fn pollEvent(self: Self) ?sf.window.Event {
 // Drawing functions
 
 /// Clears the drawing screen with a color
-pub fn clear(self: Self, color: sf.Color) void {
+pub fn clear(self: RenderWindow, color: sf.Color) void {
     sf.c.sfRenderWindow_clear(self.ptr, color.toCSFML());
 }
 
 /// Displays what has been drawn on the render area
-pub fn display(self: Self) void {
+pub fn display(self: RenderWindow) void {
     sf.c.sfRenderWindow_display(self.ptr);
 }
 
 /// Draw something on the screen (won't be visible until display is called)
 /// Object must be a SFML object from the wrapper
 /// You can pass a render state or null for default
-pub fn draw(self: Self, to_draw: anytype, states: ?*sf.c.sfRenderStates) void {
+pub fn draw(self: RenderWindow, to_draw: anytype, states: ?*sf.c.sfRenderStates) void {
     switch (@TypeOf(to_draw)) {
         sf.Sprite => sf.c.sfRenderWindow_drawSprite(self.ptr, to_draw.ptr, states),
         sf.CircleShape => sf.c.sfRenderWindow_drawCircleShape(self.ptr, to_draw.ptr, states),
@@ -87,56 +87,56 @@ pub fn draw(self: Self, to_draw: anytype, states: ?*sf.c.sfRenderStates) void {
 // Getters/setters
 /// Gets the current view of the window
 /// Unlike in SFML, you don't get a const pointer but a copy
-pub fn getView(self: Self) sf.View {
+pub fn getView(self: RenderWindow) sf.View {
     return sf.View.fromCSFML(sf.c.sfRenderWindow_getView(self.ptr).?);
 }
 /// Gets the default view of this window
 /// Unlike in SFML, you don't get a const pointer but a copy
-pub fn getDefaultView(self: Self) sf.View {
+pub fn getDefaultView(self: RenderWindow) sf.View {
     return sf.View.fromCSFML(sf.c.sfRenderWindow_getDefaultView(self.ptr).?);
 }
 /// Sets the view of this window
-pub fn setView(self: Self, view: sf.View) void {
+pub fn setView(self: RenderWindow, view: sf.View) void {
     var cview = view.toCSFML();
     defer sf.c.sfView_destroy(cview);
     sf.c.sfRenderWindow_setView(self.ptr, cview);
 }
 
 /// Gets the size of this window
-pub fn getSize(self: Self) sf.Vector2u {
+pub fn getSize(self: RenderWindow) sf.Vector2u {
     return sf.Vector2u.fromCSFML(sf.c.sfRenderWindow_getSize(self.ptr));
 }
 /// Sets the size of this window
-pub fn setSize(self: Self, size: sf.Vector2u) void {
+pub fn setSize(self: RenderWindow, size: sf.Vector2u) void {
     sf.c.sfRenderWindow_setSize(self.ptr, size.toCSFML());
 }
 
 /// Gets the position of this window
-pub fn getPosition(self: Self) sf.Vector2i {
+pub fn getPosition(self: RenderWindow) sf.Vector2i {
     return sf.Vector2i.fromCSFML(sf.c.sfRenderWindow_getPosition(self.ptr));
 }
 /// Sets the position of this window
-pub fn setPosition(self: Self, pos: sf.Vector2i) void {
+pub fn setPosition(self: RenderWindow, pos: sf.Vector2i) void {
     sf.c.sfRenderWindow_setPosition(self.ptr, pos.toCSFML());
 }
 
 // TODO : unicode title?
 /// Sets the title of this window
-pub fn setTitle(self: Self, title: [:0]const u8) void {
+pub fn setTitle(self: RenderWindow, title: [:0]const u8) void {
     sf.c.sfRenderWindow_setTitle(self.ptr, title);
 }
 
 /// Sets the windows's framerate limit
-pub fn setFramerateLimit(self: Self, fps: c_uint) void {
+pub fn setFramerateLimit(self: RenderWindow, fps: c_uint) void {
     sf.c.sfRenderWindow_setFramerateLimit(self.ptr, fps);
 }
 /// Enables or disables vertical sync
-pub fn setVerticalSyncEnabled(self: Self, enabled: bool) void {
+pub fn setVerticalSyncEnabled(self: RenderWindow, enabled: bool) void {
     sf.c.sfRenderWindow_setFramerateLimit(self.ptr, if (enabled) 1 else 0);
 }
 
 /// Convert a point from target coordinates to world coordinates, using the current view (or the specified view)
-pub fn mapPixelToCoords(self: Self, pixel: sf.Vector2i, view: ?sf.View) sf.Vector2f {
+pub fn mapPixelToCoords(self: RenderWindow, pixel: sf.Vector2i, view: ?sf.View) sf.Vector2f {
     if (view) |v| {
         var cview = v.toCSFML();
         defer sf.c.sfView_destroy(cview);
@@ -146,7 +146,7 @@ pub fn mapPixelToCoords(self: Self, pixel: sf.Vector2i, view: ?sf.View) sf.Vecto
 }
 
 /// Convert a point from world coordinates to target coordinates, using the current view (or the specified view)
-pub fn mapCoordsToPixel(self: Self, coords: sf.Vector2f, view: ?sf.View) sf.Vector2i {
+pub fn mapCoordsToPixel(self: RenderWindow, coords: sf.Vector2f, view: ?sf.View) sf.Vector2i {
     if (view) |v| {
         var cview = v.toCSFML();
         defer sf.c.sfView_destroy(cview);
