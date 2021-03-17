@@ -1,12 +1,15 @@
 //! Image living on the graphics card that can be used for drawing.
 
-const sf = @import("../sfml.zig");
+const sf = struct {
+    pub usingnamespace @import("../sfml.zig");
+    pub usingnamespace system;
+    pub usingnamespace graphics;
+};
+
 const std = @import("std");
 const assert = std.debug.assert;
 
-const TextureType = enum {
-    ptr, const_ptr
-};
+const TextureType = enum { ptr, const_ptr };
 
 pub const Texture = union(TextureType) {
     const Self = @This();
@@ -14,21 +17,21 @@ pub const Texture = union(TextureType) {
     // Constructor/destructor
 
     /// Creates a texture from nothing
-    pub fn init(size: sf.Vector2u) !Self {
+    pub fn create(size: sf.Vector2u) !Self {
         var tex = sf.c.sfTexture_create(@intCast(c_uint, size.x), @intCast(c_uint, size.y));
         if (tex == null)
             return sf.Error.nullptrUnknownReason;
         return Self{ .ptr = tex.? };
     }
     /// Loads a texture from a file
-    pub fn initFromFile(path: [:0]const u8) !Self {
+    pub fn createFromFile(path: [:0]const u8) !Self {
         var tex = sf.c.sfTexture_createFromFile(path, null);
         if (tex == null)
             return sf.Error.resourceLoadingError;
         return Self{ .ptr = tex.? };
     }
     /// Creates an texture from an image
-    pub fn initFromImage(image: sf.Image, area: ?sf.IntRect) !Self {
+    pub fn createFromImage(image: sf.Image, area: ?sf.IntRect) !Self {
         var tex = if (area) |a|
             sf.c.sfTexture_createFromImage(image.ptr, &a.toCSFML())
         else
@@ -41,7 +44,7 @@ pub const Texture = union(TextureType) {
 
     /// Destroys a texture
     /// Be careful, you can only destroy non const textures
-    pub fn deinit(self: Self) void {
+    pub fn destroy(self: Self) void {
         // TODO : is it possible to detect that comptime?
         // Should this panic?
         if (self == .const_ptr)
@@ -200,8 +203,8 @@ test "texture: sane getters and setters" {
     const tst = std.testing;
     const allocator = std.heap.page_allocator;
     
-    var tex = try sf.Texture.init(.{ .x = 12, .y = 10 });
-    defer tex.deinit();
+    var tex = try Texture.create(.{ .x = 12, .y = 10 });
+    defer tex.destroy();
 
     var size = tex.getSize();
 
@@ -217,7 +220,7 @@ test "texture: sane getters and setters" {
     defer allocator.free(pixel_data);
 
     for (pixel_data) |c, i| {
-        pixel_data[i] = sf.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
+        pixel_data[i] = sf.graphics.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
     }
 
     try tex.updateFromPixels(pixel_data, null);
@@ -233,7 +236,8 @@ test "texture: sane getters and setters" {
 
     tst.expectEqual(@as(usize, 120), copy.getPixelCount());
 
-    var tex2 = try sf.Texture.init(.{ .x = 100, .y = 100 });
+    var tex2 = try Texture.create(.{ .x = 100, .y = 100 });
+    defer tex2.destroy();
 
     copy.swap(tex2);
 
