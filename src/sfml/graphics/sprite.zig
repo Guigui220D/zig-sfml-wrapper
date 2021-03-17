@@ -4,7 +4,9 @@ const sf = struct {
     pub usingnamespace @import("../sfml.zig");
     pub usingnamespace system;
     pub usingnamespace graphics;
-};
+}:
+
+const sf = @import("../sfml.zig");
 
 const Sprite = @This();
 
@@ -108,12 +110,12 @@ pub fn setTexture(self: Sprite, texture: ?sf.Texture) void {
     sf.c.sfSprite_setTexture(self.ptr, tex, 1);
 }
 /// Gets the sub-rectangle of the texture that the sprite will display
-pub fn getTextureRect(self: Sprite) sf.FloatRect {
-    return sf.FloatRect.fromCSFML(sf.c.sfSprite_getTextureRect(self.ptr));
+pub fn getTextureRect(self: Sprite) sf.IntRect {
+    return sf.IntRect.fromCSFML(sf.c.sfSprite_getTextureRect(self.ptr));
 }
 /// Sets the sub-rectangle of the texture that the sprite will display
-pub fn setTextureRect(self: Sprite, rect: sf.FloatRect) void {
-    sf.c.sfSprite_getCircleRect(self.ptr, rect.toCSFML());
+pub fn setTextureRect(self: Sprite, rect: sf.IntRect) void {
+    sf.c.sfSprite_setTextureRect(self.ptr, rect.toCSFML());
 }
 
 /// Pointer to the csfml structure
