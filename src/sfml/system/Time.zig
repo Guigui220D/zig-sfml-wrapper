@@ -47,7 +47,7 @@ pub fn asMilliseconds(self: Time) i32 {
 
 /// Gets this time measurement as seconds (as a float)
 pub fn asSeconds(self: Time) f32 {
-    return @intToFloat(f32, @divFloor(self.us, 1_000)) / 1_000;
+    return @intToFloat(f32, self.us) / 1_000_000;
 }
 
 // Misc
@@ -99,7 +99,7 @@ pub const TimeSpan = struct {
 
 test "time: conversion" {
     const tst = @import("std").testing;
-    
+
     var t = Time.microseconds(5_120_000);
 
     tst.expectEqual(@as(i32, 5_120), t.asMilliseconds());
@@ -108,4 +108,7 @@ test "time: conversion" {
     t = Time.seconds(12);
 
     tst.expectWithinMargin(@as(f32, 12), t.asSeconds(), 0.0001);
+
+    t = Time.microseconds(800);
+    tst.expectWithinMargin(@as(f32, 0.0008), t.asSeconds(), 0.0001);
 }
