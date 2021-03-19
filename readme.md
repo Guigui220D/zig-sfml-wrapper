@@ -11,8 +11,6 @@ CSFML (and this wrapper in consequence) suffers from issue [#1481](https://githu
 This is a wrapper for CSFML. Theres no problem importing CSFML in Zig, but the resulting code can be a little bit messy.
 My goal is to make things close enought to SFML, with nice methods.
 
-This is a side project that I just started, it's incomplete so I don't recommend really using it yet (exept if you want to contribute which really isn't hard).
-
 ### Compiling
 
 You need to add csfml first at the top of the tree, like that
