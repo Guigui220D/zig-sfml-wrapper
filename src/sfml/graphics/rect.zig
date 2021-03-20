@@ -114,7 +114,7 @@ pub fn Rect(comptime T: type) type {
 
 // Common rect types
 pub const IntRect = Rect(i32);
-pub const UintRect = Rect(u32);
+pub const UintRect = Rect(u32); //Not a csfml type
 pub const FloatRect = Rect(f32);
 
 test "rect: intersect" {
@@ -146,3 +146,22 @@ test "rect: contains" {
     tst.expect(!r1.contains(.{ .x = 5, .y = -1 }));
     tst.expect(!r1.contains(.{ .x = 10, .y = 5 }));
 }
+
+test "rect: sane from/to CSFML rect" {
+    const tst = @import("std").testing;
+
+    inline for ([_]type{ IntRect, FloatRect }) |RectT| {
+        const rect = RectT.init(1, 3, 5, 10);
+        const crect = rect.toCSFML();
+    
+        tst.expectEqual(rect.left, crect.left);
+        tst.expectEqual(rect.top, crect.top);
+        tst.expectEqual(rect.width, crect.width);
+        tst.expectEqual(rect.height, crect.height);
+
+        const rect2 = RectT.fromCSFML(crect);
+
+        tst.expectEqual(rect, rect2);
+    }
+}
+

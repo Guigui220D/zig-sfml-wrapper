@@ -28,6 +28,7 @@ pub const graphics = struct {
     pub const View = @import("graphics/View.zig");
     pub const Font = @import("graphics/Font.zig");
     pub const Text = @import("graphics/Text.zig");
+    pub const Vertex = @import("graphics/vertex.zig").Vertex;
 };
 
 pub const audio = struct {
@@ -35,3 +36,19 @@ pub const audio = struct {
     pub const SoundBuffer = @import("audio/SoundBuffer.zig");
     pub const Sound = @import("audio/Sound.zig");
 };
+
+pub const network = @compileError("network module: to be implemented one day");
+
+pub const touch = @compileError("touch not available yet");
+pub const joystick = @compileError("Joystick not available yet");
+pub const sensor = @compileError("Sensor not available yet");
+pub const clipboard = @compileError("Clipboard not available yet");
+pub const Cursor = @compileError("Cursor not available yet");
+
+pub const VertexArray = @compileError("VertexArray not available yet");
+pub const VertexBuffer = @compileError("VertexArray not available yet");
+pub const BlendMode = @compileError("BlendMode not available yet");
+pub const RenderStates = @compileError("RenderStates not available yet");
+pub const RenderTexture = @compileError("RenderTexture not available yet");
+pub const Shader = @compileError("Shader not available yet");
+pub const Transform = @compileError("Transform not available yet");

@@ -7,23 +7,13 @@ pub const Color = packed struct {
     /// Converts a color from a csfml object
     /// For inner workings
     pub fn fromCSFML(col: sf.c.sfColor) Color {
-        return Color{
-            .r = col.r,
-            .g = col.g,
-            .b = col.b,
-            .a = col.a,
-        };
+        return @bitCast(Color, col);
     }
 
     /// Converts this color to a csfml one
     /// For inner workings
     pub fn toCSFML(self: Color) sf.c.sfColor {
-        return sf.c.sfColor{
-            .r = self.r,
-            .g = self.g,
-            .b = self.b,
-            .a = self.a,
-        };
+        return @bitCast(sf.c.sfColor, self);
     }
 
     /// Inits a color with rgb components
@@ -160,3 +150,18 @@ test "color: hsv to rgb" {
     tst.expectEqual(Color.fromRGB(255, 212, 204), col);
 }
 
+test "color: sane from/to CSFML color" {
+    const tst = @import("std").testing;
+
+    const col = Color.fromRGBA(5, 12, 28, 127);
+    const ccol = col.toCSFML();
+
+    tst.expectEqual(col.r, ccol.r);
+    tst.expectEqual(col.g, ccol.g);
+    tst.expectEqual(col.b, ccol.b);
+    tst.expectEqual(col.a, ccol.a);
+
+    const col2 = Color.fromCSFML(ccol);
+
+    tst.expectEqual(col, col2);
+}

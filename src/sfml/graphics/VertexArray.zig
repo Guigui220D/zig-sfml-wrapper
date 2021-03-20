@@ -16,19 +16,12 @@ pub const PrimitiveType = enum(c_int) {
     Quads
 }
 
-pub fn create() !VertexArray {
-    var va = sf.c.sfVertexArray_create();
-    if (va == null)
-        return sf.Error.nullptrUnknownReason;
-    return VertexArray{ .ptr = va.? };
-}
-
 pub fn createFromSlice(vertex: []const sf.graphics.Vertex) !VertexArray {
     var va = sf.c.sfVertexArray_create();
     if (va) |vert| {
-        for (vertex) {
-
-        }
+        sf.c.sfVertexArray_resize(vert, vertex.len);
+        for (vertex) |v, i|
+            sf.c.sfVertexArray_getVertex(vert, i).* = @bitCast(sf.c.sfVertex, v);
     } else
         return sf.Error.nullptrUnknownReason;
 }
