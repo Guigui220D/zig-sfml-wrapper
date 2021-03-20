@@ -46,6 +46,7 @@ pub fn getRect(self: View) sf.FloatRect {
         self.size.x,
         self.size.y
     );
+}
 
 pub fn setSize(self: *View, size: sf.Vector2f) void {
     self.size = size;
@@ -56,7 +57,7 @@ pub fn setCenter(self: *View, center: sf.Vector2f) void {
 }
 
 pub fn zoom(self: *View, factor: f32) void {
-    self.size = .{.x = self.size.x * factor, .y = self.size.y * factor};
+    self.size = .{ .x = self.size.x * factor, .y = self.size.y * factor };
 }
 
 // View variables
