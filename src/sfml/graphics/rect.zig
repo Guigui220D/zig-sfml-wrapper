@@ -12,7 +12,7 @@ pub fn Rect(comptime T: type) type {
 
         /// The CSFML vector type equivalent
         const CsfmlEquivalent = switch (T) {
-            i32 => sf.c.sfIntRect,
+            c_int => sf.c.sfIntRect,
             f32 => sf.c.sfFloatRect,
             else => void,
         };
@@ -112,19 +112,14 @@ pub fn Rect(comptime T: type) type {
     };
 }
 
-// Common rect types
-pub const IntRect = Rect(i32);
-pub const UintRect = Rect(u32); //Not a csfml type
-pub const FloatRect = Rect(f32);
-
 test "rect: intersect" {
     const tst = @import("std").testing;
 
-    var r1 = IntRect.init(0, 0, 10, 10);
-    var r2 = IntRect.init(6, 6, 20, 20);
-    var r3 = IntRect.init(-5, -5, 10, 10);
+    var r1 = Rect(c_int).init(0, 0, 10, 10);
+    var r2 = Rect(c_int).init(6, 6, 20, 20);
+    var r3 = Rect(c_int).init(-5, -5, 10, 10);
 
-    tst.expectEqual(@as(?IntRect, null), r2.intersects(r3));
+    tst.expectEqual(@as(?Rect(c_int), null), r2.intersects(r3));
 
     var inter1: sf.c.sfIntRect = undefined;
     var inter2: sf.c.sfIntRect = undefined;
@@ -132,14 +127,14 @@ test "rect: intersect" {
     tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r2.toCSFML(), &inter1), 1);
     tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r3.toCSFML(), &inter2), 1);
 
-    tst.expectEqual(IntRect.fromCSFML(inter1), r1.intersects(r2).?);
-    tst.expectEqual(IntRect.fromCSFML(inter2), r1.intersects(r3).?);
+    tst.expectEqual(Rect(c_int).fromCSFML(inter1), r1.intersects(r2).?);
+    tst.expectEqual(Rect(c_int).fromCSFML(inter2), r1.intersects(r3).?);
 }
 
 test "rect: contains" {
     const tst = @import("std").testing;
     
-    var r1 = FloatRect.init(0, 0, 10, 10);
+    var r1 = Rect(f32).init(0, 0, 10, 10);
 
     tst.expect(r1.contains(.{ .x = 0, .y = 0 }));
     tst.expect(r1.contains(.{ .x = 9, .y = 9 }));
@@ -150,8 +145,8 @@ test "rect: contains" {
 test "rect: sane from/to CSFML rect" {
     const tst = @import("std").testing;
 
-    inline for ([_]type{ IntRect, FloatRect }) |RectT| {
-        const rect = RectT.init(1, 3, 5, 10);
+    inline for ([_]type{ c_int, f32 }) |T| {
+        const rect = Rect(T).init(1, 3, 5, 10);
         const crect = rect.toCSFML();
     
         tst.expectEqual(rect.left, crect.left);
@@ -159,7 +154,7 @@ test "rect: sane from/to CSFML rect" {
         tst.expectEqual(rect.width, crect.width);
         tst.expectEqual(rect.height, crect.height);
 
-        const rect2 = RectT.fromCSFML(crect);
+        const rect2 = Rect(T).fromCSFML(crect);
 
         tst.expectEqual(rect, rect2);
     }

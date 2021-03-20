@@ -93,18 +93,18 @@ pub const Texture = union(TextureType) {
     }
 
     /// Updates the pixels of the image from an array of pixels (colors)
-    pub fn updateFromPixels(self: Self, pixels: []const sf.Color, zone: ?sf.UintRect) !void {
+    pub fn updateFromPixels(self: Self, pixels: []const sf.Color, zone: ?sf.Rect(c_uint)) !void {
         if (self == .const_ptr)
             @panic("Can't set pixels on a const texture");
         if (self.isSrgb())
             @panic("Updating an srgb from a pixel array isn't implemented");
 
-        var real_zone: sf.UintRect = undefined;
+        var real_zone: sf.Rect(c_uint) = undefined;
         var size = self.getSize();
 
         if (zone) |z| {
             // Check if the given zone is fully inside the image
-            var intersection = z.intersects(sf.UintRect.init(0, 0, size.x, size.y));
+            var intersection = z.intersects(sf.Rect(c_uint).init(0, 0, size.x, size.y));
 
             if (intersection) |i| {
                 if (!i.equals(z))

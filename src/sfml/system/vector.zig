@@ -8,8 +8,8 @@ pub fn Vector2(comptime T: type) type {
 
         /// The CSFML vector type equivalent
         const CsfmlEquivalent = switch (T) {
-            u32 => sf.c.sfVector2u,
-            i32 => sf.c.sfVector2i,
+            c_uint => sf.c.sfVector2u,
+            c_int => sf.c.sfVector2i,
             f32 => sf.c.sfVector2f,
             else => void,
         };
@@ -50,11 +50,6 @@ pub fn Vector2(comptime T: type) type {
     };
 }
 
-// Common vector types
-pub const Vector2u = Vector2(u32);
-pub const Vector2i = Vector2(i32);
-pub const Vector2f = Vector2(f32);
-
 pub const Vector3f = struct {
     const Self = @This();
 
@@ -81,7 +76,8 @@ pub const Vector3f = struct {
 test "vector: sane from/to CSFML vectors" {
     const tst = @import("std").testing;
 
-    inline for ([_]type{ Vector2u, Vector2i, Vector2f }) |VecT| {
+    inline for ([_]type{ c_int, c_uint, f32 }) |T| {
+        const VecT = Vector2(T);
         const vec = VecT{ .x = 1, .y = 3 };
         const cvec = vec.toCSFML();
     

@@ -5,13 +5,17 @@ pub const c = @import("sfml_import.zig").c;
 pub const Error = @import("sfml_errors.zig").Error;
 
 pub const system = struct {
-    pub usingnamespace @import("system/vector.zig");
+    pub const Vector2 = @import("system/vector.zig").Vector2;
+    pub const Vector2i = Vector2(c_int);
+    pub const Vector2u = Vector2(c_uint);
+    pub const Vector2f = Vector2(f32);
+    pub const Vector3f = @import("system/vector.zig").Vector3f;
     pub const Time = @import("system/Time.zig");
     pub const Clock = @import("system/Clock.zig");
 };
 
 pub const window = struct {
-    usingnamespace @import("window/event.zig");
+    pub const Event = @import("window/event.zig").Event;
     pub const keyboard = @import("window/Keyboard.zig");
     pub const mouse = @import("window/Mouse.zig");
 };
@@ -24,7 +28,9 @@ pub const graphics = struct {
     pub const Sprite = @import("graphics/Sprite.zig");
     pub const CircleShape = @import("graphics/CircleShape.zig");
     pub const RectangleShape = @import("graphics/RectangleShape.zig");
-    pub usingnamespace @import("graphics/rect.zig");
+    pub const Rect = @import("graphics/rect.zig").Rect;
+    pub const IntRect = Rect(c_int);
+    pub const FloatRect = Rect(f32);
     pub const View = @import("graphics/View.zig");
     pub const Font = @import("graphics/Font.zig");
     pub const Text = @import("graphics/Text.zig");
