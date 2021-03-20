@@ -46,6 +46,17 @@ pub fn getRect(self: View) sf.FloatRect {
         self.size.x,
         self.size.y
     );
+
+pub fn setSize(self: *View, size: sf.Vector2f) void {
+    self.size = size;
+}
+
+pub fn setCenter(self: *View, center: sf.Vector2f) void {
+    self.center = center;
+}
+
+pub fn zoom(self: *View, factor: f32) void {
+    self.size = .{.x = self.size.x * factor, .y = self.size.y * factor};
 }
 
 // View variables
@@ -76,9 +87,17 @@ test "view: from rect" {
     tst.expectWithinMargin(size.y, view2.size.y, 0.00001);
 
     var rect_ret = view2.getRect();
-    
+
     tst.expectWithinMargin(rect.left, rect_ret.left, 0.00001);
     tst.expectWithinMargin(rect.top, rect_ret.top, 0.00001);
     tst.expectWithinMargin(rect.width, rect_ret.width, 0.00001);
     tst.expectWithinMargin(rect.height, rect_ret.height, 0.00001);
+
+    view2.setCenter(.{ .x = 400, .y = 300 });
+    view2.setSize(.{ .x = 800, .y = 600 });
+    rect_ret = view2.getRect();
+    tst.expectWithinMargin(@as(f32, 0), rect_ret.left, 0.00001);
+    tst.expectWithinMargin(@as(f32, 0), rect_ret.top, 0.00001);
+    tst.expectWithinMargin(@as(f32, 800), rect_ret.width, 0.00001);
+    tst.expectWithinMargin(@as(f32, 600), rect_ret.height, 0.00001);
 }
