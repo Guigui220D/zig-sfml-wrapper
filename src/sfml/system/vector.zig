@@ -3,7 +3,7 @@
 const sf = @import("../sfml_import.zig");
 
 pub fn Vector2(comptime T: type) type {
-    return struct {
+    return packed struct {
         const Self = @This();
 
         /// The CSFML vector type equivalent
@@ -18,14 +18,14 @@ pub fn Vector2(comptime T: type) type {
         /// This is mainly for the inner workings of this wrapper
         pub fn toCSFML(self: Self) CsfmlEquivalent {
             if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return CsfmlEquivalent{ .x = self.x, .y = self.y };
+            return @bitCast(CsfmlEquivalent, self);
         }
 
         /// Creates a vector from a CSFML one (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
         pub fn fromCSFML(vec: CsfmlEquivalent) Self {
             if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return Self{ .x = vec.x, .y = vec.y };
+            return @bitCast(Self, vec);
         }
 
         /// Adds two vectors
@@ -39,8 +39,8 @@ pub fn Vector2(comptime T: type) type {
         }
 
         /// Scales a vector
-        pub fn scale(self: Self, factor: T) Self {
-            return Self{ .x = self.x * factor, .y = self.y * factor };
+        pub fn scale(self: Self, scalar: T) Self {
+            return Self{ .x = self.x * scalar, .y = self.y * scalar };
         }
 
         /// x component of the vector
@@ -61,13 +61,13 @@ pub const Vector3f = struct {
     /// Makes a CSFML vector with this vector (only if the corresponding type exists)
     /// This is mainly for the inner workings of this wrapper
     pub fn toCSFML(self: Self) sf.c.sfVector3f {
-        return sf.c.sfVector3f{ .x = self.x, .y = self.y, .z = self.z };
+        return @bitCast(sf.c.sfVector3f, self);
     }
 
     /// Creates a vector from a CSFML one (only if the corresponding type exists)
     /// This is mainly for the inner workings of this wrapper
     pub fn fromCSFML(vec: sf.c.sfVector3f) Self {
-        return Self{ .x = vec.x, .y = vec.y, .z = vec.z };
+        return @bitCast(Self, vec);
     }
 
     /// x component of the vector
@@ -77,3 +77,34 @@ pub const Vector3f = struct {
     /// z component of the vector
     z: f32,
 };
+
+test "vector: sane from/to CSFML vectors" {
+    const tst = @import("std").testing;
+
+    inline for ([_]type{ Vector2u, Vector2i, Vector2f }) |VecT| {
+        const vec = VecT{ .x = 1, .y = 3 };
+        const cvec = vec.toCSFML();
+    
+        tst.expectEqual(vec.x, cvec.x);
+        tst.expectEqual(vec.y, cvec.y);
+
+        const vec2 = VecT.fromCSFML(cvec);
+
+        tst.expectEqual(vec, vec2);
+    }
+
+    {
+        const vec = Vector3f{ .x = 1, .y = 3.5, .z = -12 };
+        const cvec = vec.toCSFML();
+
+        tst.expectEqual(vec.x, cvec.x);
+        tst.expectEqual(vec.y, cvec.y);
+        tst.expectEqual(vec.z, cvec.z);
+
+        const vec2 = Vector3f.fromCSFML(cvec);
+
+        tst.expectEqual(vec, vec2);
+    }
+}
+
+

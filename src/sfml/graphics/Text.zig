@@ -172,7 +172,7 @@ test "text: sane getters and setters" {
     var text = try Text.create();
     defer text.destroy();
 
-    text.setText("hello");
+    text.setString("hello");
     text.setFillColor(sf.Color.Yellow);
     text.setOutlineColor(sf.Color.Red);
     text.setOutlineThickness(2);

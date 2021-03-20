@@ -7,7 +7,7 @@ const sf = struct {
 const math = @import("std").math;
 
 pub fn Rect(comptime T: type) type {
-    return struct {
+    return packed struct {
         const Self = @This();
 
         /// The CSFML vector type equivalent
@@ -31,19 +31,14 @@ pub fn Rect(comptime T: type) type {
         /// This is mainly for the inner workings of this wrapper
         pub fn toCSFML(self: Self) CsfmlEquivalent {
             if (CsfmlEquivalent == void) @compileError("This rectangle type doesn't have a CSFML equivalent.");
-            return CsfmlEquivalent{
-                .left = self.left,
-                .top = self.top,
-                .width = self.width,
-                .height = self.height,
-            };
+            return @bitCast(CsfmlEquivalent, self);
         }
 
         /// Creates a rect from a CSFML one (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
         pub fn fromCSFML(rect: CsfmlEquivalent) Self {
             if (CsfmlEquivalent == void) @compileError("This rectangle type doesn't have a CSFML equivalent.");
-            return Self.init(rect.left, rect.top, rect.width, rect.height);
+            return @bitCast(Self, rect);
         }
 
         /// Checks if a point is inside this recangle

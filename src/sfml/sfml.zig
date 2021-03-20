@@ -17,7 +17,7 @@ pub const window = struct {
 };
 
 pub const graphics = struct {
-    pub const Color = @import("graphics/Color.zig");
+    pub const Color = @import("graphics/color.zig").Color;
     pub const RenderWindow = @import("graphics/RenderWindow.zig");
     pub const Image = @import("graphics/Image.zig");
     pub const Texture = @import("graphics/texture.zig").Texture;

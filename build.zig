@@ -23,22 +23,6 @@ pub fn build(b: *Builder) void {
     example(b, target, "green_circle");
     example(b, target, "my_tests");
     example(b, target, "sound_experiments");
-
-    const doc = b.addObject("sfml", "src/sfml/doc_generation.zig");
-    doc.linkLibC();
-    doc.addPackagePath("sfml", "src/sfml/sfml.zig");
-    doc.addLibPath("csfml/lib/msvc/");
-    doc.linkSystemLibrary("csfml-graphics");
-    doc.linkSystemLibrary("csfml-system");
-    doc.linkSystemLibrary("csfml-window");
-    doc.linkSystemLibrary("csfml-audio");
-    doc.addIncludeDir("csfml/include/");
-    doc.setTarget(target);
-    doc.setBuildMode(mode);
-    doc.emit_docs = true;
-
-    const run_step = b.step("make-docs", "Generate the docs");
-    run_step.dependOn(&doc.step);
 }
 
 fn example(b: *Builder, targ: anytype, comptime name: []const u8) void {
