@@ -34,6 +34,11 @@ pub fn destroy(self: Text) void {
 
 // Getters/setters
 
+/// Sets the content of this text
+pub fn setText(self: Text, string: [:0]const u8) void {
+    sf.c.sfText_setString(self.ptr, string);
+}
+
 /// Sets the font of this text
 pub fn setFont(self: Text, font: sf.Font) void {
     sf.c.sfText_setFont(self.ptr, font.ptr);
@@ -167,6 +172,7 @@ test "text: sane getters and setters" {
     var text = try Text.create();
     defer text.destroy();
 
+    text.setText("hello");
     text.setFillColor(sf.Color.Yellow);
     text.setOutlineColor(sf.Color.Red);
     text.setOutlineThickness(2);
