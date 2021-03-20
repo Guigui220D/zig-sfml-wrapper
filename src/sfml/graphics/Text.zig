@@ -35,7 +35,7 @@ pub fn destroy(self: Text) void {
 // Getters/setters
 
 /// Sets the content of this text
-pub fn setText(self: Text, string: [:0]const u8) void {
+pub fn setString(self: Text, string: [:0]const u8) void {
     sf.c.sfText_setString(self.ptr, string);
 }
 
