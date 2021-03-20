@@ -10,10 +10,9 @@ const RenderWindow = @This();
 
 // Constructor/destructor
 
-// TODO : choose style of window
-/// Inits a render window with a size, a bits per pixel (most put 32) and a title
+/// Inits a render window with a size, a bits per pixel (most put 32), a title and a style
 /// The window will have the default style
-pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !RenderWindow {
+pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32) !RenderWindow {
     var ret: RenderWindow = undefined;
 
     var mode: sf.c.sfVideoMode = .{
@@ -22,7 +21,29 @@ pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8) !RenderWindow 
         .bitsPerPixel = @intCast(c_uint, bpp),
     };
 
-    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), sf.c.sfDefaultStyle, 0);
+    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), style, null);
+
+    if (window) |w| {
+        ret.ptr = w;
+    } else {
+        return sf.Error.windowCreationFailed;
+    }
+
+    return ret;
+}
+
+/// Inits a render window with a size and a title
+/// The window will have the default style
+pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
+    var ret: RenderWindow = undefined;
+
+    var mode: sf.c.sfVideoMode = .{
+        .width = @intCast(c_uint, size.x),
+        .height = @intCast(c_uint, size.y),
+        .bitsPerPixel = 32,
+    };
+
+    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), sf.window.Style.defaultStyle, null);
 
     if (window) |w| {
         ret.ptr = w;
@@ -80,6 +101,7 @@ pub fn draw(self: RenderWindow, to_draw: anytype, states: ?*sf.c.sfRenderStates)
         sf.CircleShape => sf.c.sfRenderWindow_drawCircleShape(self.ptr, to_draw.ptr, states),
         sf.RectangleShape => sf.c.sfRenderWindow_drawRectangleShape(self.ptr, to_draw.ptr, states),
         sf.Text => sf.c.sfRenderWindow_drawText(self.ptr, to_draw.ptr, states),
+        sf.VertexArray => sf.c.sfRenderWindow_drawVertexArray(self.ptr, to_draw.ptr, states),
         else => @compileError("You must provide a drawable object"),
     }
 }

@@ -6,24 +6,23 @@ const sf = @import("../sfml.zig");
 
 const VertexArray = @This();
 
-pub const PrimitiveType = enum(c_int) {
-    Points,
-    Lines,
-    LineStrip,
-    Triangles,
-    TriangleStrip,
-    TriangleFan,
-    Quads
-}
-
-pub fn createFromSlice(vertex: []const sf.graphics.Vertex) !VertexArray {
+/// Creates a vertex array from a slice of vertices
+pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphics.PrimitiveType) !VertexArray {
     var va = sf.c.sfVertexArray_create();
     if (va) |vert| {
+        sf.c.sfVertexArray_setPrimitiveType(vert, @intToEnum(sf.c.sfPrimitiveType, @enumToInt(primitive)));
         sf.c.sfVertexArray_resize(vert, vertex.len);
         for (vertex) |v, i|
             sf.c.sfVertexArray_getVertex(vert, i).* = @bitCast(sf.c.sfVertex, v);
+        return VertexArray{ .ptr = vert };
     } else
         return sf.Error.nullptrUnknownReason;
 }
 
-ptr: *sf.c.sfSoundBuffer,
+/// Destroys a vertex array
+pub fn destroy(self: VertexArray) void {
+    sf.c.sfVertexArray_destroy(self.ptr);
+}
+
+/// Pointer to the csfml structure
+ptr: *sf.c.sfVertexArray,

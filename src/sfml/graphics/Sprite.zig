@@ -96,9 +96,9 @@ pub fn setColor(self: Sprite, color: sf.Color) void {
 
 /// Gets the texture of this shape
 pub fn getTexture(self: Sprite) ?sf.Texture {
-    var t = sf.c.sfSprite_getTexture(self.ptr);
-    if (t != null) {
-        return sf.Texture{ .const_ptr = t.? };
+    const t = sf.c.sfSprite_getTexture(self.ptr);
+    if (t) |tex| {
+        return sf.Texture{ .const_ptr = tex };
     } else
         return null;
 }
@@ -130,6 +130,7 @@ test "sprite: sane getters and setters" {
     spr.setPosition(.{ .x = 1, .y = 2 });
     spr.setOrigin(.{ .x = 20, .y = 25 });
     spr.setScale(.{ .x = 2, .y = 2 });
+    spr.setTexture(null);
 
     // TODO : issue #2
     //tst.expectEqual(sf.Color.Yellow, spr.getColor());

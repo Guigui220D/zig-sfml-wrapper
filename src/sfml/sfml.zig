@@ -16,6 +16,7 @@ pub const system = struct {
 
 pub const window = struct {
     pub const Event = @import("window/event.zig").Event;
+    pub const Style = @import("window/Style.zig");
     pub const keyboard = @import("window/Keyboard.zig");
     pub const mouse = @import("window/Mouse.zig");
 };
@@ -35,6 +36,8 @@ pub const graphics = struct {
     pub const Font = @import("graphics/Font.zig");
     pub const Text = @import("graphics/Text.zig");
     pub const Vertex = @import("graphics/vertex.zig").Vertex;
+    pub const VertexArray = @import("graphics/VertexArray.zig");
+    pub const PrimitiveType = @import("graphics/primitive_type.zig").PrimitiveType;
 };
 
 pub const audio = struct {
@@ -51,7 +54,6 @@ pub const sensor = @compileError("Sensor not available yet");
 pub const clipboard = @compileError("Clipboard not available yet");
 pub const Cursor = @compileError("Cursor not available yet");
 
-pub const VertexArray = @compileError("VertexArray not available yet");
 pub const VertexBuffer = @compileError("VertexArray not available yet");
 pub const BlendMode = @compileError("BlendMode not available yet");
 pub const RenderStates = @compileError("RenderStates not available yet");

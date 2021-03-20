@@ -95,9 +95,9 @@ pub fn rotate(self: CircleShape, angle: f32) void {
 
 /// Gets the texture of this shape
 pub fn getTexture(self: CircleShape) ?sf.Texture {
-    var t = sf.c.sfCircleShape_getTexture(self.ptr);
-    if (t != null) {
-        return sf.Texture{ .const_ptr = t.? };
+    const t = sf.c.sfCircleShape_getTexture(self.ptr);
+    if (t) |tex| {
+        return sf.Texture{ .const_ptr = tex };
     } else
         return null;
 }
@@ -139,6 +139,7 @@ test "circle shape: sane getters and setters" {
     circle.setRotation(15);
     circle.setPosition(.{ .x = 1, .y = 2 });
     circle.setOrigin(.{ .x = 20, .y = 25 });
+    circle.setTexture(null);
 
     // TODO : issue #2
     //tst.expectEqual(sf.Color.Yellow, circle.getFillColor());

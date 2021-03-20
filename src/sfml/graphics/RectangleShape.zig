@@ -84,9 +84,9 @@ pub fn rotate(self: RectangleShape, angle: f32) void {
 
 /// Gets the texture of this shape
 pub fn getTexture(self: RectangleShape) ?sf.Texture {
-    var t = sf.c.sfRectangleShape_getTexture(self.ptr);
-    if (t != null) {
-        return sf.Texture{ .const_ptr = t.? };
+    const t = sf.c.sfRectangleShape_getTexture(self.ptr);
+    if (t) |tex| {
+        return sf.Texture{ .const_ptr = tex };
     } else
         return null;
 }
@@ -130,6 +130,7 @@ test "rectangle shape: sane getters and setters" {
     rect.setRotation(15);
     rect.setPosition(.{ .x = 1, .y = 2 });
     rect.setOrigin(.{ .x = 20, .y = 25 });
+    rect.setTexture(null);  //Weirdly, getTexture if texture wasn't set gives a wrong pointer
 
     // TODO : issue #2
     //tst.expectEqual(sf.c.sfYellow, rect.getFillColor());
@@ -137,8 +138,7 @@ test "rectangle shape: sane getters and setters" {
     tst.expectEqual(@as(f32, 15), rect.getRotation());
     tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, rect.getPosition());
     tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, rect.getOrigin());
-    // TODO : find why that doesn't work
-    //tst.expectEqual(@as(?sf.Texture, null), rect.getTexture());
+    tst.expectEqual(@as(?sf.Texture, null), rect.getTexture());
 
     rect.rotate(5);
     rect.move(.{ .x = -5, .y = 5 });

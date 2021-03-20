@@ -8,10 +8,18 @@ const allocator = std.heap.page_allocator;
 // I only use things I've wrapped here, but the other csfml functions seem to work, just need to wrap them
 pub fn main() anyerror!void {
     // Create a window
-    var window = try sf.graphics.RenderWindow.create(.{ .x = 800, .y = 600 }, 32, "This is zig!");
+    var window = try sf.graphics.RenderWindow.create(.{ .x = 800, .y = 600 }, 32, "This is zig!", 0);
     defer window.destroy();
     //window.setVerticalSyncEnabled(false);
     window.setFramerateLimit(60);
+
+    var vertices: [4]sf.graphics.Vertex = undefined;
+    vertices[0] = .{ .position = .{ .x = 0, .y = 0 }, .color = sf.graphics.Color.Red, .tex_coords = .{ .x = 0, .y = 0 } };
+    vertices[1] = .{ .position = .{ .x = 0, .y = 50 }, .color = sf.graphics.Color.Yellow, .tex_coords = .{ .x = 0, .y = 0 } };
+    vertices[2] = .{ .position = .{ .x = 50, .y = 50 }, .color = sf.graphics.Color.Green, .tex_coords = .{ .x = 0, .y = 0 } };
+    vertices[3] = .{ .position = .{ .x = 50, .y = 0 }, .color = sf.graphics.Color.Blue, .tex_coords = .{ .x = 0, .y = 0 } };
+    var vertex_array = try sf.graphics.VertexArray.createFromSlice(vertices[0..], sf.graphics.PrimitiveType.Quads);
+    defer vertex_array.destroy();
 
     // Shapes creation
     var circle = try sf.graphics.CircleShape.create(100);
@@ -80,6 +88,7 @@ pub fn main() anyerror!void {
         window.draw(circle, null);
         window.draw(bob, null);
         window.draw(rect, null);
+        window.draw(vertex_array, null);
         window.display();
     }
 }

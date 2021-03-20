@@ -191,8 +191,6 @@ pub const Texture = union(TextureType) {
         sf.c.sfTexture_swap(self.ptr, other.ptr);
     }
 
-    // TODO: many things
-
     /// Pointer to the csfml texture
     ptr: *sf.c.sfTexture,
     /// Const pointer to the csfml texture
