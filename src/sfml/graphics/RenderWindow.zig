@@ -93,17 +93,15 @@ pub fn display(self: RenderWindow) void {
 }
 
 /// Draw something on the screen (won't be visible until display is called)
-/// Object must be a SFML object from the wrapper
+/// Object must have a sfDraw function (look at CircleShape for reference)
 /// You can pass a render state or null for default
 pub fn draw(self: RenderWindow, to_draw: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(to_draw)) {
-        sf.Sprite => sf.c.sfRenderWindow_drawSprite(self.ptr, to_draw.ptr, states),
-        sf.CircleShape => sf.c.sfRenderWindow_drawCircleShape(self.ptr, to_draw.ptr, states),
-        sf.RectangleShape => sf.c.sfRenderWindow_drawRectangleShape(self.ptr, to_draw.ptr, states),
-        sf.Text => sf.c.sfRenderWindow_drawText(self.ptr, to_draw.ptr, states),
-        sf.VertexArray => sf.c.sfRenderWindow_drawVertexArray(self.ptr, to_draw.ptr, states),
-        else => @compileError("You must provide a drawable object"),
-    }
+    const T = @TypeOf(to_draw);
+    if (comptime @import("std").meta.trait.hasFn("sfDraw")(T)) {
+        // Inline call of object's draw function
+        @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self, states });
+        // to_draw.sfDraw(self, states);
+    } else @compileError("You must provide a drawable object (struct with \"sfDraw\" method).");
 }
 
 // Getters/setters

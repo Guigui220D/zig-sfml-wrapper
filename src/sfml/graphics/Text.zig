@@ -32,6 +32,11 @@ pub fn destroy(self: Text) void {
     sf.c.sfText_destroy(self.ptr);
 }
 
+// Draw function
+pub fn sfDraw(self: Text, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
+    sf.c.sfRenderWindow_drawText(window.ptr, self.ptr, states);
+}
+
 // Getters/setters
 
 /// Sets the content of this text

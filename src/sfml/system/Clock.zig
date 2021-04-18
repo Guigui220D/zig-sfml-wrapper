@@ -50,10 +50,10 @@ test "clock: sleep test" {
 
     sf.Time.milliseconds(500).sleep();
 
-    tst.expectWithinMargin(@as(f32, 0.5), clk.getElapsedTime().asSeconds(), 0.1);
+    tst.expectApproxEqAbs(@as(f32, 0.5), clk.getElapsedTime().asSeconds(), 0.1);
 
     sf.Time.sleep(sf.Time.seconds(0.2));
 
-    tst.expectWithinMargin(@as(f32, 0.7), clk.restart().asSeconds(), 0.1);
-    tst.expectWithinMargin(@as(f32, 0), clk.getElapsedTime().asSeconds(), 0.01);
+    tst.expectApproxEqAbs(@as(f32, 0.7), clk.restart().asSeconds(), 0.1);
+    tst.expectApproxEqAbs(@as(f32, 0), clk.getElapsedTime().asSeconds(), 0.01);
 }

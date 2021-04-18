@@ -35,6 +35,11 @@ pub fn destroy(self: Sprite) void {
     sf.c.sfSprite_destroy(self.ptr);
 }
 
+// Draw function
+pub fn sfDraw(self: Sprite, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
+    sf.c.sfRenderWindow_drawSprite(window.ptr, self.ptr, states);
+}
+
 // Getters/setters
 
 /// Gets the position of this sprite

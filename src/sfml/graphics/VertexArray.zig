@@ -24,5 +24,10 @@ pub fn destroy(self: VertexArray) void {
     sf.c.sfVertexArray_destroy(self.ptr);
 }
 
+// Draw function
+pub fn sfDraw(self: VertexArray, window: sf.graphics.RenderWindow, states: ?*sf.c.sfRenderStates) void {
+    sf.c.sfRenderWindow_drawVertexArray(window.ptr, self.ptr, states);
+}
+
 /// Pointer to the csfml structure
 ptr: *sf.c.sfVertexArray,

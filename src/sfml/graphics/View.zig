@@ -82,23 +82,23 @@ test "view: from rect" {
     var center = sf.Vector2f.fromCSFML(sf.c.sfView_getCenter(view));
     var size = sf.Vector2f.fromCSFML(sf.c.sfView_getSize(view));
 
-    tst.expectWithinMargin(center.x, view2.center.x, 0.00001);
-    tst.expectWithinMargin(center.y, view2.center.y, 0.00001);
-    tst.expectWithinMargin(size.x, view2.size.x, 0.00001);
-    tst.expectWithinMargin(size.y, view2.size.y, 0.00001);
+    tst.expectApproxEqAbs(center.x, view2.center.x, 0.00001);
+    tst.expectApproxEqAbs(center.y, view2.center.y, 0.00001);
+    tst.expectApproxEqAbs(size.x, view2.size.x, 0.00001);
+    tst.expectApproxEqAbs(size.y, view2.size.y, 0.00001);
 
     var rect_ret = view2.getRect();
 
-    tst.expectWithinMargin(rect.left, rect_ret.left, 0.00001);
-    tst.expectWithinMargin(rect.top, rect_ret.top, 0.00001);
-    tst.expectWithinMargin(rect.width, rect_ret.width, 0.00001);
-    tst.expectWithinMargin(rect.height, rect_ret.height, 0.00001);
+    tst.expectApproxEqAbs(rect.left, rect_ret.left, 0.00001);
+    tst.expectApproxEqAbs(rect.top, rect_ret.top, 0.00001);
+    tst.expectApproxEqAbs(rect.width, rect_ret.width, 0.00001);
+    tst.expectApproxEqAbs(rect.height, rect_ret.height, 0.00001);
 
     view2.setCenter(.{ .x = 400, .y = 300 });
     view2.setSize(.{ .x = 800, .y = 600 });
     rect_ret = view2.getRect();
-    tst.expectWithinMargin(@as(f32, 0), rect_ret.left, 0.00001);
-    tst.expectWithinMargin(@as(f32, 0), rect_ret.top, 0.00001);
-    tst.expectWithinMargin(@as(f32, 800), rect_ret.width, 0.00001);
-    tst.expectWithinMargin(@as(f32, 600), rect_ret.height, 0.00001);
+    tst.expectApproxEqAbs(@as(f32, 0), rect_ret.left, 0.00001);
+    tst.expectApproxEqAbs(@as(f32, 0), rect_ret.top, 0.00001);
+    tst.expectApproxEqAbs(@as(f32, 800), rect_ret.width, 0.00001);
+    tst.expectApproxEqAbs(@as(f32, 600), rect_ret.height, 0.00001);
 }

@@ -27,6 +27,11 @@ pub fn destroy(self: CircleShape) void {
     sf.c.sfCircleShape_destroy(self.ptr);
 }
 
+// Draw function
+pub fn sfDraw(self: CircleShape, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
+    sf.c.sfRenderWindow_drawCircleShape(window.ptr, self.ptr, states);
+}
+
 // Getters/setters
 
 /// Gets the fill color of this circle shape

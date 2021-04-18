@@ -27,6 +27,11 @@ pub fn destroy(self: RectangleShape) void {
     sf.c.sfRectangleShape_destroy(self.ptr);
 }
 
+// Draw function
+pub fn sfDraw(self: RectangleShape, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
+    sf.c.sfRenderWindow_drawRectangleShape(window.ptr, self.ptr, states);
+}
+
 // Getters/setters
 
 /// Gets the fill color of this rectangle shape
