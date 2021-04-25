@@ -47,6 +47,12 @@ pub fn destroy(self: Image) void {
     sf.c.sfImage_destroy(self.ptr);
 }
 
+// Save an image to a file
+pub fn saveToFile(self: Image, path: [:0]const u8) !void {
+    if (sf.c.sfImage_saveToFile(self.ptr, path) != 1)
+        return sf.Error.savingInFileFailed;
+}
+
 // Getters/setters
 
 /// Gets a pixel from this image (bounds are only checked in an assertion)
