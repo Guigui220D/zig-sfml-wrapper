@@ -104,8 +104,7 @@ pub fn getTexture(self: Sprite) ?sf.Texture {
     const t = sf.c.sfSprite_getTexture(self.ptr);
     if (t) |tex| {
         return sf.Texture{ .const_ptr = tex };
-    } else
-        return null;
+    } else return null;
 }
 /// Sets this sprite's texture (the sprite will take the texture's dimensions)
 pub fn setTexture(self: Sprite, texture: ?sf.Texture) void {
@@ -126,7 +125,7 @@ ptr: *sf.c.sfSprite,
 
 test "sprite: sane getters and setters" {
     const tst = @import("std").testing;
-    
+
     var spr = try Sprite.create();
     defer spr.destroy();
 
@@ -137,18 +136,17 @@ test "sprite: sane getters and setters" {
     spr.setScale(.{ .x = 2, .y = 2 });
     spr.setTexture(null);
 
-    // TODO : issue #2
-    //tst.expectEqual(sf.Color.Yellow, spr.getColor());
-    tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, spr.getPosition());
-    tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, spr.getOrigin());
-    tst.expectEqual(@as(?sf.Texture, null), spr.getTexture());
-    tst.expectEqual(sf.Vector2f{ .x = 2, .y = 2 }, spr.getScale());
+    try tst.expectEqual(sf.Color.Yellow, spr.getColor());
+    try tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, spr.getPosition());
+    try tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, spr.getOrigin());
+    try tst.expectEqual(@as(?sf.Texture, null), spr.getTexture());
+    try tst.expectEqual(sf.Vector2f{ .x = 2, .y = 2 }, spr.getScale());
 
     spr.rotate(5);
     spr.move(.{ .x = -5, .y = 5 });
     spr.scale(.{ .x = 5, .y = 5 });
 
-    tst.expectEqual(@as(f32, 20), spr.getRotation());
-    tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, spr.getPosition());
-    tst.expectEqual(sf.Vector2f{ .x = 10, .y = 10 }, spr.getScale());
+    try tst.expectEqual(@as(f32, 20), spr.getRotation());
+    try tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, spr.getPosition());
+    try tst.expectEqual(sf.Vector2f{ .x = 10, .y = 10 }, spr.getScale());
 }

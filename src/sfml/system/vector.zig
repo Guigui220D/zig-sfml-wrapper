@@ -80,27 +80,25 @@ test "vector: sane from/to CSFML vectors" {
         const VecT = Vector2(T);
         const vec = VecT{ .x = 1, .y = 3 };
         const cvec = vec.toCSFML();
-    
-        tst.expectEqual(vec.x, cvec.x);
-        tst.expectEqual(vec.y, cvec.y);
+
+        try tst.expectEqual(vec.x, cvec.x);
+        try tst.expectEqual(vec.y, cvec.y);
 
         const vec2 = VecT.fromCSFML(cvec);
 
-        tst.expectEqual(vec, vec2);
+        try tst.expectEqual(vec, vec2);
     }
 
     {
         const vec = Vector3f{ .x = 1, .y = 3.5, .z = -12 };
         const cvec = vec.toCSFML();
 
-        tst.expectEqual(vec.x, cvec.x);
-        tst.expectEqual(vec.y, cvec.y);
-        tst.expectEqual(vec.z, cvec.z);
+        try tst.expectEqual(vec.x, cvec.x);
+        try tst.expectEqual(vec.y, cvec.y);
+        try tst.expectEqual(vec.z, cvec.z);
 
         const vec2 = Vector3f.fromCSFML(cvec);
 
-        tst.expectEqual(vec, vec2);
+        try tst.expectEqual(vec, vec2);
     }
 }
-
-

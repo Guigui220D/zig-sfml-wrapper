@@ -72,8 +72,8 @@ test "sound buffer: sane getter and setters" {
     var buffer = try SoundBuffer.createFromSamples(samples, 1, 44100);
     defer buffer.destroy();
 
-    tst.expectApproxEqAbs(@as(f32, 3), buffer.getDuration().asSeconds(), 0.001);
-    tst.expectEqual(@as(usize, 44100 * 3), buffer.getSampleCount());
-    tst.expectEqual(@as(usize, 44100), buffer.getSampleRate());
-    tst.expectEqual(@as(usize, 1), buffer.getChannelCount());
+    try tst.expectApproxEqAbs(@as(f32, 3), buffer.getDuration().asSeconds(), 0.001);
+    try tst.expectEqual(@as(usize, 44100 * 3), buffer.getSampleCount());
+    try tst.expectEqual(@as(usize, 44100), buffer.getSampleRate());
+    try tst.expectEqual(@as(usize, 1), buffer.getChannelCount());
 }

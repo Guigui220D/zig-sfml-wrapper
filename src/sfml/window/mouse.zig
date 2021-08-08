@@ -3,13 +3,9 @@
 const sf = @import("../sfml.zig");
 
 /// Mouse buttons
-pub const Button = enum(c_int) {
-    Left, Right, Middle, XButton1, XButton2
-};
+pub const Button = enum(c_uint) { Left, Right, Middle, XButton1, XButton2 };
 /// Mouse wheels
-pub const Wheel = enum(c_int) {
-    Vertical, Horizontal
-};
+pub const Wheel = enum(c_uint) { Vertical, Horizontal };
 
 /// Returns true if the specified mouse button is pressed
 pub fn isButtonPressed(button: Button) bool {
@@ -19,21 +15,12 @@ pub fn isButtonPressed(button: Button) bool {
 /// Gets the position of the mouse cursor relative to the window passed or desktop
 pub fn getPosition(window: ?sf.graphics.RenderWindow) sf.system.Vector2i {
     if (window) |w| {
-        _ = sf.c.sfMouse_getPosition(@ptrCast(*sf.c.sfWindow, w.ptr));
-    } else
-        _ = sf.c.sfMouse_getPosition(null);
-    // Register Rax holds the return val of function calls that can fit in a register
-    const rax: usize = asm volatile (""
-        : [ret] "={rax}" (-> usize)
-    );
-    var x: i32 = @bitCast(i32, @truncate(u32, (rax & 0x00000000FFFFFFFF) >> 00));
-    var y: i32 = @bitCast(i32, @truncate(u32, (rax & 0xFFFFFFFF00000000) >> 32));
-    return sf.system.Vector2i{ .x = x, .y = y };
+        return sf.system.Vector2i.fromCSFML(sf.c.sfMouse_getPosition(@ptrCast(*sf.c.sfWindow, w.ptr)));
+    } else return sf.system.Vector2i.fromCSFML(sf.c.sfMouse_getPosition(null));
 }
 /// Set the position of the mouse cursor relative to the window passed or desktop
 pub fn setPosition(position: sf.system.Vector2i, window: ?sf.graphics.RenderWindow) void {
     if (window) |w| {
         sf.c.sfMouse_setPosition(position.toCSFML(), @ptrCast(*sf.c.sfWindow, w.ptr));
-    } else
-        sf.c.sfMouse_setPosition(position.toCSFML(), null);
+    } else sf.c.sfMouse_setPosition(position.toCSFML(), null);
 }

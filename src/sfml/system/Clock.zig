@@ -43,17 +43,17 @@ ptr: *sf.c.sfClock,
 
 test "clock: sleep test" {
     const tst = @import("std").testing;
-    
+
     // This tests just sleeps and check what the timer measured (not very accurate but eh)
     var clk = try Clock.create();
     defer clk.destroy();
 
     sf.Time.milliseconds(500).sleep();
 
-    tst.expectApproxEqAbs(@as(f32, 0.5), clk.getElapsedTime().asSeconds(), 0.1);
+    try tst.expectApproxEqAbs(@as(f32, 0.5), clk.getElapsedTime().asSeconds(), 0.1);
 
     sf.Time.sleep(sf.Time.seconds(0.2));
 
-    tst.expectApproxEqAbs(@as(f32, 0.7), clk.restart().asSeconds(), 0.1);
-    tst.expectApproxEqAbs(@as(f32, 0), clk.getElapsedTime().asSeconds(), 0.01);
+    try tst.expectApproxEqAbs(@as(f32, 0.7), clk.restart().asSeconds(), 0.1);
+    try tst.expectApproxEqAbs(@as(f32, 0), clk.getElapsedTime().asSeconds(), 0.01);
 }

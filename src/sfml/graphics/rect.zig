@@ -119,27 +119,27 @@ test "rect: intersect" {
     var r2 = Rect(c_int).init(6, 6, 20, 20);
     var r3 = Rect(c_int).init(-5, -5, 10, 10);
 
-    tst.expectEqual(@as(?Rect(c_int), null), r2.intersects(r3));
+    try tst.expectEqual(@as(?Rect(c_int), null), r2.intersects(r3));
 
     var inter1: sf.c.sfIntRect = undefined;
     var inter2: sf.c.sfIntRect = undefined;
 
-    tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r2.toCSFML(), &inter1), 1);
-    tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r3.toCSFML(), &inter2), 1);
+    try tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r2.toCSFML(), &inter1), 1);
+    try tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r3.toCSFML(), &inter2), 1);
 
-    tst.expectEqual(Rect(c_int).fromCSFML(inter1), r1.intersects(r2).?);
-    tst.expectEqual(Rect(c_int).fromCSFML(inter2), r1.intersects(r3).?);
+    try tst.expectEqual(Rect(c_int).fromCSFML(inter1), r1.intersects(r2).?);
+    try tst.expectEqual(Rect(c_int).fromCSFML(inter2), r1.intersects(r3).?);
 }
 
 test "rect: contains" {
     const tst = @import("std").testing;
-    
+
     var r1 = Rect(f32).init(0, 0, 10, 10);
 
-    tst.expect(r1.contains(.{ .x = 0, .y = 0 }));
-    tst.expect(r1.contains(.{ .x = 9, .y = 9 }));
-    tst.expect(!r1.contains(.{ .x = 5, .y = -1 }));
-    tst.expect(!r1.contains(.{ .x = 10, .y = 5 }));
+    try tst.expect(r1.contains(.{ .x = 0, .y = 0 }));
+    try tst.expect(r1.contains(.{ .x = 9, .y = 9 }));
+    try tst.expect(!r1.contains(.{ .x = 5, .y = -1 }));
+    try tst.expect(!r1.contains(.{ .x = 10, .y = 5 }));
 }
 
 test "rect: sane from/to CSFML rect" {
@@ -148,15 +148,14 @@ test "rect: sane from/to CSFML rect" {
     inline for ([_]type{ c_int, f32 }) |T| {
         const rect = Rect(T).init(1, 3, 5, 10);
         const crect = rect.toCSFML();
-    
-        tst.expectEqual(rect.left, crect.left);
-        tst.expectEqual(rect.top, crect.top);
-        tst.expectEqual(rect.width, crect.width);
-        tst.expectEqual(rect.height, crect.height);
+
+        try tst.expectEqual(rect.left, crect.left);
+        try tst.expectEqual(rect.top, crect.top);
+        try tst.expectEqual(rect.width, crect.width);
+        try tst.expectEqual(rect.height, crect.height);
 
         const rect2 = Rect(T).fromCSFML(crect);
 
-        tst.expectEqual(rect, rect2);
+        try tst.expectEqual(rect, rect2);
     }
 }
-

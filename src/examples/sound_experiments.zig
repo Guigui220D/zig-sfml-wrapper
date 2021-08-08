@@ -5,8 +5,8 @@ const std = @import("std");
 const allocator = std.heap.page_allocator;
 
 pub fn main() !void {
-    const sample_rate: usize = 44100;   //Samples per second, standard for CD
-    const channel_count: usize = 1;     //Mono
+    const sample_rate: usize = 44100; //Samples per second, standard for CD
+    const channel_count: usize = 1; //Mono
 
     //Allocation of samples
     var samples = try allocator.alloc(i16, sample_rate * 1);
@@ -24,7 +24,7 @@ pub fn main() !void {
     defer sound.destroy();
 
     //Playing the sound
-    sound.setVolume(10);    //So it doesn't break your ears
+    sound.setVolume(10); //So it doesn't break your ears
     sound.setPitch(2);
     sound.play();
 
@@ -35,6 +35,6 @@ pub fn main() !void {
 
 pub fn sineWave(buffer: []i16, sample_rate: u32, height: f32, freq: f32) void {
     for (buffer) |*sample, index| {
-        sample.* = @floatToInt(i16, (1.0 + @sin(@intToFloat(f32, index) / @intToFloat(f32, sample_rate) * 2*3.1415 * freq) / 2.0 * height));
+        sample.* = @floatToInt(i16, (1.0 + @sin(@intToFloat(f32, index) / @intToFloat(f32, sample_rate) * 2 * 3.1415 * freq) / 2.0 * height));
     }
 }
