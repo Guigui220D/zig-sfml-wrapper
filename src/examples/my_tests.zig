@@ -1,5 +1,4 @@
 ///! This is an example use of the sfml
-
 const std = @import("std");
 const sf = @import("sfml");
 
@@ -8,7 +7,7 @@ const allocator = std.heap.page_allocator;
 // I only use things I've wrapped here, but the other csfml functions seem to work, just need to wrap them
 pub fn main() anyerror!void {
     // Create a window
-    var window = try sf.graphics.RenderWindow.create(.{ .x = 800, .y = 600 }, 32, "This is zig!", 0);
+    var window = try sf.graphics.RenderWindow.create(.{ .x = 800, .y = 600 }, 32, "This is zig!", sf.window.Style.defaultStyle);
     defer window.destroy();
     //window.setVerticalSyncEnabled(false);
     window.setFramerateLimit(60);
@@ -40,8 +39,8 @@ pub fn main() anyerror!void {
     std.debug.print("{}\n", .{tex.getPixelCount()});
     var pixel_data = try allocator.alloc(sf.graphics.Color, 120);
     defer allocator.free(pixel_data);
-    for (pixel_data) |c, i| {
-        pixel_data[i] = sf.graphics.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
+    for (pixel_data) |*c, i| {
+        c.* = sf.graphics.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
     }
     try tex.updateFromPixels(pixel_data, null);
 
@@ -65,6 +64,19 @@ pub fn main() anyerror!void {
                 .mouseButtonPressed => |e| {
                     var coords = window.mapPixelToCoords(e.pos, null);
                     rect.setPosition(coords);
+
+                    var global_pos = sf.window.mouse.getPosition(null);
+                    std.debug.print("Mouse Global Position: {d}, {d}\n", .{ global_pos.x, global_pos.y });
+                    var local_pos = sf.window.mouse.getPosition(window);
+                    std.debug.print("Mouse Local Position: {d}, {d}\n", .{ local_pos.x, local_pos.y });
+                },
+                .resized => |resized| {
+                    std.debug.print("Window Size from event: {d}, {d}\n", .{ resized.size.x, resized.size.y });
+                    const size = window.getSize();
+                    std.debug.print("Window Size from window.getSize(): {d}, {d}\n", .{ size.x, size.y });
+                },
+                .mouseWheelScrolled => |e| {
+                    std.debug.print("Wheel: {}, Delta: {}\n", .{ e.wheel, e.delta });
                 },
                 else => {},
             }

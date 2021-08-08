@@ -133,21 +133,20 @@ test "color: conversions" {
     var code: u32 = 0x4BDA9CFF;
     var col = Color.fromInteger(code);
 
-    tst.expectEqual(Color.fromRGB(75, 218, 156), col);
-    tst.expectEqual(code, col.toInteger());
+    try tst.expectEqual(Color.fromRGB(75, 218, 156), col);
+    try tst.expectEqual(code, col.toInteger());
 
     var csfml_col = sf.c.sfColor_fromInteger(@as(c_uint, code));
 
-    // TODO : issue #2
-    //tst.expectEqual(Color.fromCSFML(csfml_col), col);
+    try tst.expectEqual(Color.fromCSFML(csfml_col), col);
 }
 
 test "color: hsv to rgb" {
     const tst = @import("std").testing;
-    
+
     var col = Color.fromHSVA(10, 20, 100, 255);
 
-    tst.expectEqual(Color.fromRGB(255, 212, 204), col);
+    try tst.expectEqual(Color.fromRGB(255, 212, 204), col);
 }
 
 test "color: sane from/to CSFML color" {
@@ -156,12 +155,12 @@ test "color: sane from/to CSFML color" {
     const col = Color.fromRGBA(5, 12, 28, 127);
     const ccol = col.toCSFML();
 
-    tst.expectEqual(col.r, ccol.r);
-    tst.expectEqual(col.g, ccol.g);
-    tst.expectEqual(col.b, ccol.b);
-    tst.expectEqual(col.a, ccol.a);
+    try tst.expectEqual(col.r, ccol.r);
+    try tst.expectEqual(col.g, ccol.g);
+    try tst.expectEqual(col.b, ccol.b);
+    try tst.expectEqual(col.a, ccol.a);
 
     const col2 = Color.fromCSFML(ccol);
 
-    tst.expectEqual(col, col2);
+    try tst.expectEqual(col, col2);
 }

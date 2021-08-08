@@ -36,18 +36,7 @@ pub fn sfDraw(self: CircleShape, window: sf.RenderWindow, states: ?*sf.c.sfRende
 
 /// Gets the fill color of this circle shape
 pub fn getFillColor(self: CircleShape) sf.Color {
-    _ = sf.c.sfCircleShape_getFillColor(self.ptr);
-
-    // Register Rax holds the return val of function calls that can fit in a register
-    const rax: usize = asm volatile (""
-        : [ret] "={rax}" (-> usize)
-    );
-
-    std.debug.print("{}\n", rax);
-    
-    var x: u32 = @truncate(u32, (rax & 0x00000000FFFFFFFF) >> 00);
-    var y: u32 = @truncate(u32, (rax & 0xFFFFFFFF00000000) >> 32);
-    return sf.Color.fromInteger(x);
+    return sf.Color.fromCSFML(sf.c.sfCircleShape_getFillColor(self.ptr));
 }
 /// Sets the fill color of this circle shape
 pub fn setFillColor(self: CircleShape, color: sf.Color) void {
@@ -103,8 +92,7 @@ pub fn getTexture(self: CircleShape) ?sf.Texture {
     const t = sf.c.sfCircleShape_getTexture(self.ptr);
     if (t) |tex| {
         return sf.Texture{ .const_ptr = tex };
-    } else
-        return null;
+    } else return null;
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: CircleShape, texture: ?sf.Texture) void {
@@ -135,7 +123,7 @@ ptr: *sf.c.sfCircleShape,
 
 test "circle shape: sane getters and setters" {
     const tst = @import("std").testing;
-    
+
     var circle = try CircleShape.create(30);
     defer circle.destroy();
 
@@ -147,16 +135,16 @@ test "circle shape: sane getters and setters" {
     circle.setTexture(null);
 
     // TODO : issue #2
-    //tst.expectEqual(sf.Color.Yellow, circle.getFillColor());
-    tst.expectEqual(@as(f32, 50), circle.getRadius());
-    tst.expectEqual(@as(f32, 15), circle.getRotation());
-    tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, circle.getPosition());
-    tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, circle.getOrigin());
-    tst.expectEqual(@as(?sf.Texture, null), circle.getTexture());
+    try tst.expectEqual(sf.Color.Yellow, circle.getFillColor());
+    try tst.expectEqual(@as(f32, 50), circle.getRadius());
+    try tst.expectEqual(@as(f32, 15), circle.getRotation());
+    try tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, circle.getPosition());
+    try tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, circle.getOrigin());
+    try tst.expectEqual(@as(?sf.Texture, null), circle.getTexture());
 
     circle.rotate(5);
     circle.move(.{ .x = -5, .y = 5 });
 
-    tst.expectEqual(@as(f32, 20), circle.getRotation());
-    tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, circle.getPosition());
+    try tst.expectEqual(@as(f32, 20), circle.getRotation());
+    try tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, circle.getPosition());
 }

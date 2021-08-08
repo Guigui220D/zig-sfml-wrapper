@@ -102,13 +102,13 @@ test "time: conversion" {
 
     var t = Time.microseconds(5_120_000);
 
-    tst.expectEqual(@as(i32, 5_120), t.asMilliseconds());
-    tst.expectApproxEqAbs(@as(f32, 5.12), t.asSeconds(), 0.0001);
+    try tst.expectEqual(@as(i32, 5_120), t.asMilliseconds());
+    try tst.expectApproxEqAbs(@as(f32, 5.12), t.asSeconds(), 0.0001);
 
     t = Time.seconds(12);
 
-    tst.expectApproxEqAbs(@as(f32, 12), t.asSeconds(), 0.0001);
+    try tst.expectApproxEqAbs(@as(f32, 12), t.asSeconds(), 0.0001);
 
     t = Time.microseconds(800);
-    tst.expectApproxEqAbs(@as(f32, 0.0008), t.asSeconds(), 0.0001);
+    try tst.expectApproxEqAbs(@as(f32, 0.0008), t.asSeconds(), 0.0001);
 }

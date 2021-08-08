@@ -57,8 +57,6 @@ pub fn saveToFile(self: Image, path: [:0]const u8) !void {
 
 /// Gets a pixel from this image (bounds are only checked in an assertion)
 pub fn getPixel(self: Image, pixel_pos: sf.Vector2u) sf.Color {
-    @compileError("This function causes a segfault, comment this out if you thing it will work (issue #2)");
-
     const size = self.getSize();
     assert(pixel_pos.x < size.x and pixel_pos.y < size.y);
 
@@ -95,17 +93,17 @@ test "image: sane getters and setters" {
     var pixel_data = try allocator.alloc(sf.Color, 30);
     defer allocator.free(pixel_data);
 
-    for (pixel_data) |c, i| {
-        pixel_data[i] = sf.Color.fromHSVA(@intToFloat(f32, i) / 30 * 360, 100, 100, 1);
+    for (pixel_data) |*c, i| {
+        c.* = sf.Color.fromHSVA(@intToFloat(f32, i) / 30 * 360, 100, 100, 1);
     }
 
-    var img = try Image.createFromPixels(.{.x = 5, .y = 6}, pixel_data);
+    var img = try Image.createFromPixels(.{ .x = 5, .y = 6 }, pixel_data);
     defer img.destroy();
 
-    tst.expectEqual(sf.Vector2u{.x = 5, .y = 6}, img.getSize());
+    try tst.expectEqual(sf.Vector2u{ .x = 5, .y = 6 }, img.getSize());
 
-    img.setPixel(.{.x = 1, .y = 2}, sf.Color.Cyan);
-    //tst.expectEqual(sf.Color.Cyan, img.getPixel(.{.x = 1, .y = 2}));
+    img.setPixel(.{ .x = 1, .y = 2 }, sf.Color.Cyan);
+    try tst.expectEqual(sf.Color.Cyan, img.getPixel(.{ .x = 1, .y = 2 }));
 
     var tex = try sf.Texture.createFromImage(img, null);
     defer tex.destroy();

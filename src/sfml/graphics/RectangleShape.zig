@@ -128,7 +128,7 @@ test "rectangle shape: sane getters and setters" {
     var rect = try RectangleShape.create(sf.Vector2f{ .x = 30, .y = 50 });
     defer rect.destroy();
 
-    tst.expectEqual(sf.Vector2f{ .x = 30, .y = 50 }, rect.getSize());
+    try tst.expectEqual(sf.Vector2f{ .x = 30, .y = 50 }, rect.getSize());
 
     rect.setFillColor(sf.Color.Yellow);
     rect.setSize(.{ .x = 15, .y = 510 });
@@ -137,17 +137,16 @@ test "rectangle shape: sane getters and setters" {
     rect.setOrigin(.{ .x = 20, .y = 25 });
     rect.setTexture(null);  //Weirdly, getTexture if texture wasn't set gives a wrong pointer
 
-    // TODO : issue #2
-    //tst.expectEqual(sf.c.sfYellow, rect.getFillColor());
-    tst.expectEqual(sf.Vector2f{ .x = 15, .y = 510 }, rect.getSize());
-    tst.expectEqual(@as(f32, 15), rect.getRotation());
-    tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, rect.getPosition());
-    tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, rect.getOrigin());
-    tst.expectEqual(@as(?sf.Texture, null), rect.getTexture());
+    try tst.expectEqual(sf.Color.Yellow, rect.getFillColor());
+    try tst.expectEqual(sf.Vector2f{ .x = 15, .y = 510 }, rect.getSize());
+    try tst.expectEqual(@as(f32, 15), rect.getRotation());
+    try tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, rect.getPosition());
+    try tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, rect.getOrigin());
+    try tst.expectEqual(@as(?sf.Texture, null), rect.getTexture());
 
     rect.rotate(5);
     rect.move(.{ .x = -5, .y = 5 });
 
-    tst.expectEqual(@as(f32, 20), rect.getRotation());
-    tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, rect.getPosition());
+    try tst.expectEqual(@as(f32, 20), rect.getRotation());
+    try tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, rect.getPosition());
 }

@@ -70,7 +70,6 @@ pub const Texture = union(TextureType) {
     }
     /// Makes this texture constant (I don't know why you would do that)
     pub fn makeConst(self: *Self) void {
-        var ptr = self.get();
         self.* = Self{ .const_ptr = self.get() };
     }
 
@@ -109,8 +108,7 @@ pub const Texture = union(TextureType) {
             if (intersection) |i| {
                 if (!i.equals(z))
                     return sf.Error.areaDoesNotFit;
-            } else
-                return sf.Error.areaDoesNotFit;
+            } else return sf.Error.areaDoesNotFit;
 
             real_zone = z;
         } else {
@@ -127,7 +125,7 @@ pub const Texture = union(TextureType) {
     }
     /// Updates the pixels of the image from an other texture
     pub fn updateFromTexture(self: Self, other: Texture, copy_pos: ?sf.Vector2u) void {
-        var pos = if (copy_pos) |a| a else sf.Vector2u{.x = 0, .y = 0};
+        var pos = if (copy_pos) |a| a else sf.Vector2u{ .x = 0, .y = 0 };
         var max = other.getSize().add(pos);
         var size = self.getSize();
 
@@ -137,7 +135,7 @@ pub const Texture = union(TextureType) {
     }
     /// Updates the pixels of the image from an image
     pub fn updateFromImage(self: Self, image: sf.Image, copy_pos: ?sf.Vector2u) void {
-        var pos = if (copy_pos) |a| a else sf.Vector2u{.x = 0, .y = 0};
+        var pos = if (copy_pos) |a| a else sf.Vector2u{ .x = 0, .y = 0 };
         var max = image.getSize().add(pos);
         var size = self.getSize();
 
@@ -200,7 +198,7 @@ pub const Texture = union(TextureType) {
 test "texture: sane getters and setters" {
     const tst = std.testing;
     const allocator = std.heap.page_allocator;
-    
+
     var tex = try Texture.create(.{ .x = 12, .y = 10 });
     defer tex.destroy();
 
@@ -210,35 +208,35 @@ test "texture: sane getters and setters" {
     tex.setSmooth(true);
     tex.setRepeated(true);
 
-    tst.expectEqual(@as(u32, 12), size.x);
-    tst.expectEqual(@as(u32, 10), size.y);
-    tst.expectEqual(@as(usize, 120), tex.getPixelCount());
+    try tst.expectEqual(@as(u32, 12), size.x);
+    try tst.expectEqual(@as(u32, 10), size.y);
+    try tst.expectEqual(@as(usize, 120), tex.getPixelCount());
 
     var pixel_data = try allocator.alloc(sf.Color, 120);
     defer allocator.free(pixel_data);
 
-    for (pixel_data) |c, i| {
-        pixel_data[i] = sf.graphics.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
+    for (pixel_data) |*c, i| {
+        c.* = sf.graphics.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
     }
 
     try tex.updateFromPixels(pixel_data, null);
 
-    tst.expect(!tex.isSrgb());
-    tst.expect(tex.isSmooth());
-    tst.expect(tex.isRepeated());
+    try tst.expect(!tex.isSrgb());
+    try tst.expect(tex.isSmooth());
+    try tst.expect(tex.isRepeated());
 
     var t = tex;
     t.makeConst();
 
     var copy = try t.copy();
 
-    tst.expectEqual(@as(usize, 120), copy.getPixelCount());
+    try tst.expectEqual(@as(usize, 120), copy.getPixelCount());
 
     var tex2 = try Texture.create(.{ .x = 100, .y = 100 });
     defer tex2.destroy();
 
     copy.swap(tex2);
 
-    tst.expectEqual(@as(usize, 100 * 100), copy.getPixelCount());
-    tst.expectEqual(@as(usize, 120), tex2.getPixelCount());
+    try tst.expectEqual(@as(usize, 100 * 100), copy.getPixelCount());
+    try tst.expectEqual(@as(usize, 120), tex2.getPixelCount());
 }

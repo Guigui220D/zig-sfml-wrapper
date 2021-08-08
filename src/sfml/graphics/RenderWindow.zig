@@ -161,8 +161,7 @@ pub fn mapPixelToCoords(self: RenderWindow, pixel: sf.Vector2i, view: ?sf.View) 
         var cview = v.toCSFML();
         defer sf.c.sfView_destroy(cview);
         return sf.Vector2f.fromCSFML(sf.c.sfRenderWindow_mapPixelToCoords(self.ptr, pixel.toCSFML(), cview));
-    } else
-        return sf.Vector2f.fromCSFML(sf.c.sfRenderWindow_mapPixelToCoords(self.ptr, pixel.toCSFML(), null));
+    } else return sf.Vector2f.fromCSFML(sf.c.sfRenderWindow_mapPixelToCoords(self.ptr, pixel.toCSFML(), null));
 }
 
 /// Convert a point from world coordinates to target coordinates, using the current view (or the specified view)
@@ -171,8 +170,7 @@ pub fn mapCoordsToPixel(self: RenderWindow, coords: sf.Vector2f, view: ?sf.View)
         var cview = v.toCSFML();
         defer sf.c.sfView_destroy(cview);
         return sf.Vector2i.fromCSFML(sf.c.sfRenderWindow_mapCoordsToPixel(self.ptr, coords.toCSFML(), cview));
-    } else
-        return sf.Vector2i.fromCSFML(sf.c.sfRenderWindow_mapCoordsToPixel(self.ptr, coords.toCSFML(), null));
+    } else return sf.Vector2i.fromCSFML(sf.c.sfRenderWindow_mapCoordsToPixel(self.ptr, coords.toCSFML(), null));
 }
 
 /// Pointer to the csfml structure

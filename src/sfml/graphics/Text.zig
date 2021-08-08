@@ -135,26 +135,26 @@ pub fn scale(self: Text, factor: sf.Vector2f) void {
 
 /// return the position of the index-th character
 pub fn findCharacterPos(self: Text, index: usize) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfText_findCharacterPos(self.ptr));
+    return sf.Vector2f.fromCSFML(sf.c.sfText_findCharacterPos(self.ptr, index));
 }
 
 /// Gets the letter spacing factor
 pub fn getLetterSpacing(self: Text) f32 {
     return sf.c.sfText_getLetterSpacing(self.ptr);
-} 
+}
 /// Sets the letter spacing factor
 pub fn setLetterSpacing(self: Text, spacing_factor: f32) void {
     sf.c.sfText_setLetterSpacing(self.ptr, spacing_factor);
-} 
+}
 
 /// Gets the line spacing factor
 pub fn getLineSpacing(self: Text) f32 {
     return sf.c.sfText_getLineSpacing(self.ptr);
-} 
+}
 /// Sets the line spacing factor
 pub fn setLineSpacing(self: Text, spacing_factor: f32) void {
     sf.c.sfText_setLineSpacing(self.ptr, spacing_factor);
-} 
+}
 
 /// Gets the local bounding rectangle of the text
 pub fn getLocalBounds(self: Text) sf.FloatRect {
@@ -173,7 +173,7 @@ ptr: *sf.c.sfText,
 
 test "text: sane getters and setters" {
     const tst = @import("std").testing;
-    
+
     var text = try Text.create();
     defer text.destroy();
 
@@ -190,15 +190,15 @@ test "text: sane getters and setters" {
     text.rotate(5);
     text.move(.{ .x = -5, .y = 5 });
     text.scale(.{ .x = 2, .y = 3 });
-    
-    //getfillcolor
-    //getoutlinecolor
-    tst.expectEqual(@as(f32, 2), text.getOutlineThickness());
-    tst.expectEqual(@as(usize, 10), text.getCharacterSize());
-    tst.expectEqual(@as(f32, 20), text.getRotation());
-    tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, text.getPosition());
-    tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, text.getOrigin());
-    tst.expectEqual(sf.Vector2f{ .x = 4, .y = 6 }, text.getScale());
+
+    try tst.expectEqual(sf.Color.Yellow, text.getFillColor());
+    try tst.expectEqual(sf.Color.Red, text.getOutlineColor());
+    try tst.expectEqual(@as(f32, 2), text.getOutlineThickness());
+    try tst.expectEqual(@as(usize, 10), text.getCharacterSize());
+    try tst.expectEqual(@as(f32, 20), text.getRotation());
+    try tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, text.getPosition());
+    try tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, text.getOrigin());
+    try tst.expectEqual(sf.Vector2f{ .x = 4, .y = 6 }, text.getScale());
 
     _ = text.getLocalBounds();
     _ = text.getGlobalBounds();
