@@ -77,6 +77,11 @@ pub fn pollEvent(self: RenderWindow) ?sf.window.Event {
     var event: sf.c.sfEvent = undefined;
     if (sf.c.sfRenderWindow_pollEvent(self.ptr, &event) == 0)
         return null;
+
+    // Skip sfEvtMouseWheelMoved to avoid sending mouseWheelScrolled twice
+    if (event.type == sf.c.sfEvtMouseWheelMoved) {
+        return self.pollEvent();
+    }
     return sf.window.Event.fromCSFML(event);
 }
 
