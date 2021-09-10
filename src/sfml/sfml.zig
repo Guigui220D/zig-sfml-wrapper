@@ -17,8 +17,8 @@ pub const system = struct {
 pub const window = struct {
     pub const Event = @import("window/event.zig").Event;
     pub const Style = @import("window/Style.zig");
-    pub const keyboard = @import("window/Keyboard.zig");
-    pub const mouse = @import("window/Mouse.zig");
+    pub const keyboard = @import("window/keyboard.zig");
+    pub const mouse = @import("window/mouse.zig");
 };
 
 pub const graphics = struct {

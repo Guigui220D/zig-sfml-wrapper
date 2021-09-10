@@ -2,8 +2,8 @@
 
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace system;
-    pub usingnamespace graphics;
+    pub usingnamespace sf.system;
+    pub usingnamespace sf.graphics;
 };
 
 const RectangleShape = @This();
@@ -124,7 +124,7 @@ ptr: *sf.c.sfRectangleShape,
 
 test "rectangle shape: sane getters and setters" {
     const tst = @import("std").testing;
-    
+
     var rect = try RectangleShape.create(sf.Vector2f{ .x = 30, .y = 50 });
     defer rect.destroy();
 

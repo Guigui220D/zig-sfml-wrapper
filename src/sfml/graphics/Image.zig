@@ -2,8 +2,8 @@
 
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace system;
-    pub usingnamespace graphics;
+    pub usingnamespace sf.system;
+    pub usingnamespace sf.graphics;
 };
 
 const std = @import("std");
@@ -72,15 +72,8 @@ pub fn setPixel(self: Image, pixel_pos: sf.Vector2u, color: sf.Color) void {
 
 /// Gets the size of this image
 pub fn getSize(self: Image) sf.Vector2u {
-    // This is a hack
-    _ = sf.c.sfImage_getSize(self.ptr);
-    // Register Rax holds the return val of function calls that can fit in a register
-    const rax: usize = asm volatile (""
-        : [ret] "={rax}" (-> usize)
-    );
-    var x: u32 = @truncate(u32, (rax & 0x00000000FFFFFFFF) >> 00);
-    var y: u32 = @truncate(u32, (rax & 0xFFFFFFFF00000000) >> 32);
-    return sf.Vector2u{ .x = x, .y = y };
+    const size = sf.c.sfImage_getSize(self.ptr);
+    return sf.Vector2u{ .x = size.x, .y = size.y };
 }
 
 /// Pointer to the csfml texture

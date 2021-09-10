@@ -2,9 +2,9 @@
 //! for instance, in this page: https://www.sfml-dev.org/tutorials/2.5/start-vc.php
 
 const sf = struct {
-    pub usingnamespace @import("sfml");
-    pub usingnamespace graphics;
-    pub usingnamespace window;
+    usingnamespace @import("sfml");
+    usingnamespace sf.graphics;
+    usingnamespace sf.window;
 };
 
 pub fn main() !void {
