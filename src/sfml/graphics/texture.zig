@@ -2,8 +2,8 @@
 
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace system;
-    pub usingnamespace graphics;
+    pub usingnamespace sf.system;
+    pub usingnamespace sf.graphics;
 };
 
 const std = @import("std");

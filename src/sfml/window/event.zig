@@ -2,7 +2,7 @@
 
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace system;
+    pub usingnamespace sf.system;
 };
 
 pub const Event = union(Event.Type) {

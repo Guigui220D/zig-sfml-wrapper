@@ -1,8 +1,8 @@
-//! Regular sound that can be played in the audio environment. 
+//! Regular sound that can be played in the audio environment.
 
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace audio;
+    pub usingnamespace sf.audio;
 };
 
 const Sound = @This();
