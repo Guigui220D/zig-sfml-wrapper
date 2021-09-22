@@ -2,10 +2,6 @@
 
 ## This is a work in progress! Things work but I want to make pretty classes for everything
 
-### Disclaimer
-
-CSFML (and this wrapper in consequence) suffers from issue [#1481](https://github.com/ziglang/zig/issues/1481) of Ziglang, breaking some getter functions.
-
 ### What this is
 
 This is a wrapper for CSFML. Theres no problem importing CSFML in Zig, but the resulting code can be a little bit messy.

@@ -3,10 +3,10 @@
 
 const sf = struct {
     pub usingnamespace @import("sfml");
-    pub usingnamespace system;
-    pub usingnamespace graphics;
-    pub usingnamespace audio;
-    pub usingnamespace window;
+    pub usingnamespace sf.system;
+    pub usingnamespace sf.graphics;
+    pub usingnamespace sf.audio;
+    pub usingnamespace sf.window;
 };
 
 pub fn main() !void {
