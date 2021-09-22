@@ -17,29 +17,29 @@ pub fn create() !Clock {
     if (clock == null)
         return sf.Error.nullptrUnknownReason;
 
-    return Clock{ .ptr = clock.? };
+    return Clock{ ._ptr = clock.? };
 }
 
 /// Destroys this clock
 pub fn destroy(self: Clock) void {
-    sf.c.sfClock_destroy(self.ptr);
+    sf.c.sfClock_destroy(self._ptr);
 }
 
 // Clock control
 /// Gets the elapsed seconds
 pub fn getElapsedTime(self: Clock) sf.Time {
-    var time = sf.c.sfClock_getElapsedTime(self.ptr).microseconds;
+    var time = sf.c.sfClock_getElapsedTime(self._ptr).microseconds;
     return sf.Time{ .us = time };
 }
 
 /// Gets the elapsed seconds and restarts the timer
 pub fn restart(self: Clock) sf.Time {
-    var time = sf.c.sfClock_restart(self.ptr).microseconds;
+    var time = sf.c.sfClock_restart(self._ptr).microseconds;
     return sf.Time{ .us = time };
 }
 
 /// Pointer to the csfml structure
-ptr: *sf.c.sfClock,
+_ptr: *sf.c.sfClock,
 
 test "clock: sleep test" {
     const tst = @import("std").testing;

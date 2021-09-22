@@ -17,128 +17,128 @@ pub fn create(size: sf.Vector2f) !RectangleShape {
         return sf.Error.nullptrUnknownReason;
 
     sf.c.sfRectangleShape_setFillColor(rect, sf.c.sfWhite);
-    sf.c.sfRectangleShape_setSize(rect, size.toCSFML());
+    sf.c.sfRectangleShape_setSize(rect, size._toCSFML());
 
-    return RectangleShape{ .ptr = rect.? };
+    return RectangleShape{ ._ptr = rect.? };
 }
 
 /// Destroys a rectangle shape
 pub fn destroy(self: RectangleShape) void {
-    sf.c.sfRectangleShape_destroy(self.ptr);
+    sf.c.sfRectangleShape_destroy(self._ptr);
 }
 
 // Draw function
 pub fn sfDraw(self: RectangleShape, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
-    sf.c.sfRenderWindow_drawRectangleShape(window.ptr, self.ptr, states);
+    sf.c.sfRenderWindow_drawRectangleShape(window._ptr, self._ptr, states);
 }
 
 // Getters/setters
 
 /// Gets the fill color of this rectangle shape
 pub fn getFillColor(self: RectangleShape) sf.Color {
-    return sf.Color.fromCSFML(sf.c.sfRectangleShape_getFillColor(self.ptr));
+    return sf.Color._fromCSFML(sf.c.sfRectangleShape_getFillColor(self._ptr));
 }
 /// Sets the fill color of this rectangle shape
 pub fn setFillColor(self: RectangleShape, color: sf.Color) void {
-    sf.c.sfRectangleShape_setFillColor(self.ptr, color.toCSFML());
+    sf.c.sfRectangleShape_setFillColor(self._ptr, color._toCSFML());
 }
 
 /// Gets the outline color of this rectangle shape
 pub fn getOutlineColor(self: RectangleShape) sf.Color {
-    return sf.Color.fromCSFML(sf.c.sfRectangleShape_getOutlineColor(self.ptr));
+    return sf.Color._fromCSFML(sf.c.sfRectangleShape_getOutlineColor(self._ptr));
 }
 /// Sets the outline color of this rectangle shape
 pub fn setOutlineColor(self: RectangleShape, color: sf.Color) void {
-    sf.c.sfRectangleShape_setOutlineColor(self.ptr, color.toCSFML());
+    sf.c.sfRectangleShape_setOutlineColor(self._ptr, color._toCSFML());
 }
 
 /// Gets the outline thickness of this rectangle shape
 pub fn getOutlineThickness(self: RectangleShape) f32 {
-    return sf.c.sfRectangleShape_getOutlineThickness(self.ptr);
+    return sf.c.sfRectangleShape_getOutlineThickness(self._ptr);
 }
 /// Sets the outline thickness of this rectangle shape
 pub fn setOutlineThickness(self: RectangleShape, thickness: f32) void {
-    sf.c.sfRectangleShape_setOutlineThickness(self.ptr, thickness);
+    sf.c.sfRectangleShape_setOutlineThickness(self._ptr, thickness);
 }
 
 /// Gets the size of this rectangle shape
 pub fn getSize(self: RectangleShape) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfRectangleShape_getSize(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfRectangleShape_getSize(self._ptr));
 }
 /// Sets the size of this rectangle shape
 pub fn setSize(self: RectangleShape, size: sf.Vector2f) void {
-    sf.c.sfRectangleShape_setSize(self.ptr, size.toCSFML());
+    sf.c.sfRectangleShape_setSize(self._ptr, size._toCSFML());
 }
 
 /// Gets the position of this rectangle shape
 pub fn getPosition(self: RectangleShape) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfRectangleShape_getPosition(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfRectangleShape_getPosition(self._ptr));
 }
 /// Sets the position of this rectangle shape
 pub fn setPosition(self: RectangleShape, pos: sf.Vector2f) void {
-    sf.c.sfRectangleShape_setPosition(self.ptr, pos.toCSFML());
+    sf.c.sfRectangleShape_setPosition(self._ptr, pos._toCSFML());
 }
 /// Adds the offset to this shape's position
 pub fn move(self: RectangleShape, offset: sf.Vector2f) void {
-    sf.c.sfRectangleShape_move(self.ptr, offset.toCSFML());
+    sf.c.sfRectangleShape_move(self._ptr, offset._toCSFML());
 }
 
 /// Gets the origin of this rectangle shape
 pub fn getOrigin(self: RectangleShape) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfRectangleShape_getOrigin(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfRectangleShape_getOrigin(self._ptr));
 }
 /// Sets the origin of this rectangle shape
 pub fn setOrigin(self: RectangleShape, origin: sf.Vector2f) void {
-    sf.c.sfRectangleShape_setOrigin(self.ptr, origin.toCSFML());
+    sf.c.sfRectangleShape_setOrigin(self._ptr, origin._toCSFML());
 }
 
 /// Gets the rotation of this rectangle shape
 pub fn getRotation(self: RectangleShape) f32 {
-    return sf.c.sfRectangleShape_getRotation(self.ptr);
+    return sf.c.sfRectangleShape_getRotation(self._ptr);
 }
 /// Sets the rotation of this rectangle shape
 pub fn setRotation(self: RectangleShape, angle: f32) void {
-    sf.c.sfRectangleShape_setRotation(self.ptr, angle);
+    sf.c.sfRectangleShape_setRotation(self._ptr, angle);
 }
 /// Rotates this shape by a given amount
 pub fn rotate(self: RectangleShape, angle: f32) void {
-    sf.c.sfRectangleShape_rotate(self.ptr, angle);
+    sf.c.sfRectangleShape_rotate(self._ptr, angle);
 }
 
 /// Gets the texture of this shape
 pub fn getTexture(self: RectangleShape) ?sf.Texture {
-    const t = sf.c.sfRectangleShape_getTexture(self.ptr);
+    const t = sf.c.sfRectangleShape_getTexture(self._ptr);
     if (t) |tex| {
-        return sf.Texture{ .const_ptr = tex };
+        return sf.Texture{ ._const_ptr = tex };
     } else
         return null;
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: RectangleShape, texture: ?sf.Texture) void {
     var tex = if (texture) |t| t.get() else null;
-    sf.c.sfRectangleShape_setTexture(self.ptr, tex, 0);
+    sf.c.sfRectangleShape_setTexture(self._ptr, tex, 0);
 }
 /// Gets the sub-rectangle of the texture that the shape will display
 pub fn getTextureRect(self: RectangleShape) sf.FloatRect {
-    return sf.FloatRect.fromCSFML(sf.c.sfRectangleShape_getTextureRect(self.ptr));
+    return sf.FloatRect._fromCSFML(sf.c.sfRectangleShape_getTextureRect(self._ptr));
 }
 /// Sets the sub-rectangle of the texture that the shape will display
 pub fn setTextureRect(self: RectangleShape, rect: sf.FloatRect) void {
-    sf.c.sfRectangleShape_getTextureRect(self.ptr, rect.toCSFML());
+    sf.c.sfRectangleShape_getTextureRect(self._ptr, rect._toCSFML());
 }
 
 /// Gets the bounds in the local coordinates system
 pub fn getLocalBounds(self: RectangleShape) sf.FloatRect {
-    return sf.FloatRect.fromCSFML(sf.c.sfRectangleShape_getLocalBounds(self.ptr));
+    return sf.FloatRect._fromCSFML(sf.c.sfRectangleShape_getLocalBounds(self._ptr));
 }
 
 /// Gets the bounds in the global coordinates
 pub fn getGlobalBounds(self: RectangleShape) sf.FloatRect {
-    return sf.FloatRect.fromCSFML(sf.c.sfRectangleShape_getGlobalBounds(self.ptr));
+    return sf.FloatRect._fromCSFML(sf.c.sfRectangleShape_getGlobalBounds(self._ptr));
 }
 
 /// Pointer to the csfml structure
-ptr: *sf.c.sfRectangleShape,
+_ptr: *sf.c.sfRectangleShape,
 
 test "rectangle shape: sane getters and setters" {
     const tst = @import("std").testing;

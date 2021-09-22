@@ -35,7 +35,7 @@ pub const Event = union(Event.Type) {
 
     // Big oof
     /// Creates this event from a csfml one
-    pub fn fromCSFML(event: sf.c.sfEvent) Self {
+    pub fn _fromCSFML(event: sf.c.sfEvent) Self {
         return switch (event.type) {
             sf.c.sfEvtClosed => .{ .closed = {} },
             sf.c.sfEvtResized => .{ .resized = .{ .size = .{ .x = event.size.width, .y = event.size.height } } },

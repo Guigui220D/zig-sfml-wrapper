@@ -16,14 +16,14 @@ pub fn Vector2(comptime T: type) type {
 
         /// Makes a CSFML vector with this vector (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
-        pub fn toCSFML(self: Self) CsfmlEquivalent {
+        pub fn _toCSFML(self: Self) CsfmlEquivalent {
             if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
             return @bitCast(CsfmlEquivalent, self);
         }
 
         /// Creates a vector from a CSFML one (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
-        pub fn fromCSFML(vec: CsfmlEquivalent) Self {
+        pub fn _fromCSFML(vec: CsfmlEquivalent) Self {
             if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
             return @bitCast(Self, vec);
         }
@@ -55,13 +55,13 @@ pub const Vector3f = struct {
 
     /// Makes a CSFML vector with this vector (only if the corresponding type exists)
     /// This is mainly for the inner workings of this wrapper
-    pub fn toCSFML(self: Self) sf.c.sfVector3f {
+    pub fn _toCSFML(self: Self) sf.c.sfVector3f {
         return @bitCast(sf.c.sfVector3f, self);
     }
 
     /// Creates a vector from a CSFML one (only if the corresponding type exists)
     /// This is mainly for the inner workings of this wrapper
-    pub fn fromCSFML(vec: sf.c.sfVector3f) Self {
+    pub fn _fromCSFML(vec: sf.c.sfVector3f) Self {
         return @bitCast(Self, vec);
     }
 
@@ -79,25 +79,25 @@ test "vector: sane from/to CSFML vectors" {
     inline for ([_]type{ c_int, c_uint, f32 }) |T| {
         const VecT = Vector2(T);
         const vec = VecT{ .x = 1, .y = 3 };
-        const cvec = vec.toCSFML();
+        const cvec = vec._toCSFML();
 
         try tst.expectEqual(vec.x, cvec.x);
         try tst.expectEqual(vec.y, cvec.y);
 
-        const vec2 = VecT.fromCSFML(cvec);
+        const vec2 = VecT._fromCSFML(cvec);
 
         try tst.expectEqual(vec, vec2);
     }
 
     {
         const vec = Vector3f{ .x = 1, .y = 3.5, .z = -12 };
-        const cvec = vec.toCSFML();
+        const cvec = vec._toCSFML();
 
         try tst.expectEqual(vec.x, cvec.x);
         try tst.expectEqual(vec.y, cvec.y);
         try tst.expectEqual(vec.z, cvec.z);
 
-        const vec2 = Vector3f.fromCSFML(cvec);
+        const vec2 = Vector3f._fromCSFML(cvec);
 
         try tst.expectEqual(vec, vec2);
     }

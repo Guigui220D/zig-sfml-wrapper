@@ -16,7 +16,7 @@ pub fn create() !Sprite {
     if (sprite == null)
         return sf.Error.nullptrUnknownReason;
 
-    return Sprite{ .ptr = sprite.? };
+    return Sprite{ ._ptr = sprite.? };
 }
 
 /// Inits a sprite with a texture
@@ -27,101 +27,101 @@ pub fn createFromTexture(texture: sf.Texture) !Sprite {
 
     sf.c.sfSprite_setTexture(sprite, texture.get(), 1);
 
-    return Sprite{ .ptr = sprite.? };
+    return Sprite{ ._ptr = sprite.? };
 }
 
 /// Destroys this sprite
 pub fn destroy(self: Sprite) void {
-    sf.c.sfSprite_destroy(self.ptr);
+    sf.c.sfSprite_destroy(self._ptr);
 }
 
 // Draw function
 pub fn sfDraw(self: Sprite, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
-    sf.c.sfRenderWindow_drawSprite(window.ptr, self.ptr, states);
+    sf.c.sfRenderWindow_drawSprite(window._ptr, self._ptr, states);
 }
 
 // Getters/setters
 
 /// Gets the position of this sprite
 pub fn getPosition(self: Sprite) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfSprite_getPosition(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfSprite_getPosition(self._ptr));
 }
 /// Sets the position of this sprite
 pub fn setPosition(self: Sprite, pos: sf.Vector2f) void {
-    sf.c.sfSprite_setPosition(self.ptr, pos.toCSFML());
+    sf.c.sfSprite_setPosition(self._ptr, pos._toCSFML());
 }
 /// Adds the offset to this shape's position
 pub fn move(self: Sprite, offset: sf.Vector2f) void {
-    sf.c.sfSprite_move(self.ptr, offset.toCSFML());
+    sf.c.sfSprite_move(self._ptr, offset._toCSFML());
 }
 
 /// Gets the scale of this sprite
 pub fn getScale(self: Sprite) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfSprite_getScale(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfSprite_getScale(self._ptr));
 }
 /// Sets the scale of this sprite
 pub fn setScale(self: Sprite, factor: sf.Vector2f) void {
-    sf.c.sfSprite_setScale(self.ptr, factor.toCSFML());
+    sf.c.sfSprite_setScale(self._ptr, factor._toCSFML());
 }
 /// Scales this sprite
 pub fn scale(self: Sprite, factor: sf.Vector2f) void {
-    sf.c.sfSprite_scale(self.ptr, factor.toCSFML());
+    sf.c.sfSprite_scale(self._ptr, factor._toCSFML());
 }
 
 /// Gets the origin of this sprite
 pub fn getOrigin(self: Sprite) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfSprite_getOrigin(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfSprite_getOrigin(self._ptr));
 }
 /// Sets the origin of this sprite
 pub fn setOrigin(self: Sprite, origin: sf.Vector2f) void {
-    sf.c.sfSprite_setOrigin(self.ptr, origin.toCSFML());
+    sf.c.sfSprite_setOrigin(self._ptr, origin._toCSFML());
 }
 
 /// Gets the rotation of this sprite
 pub fn getRotation(self: Sprite) f32 {
-    return sf.c.sfSprite_getRotation(self.ptr);
+    return sf.c.sfSprite_getRotation(self._ptr);
 }
 /// Sets the rotation of this sprite
 pub fn setRotation(self: Sprite, angle: f32) void {
-    sf.c.sfSprite_setRotation(self.ptr, angle);
+    sf.c.sfSprite_setRotation(self._ptr, angle);
 }
 /// Rotates this shape by a given amount
 pub fn rotate(self: Sprite, angle: f32) void {
-    sf.c.sfSprite_rotate(self.ptr, angle);
+    sf.c.sfSprite_rotate(self._ptr, angle);
 }
 
 /// Gets the color of this sprite
 pub fn getColor(self: Sprite) sf.Color {
-    return sf.Color.fromCSFML(sf.c.sfSprite_getColor(self.ptr));
+    return sf.Color._fromCSFML(sf.c.sfSprite_getColor(self._ptr));
 }
 /// Sets the color of this sprite
 pub fn setColor(self: Sprite, color: sf.Color) void {
-    sf.c.sfSprite_setColor(self.ptr, color.toCSFML());
+    sf.c.sfSprite_setColor(self._ptr, color._toCSFML());
 }
 
 /// Gets the texture of this shape
 pub fn getTexture(self: Sprite) ?sf.Texture {
-    const t = sf.c.sfSprite_getTexture(self.ptr);
+    const t = sf.c.sfSprite_getTexture(self._ptr);
     if (t) |tex| {
-        return sf.Texture{ .const_ptr = tex };
+        return sf.Texture{ ._const_ptr = tex };
     } else return null;
 }
 /// Sets this sprite's texture (the sprite will take the texture's dimensions)
 pub fn setTexture(self: Sprite, texture: ?sf.Texture) void {
     var tex = if (texture) |t| t.get() else null;
-    sf.c.sfSprite_setTexture(self.ptr, tex, 1);
+    sf.c.sfSprite_setTexture(self._ptr, tex, 1);
 }
 /// Gets the sub-rectangle of the texture that the sprite will display
 pub fn getTextureRect(self: Sprite) sf.IntRect {
-    return sf.IntRect.fromCSFML(sf.c.sfSprite_getTextureRect(self.ptr));
+    return sf.IntRect._fromCSFML(sf.c.sfSprite_getTextureRect(self._ptr));
 }
 /// Sets the sub-rectangle of the texture that the sprite will display
 pub fn setTextureRect(self: Sprite, rect: sf.IntRect) void {
-    sf.c.sfSprite_setTextureRect(self.ptr, rect.toCSFML());
+    sf.c.sfSprite_setTextureRect(self._ptr, rect._toCSFML());
 }
 
 /// Pointer to the csfml structure
-ptr: *sf.c.sfSprite,
+_ptr: *sf.c.sfSprite,
 
 test "sprite: sane getters and setters" {
     const tst = @import("std").testing;

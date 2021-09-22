@@ -15,161 +15,161 @@ pub fn create() !Text {
     var text = sf.c.sfText_create();
     if (text == null)
         return sf.Error.nullptrUnknownReason;
-    return Text{ .ptr = text.? };
+    return Text{ ._ptr = text.? };
 }
 /// Inits a text with content
 pub fn createWithText(string: [:0]const u8, font: sf.Font, character_size: usize) !Text {
     var text = sf.c.sfText_create();
     if (text == null)
         return sf.Error.nullptrUnknownReason;
-    sf.c.sfText_setFont(text, font.ptr);
+    sf.c.sfText_setFont(text, font._ptr);
     sf.c.sfText_setCharacterSize(text, @intCast(c_uint, character_size));
     sf.c.sfText_setString(text, string);
-    return Text{ .ptr = text.? };
+    return Text{ ._ptr = text.? };
 }
 /// Destroys a text
 pub fn destroy(self: Text) void {
-    sf.c.sfText_destroy(self.ptr);
+    sf.c.sfText_destroy(self._ptr);
 }
 
 // Draw function
 pub fn sfDraw(self: Text, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
-    sf.c.sfRenderWindow_drawText(window.ptr, self.ptr, states);
+    sf.c.sfRenderWindow_drawText(window._ptr, self._ptr, states);
 }
 
 // Getters/setters
 
 /// Sets the content of this text
 pub fn setString(self: Text, string: [:0]const u8) void {
-    sf.c.sfText_setString(self.ptr, string);
+    sf.c.sfText_setString(self._ptr, string);
 }
 
 /// Sets the font of this text
 pub fn setFont(self: Text, font: sf.Font) void {
-    sf.c.sfText_setFont(self.ptr, font.ptr);
+    sf.c.sfText_setFont(self._ptr, font._ptr);
 }
 
 /// Gets the character size of this text
 pub fn getCharacterSize(self: Text) usize {
-    return @intCast(usize, sf.c.sfText_getCharacterSize(self.ptr));
+    return @intCast(usize, sf.c.sfText_getCharacterSize(self._ptr));
 }
 /// Sets the character size of this text
 pub fn setCharacterSize(self: Text, character_size: usize) void {
-    sf.c.sfText_setCharacterSize(self.ptr, @intCast(c_uint, character_size));
+    sf.c.sfText_setCharacterSize(self._ptr, @intCast(c_uint, character_size));
 }
 
 /// Gets the fill color of this text
 pub fn getFillColor(self: Text) sf.Color {
-    return sf.Color.fromCSFML(sf.c.sfText_getFillColor(self.ptr));
+    return sf.Color._fromCSFML(sf.c.sfText_getFillColor(self._ptr));
 }
 /// Sets the fill color of this text
 pub fn setFillColor(self: Text, color: sf.Color) void {
-    sf.c.sfText_setFillColor(self.ptr, color.toCSFML());
+    sf.c.sfText_setFillColor(self._ptr, color._toCSFML());
 }
 
 /// Gets the outline color of this text
 pub fn getOutlineColor(self: Text) sf.Color {
-    return sf.Color.fromCSFML(sf.c.sfText_getOutlineColor(self.ptr));
+    return sf.Color._fromCSFML(sf.c.sfText_getOutlineColor(self._ptr));
 }
 /// Sets the outline color of this text
 pub fn setOutlineColor(self: Text, color: sf.Color) void {
-    sf.c.sfText_setOutlineColor(self.ptr, color.toCSFML());
+    sf.c.sfText_setOutlineColor(self._ptr, color._toCSFML());
 }
 
 /// Gets the outline thickness of this text
 pub fn getOutlineThickness(self: Text) f32 {
-    return sf.c.sfText_getOutlineThickness(self.ptr);
+    return sf.c.sfText_getOutlineThickness(self._ptr);
 }
 /// Sets the outline thickness of this text
 pub fn setOutlineThickness(self: Text, thickness: f32) void {
-    sf.c.sfText_setOutlineThickness(self.ptr, thickness);
+    sf.c.sfText_setOutlineThickness(self._ptr, thickness);
 }
 
 /// Gets the position of this text
 pub fn getPosition(self: Text) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfText_getPosition(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfText_getPosition(self._ptr));
 }
 /// Sets the position of this text
 pub fn setPosition(self: Text, pos: sf.Vector2f) void {
-    sf.c.sfText_setPosition(self.ptr, pos.toCSFML());
+    sf.c.sfText_setPosition(self._ptr, pos._toCSFML());
 }
 /// Adds the offset to this text
 pub fn move(self: Text, offset: sf.Vector2f) void {
-    sf.c.sfText_move(self.ptr, offset.toCSFML());
+    sf.c.sfText_move(self._ptr, offset._toCSFML());
 }
 
 /// Gets the origin of this text
 pub fn getOrigin(self: Text) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfText_getOrigin(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfText_getOrigin(self._ptr));
 }
 /// Sets the origin of this text
 pub fn setOrigin(self: Text, origin: sf.Vector2f) void {
-    sf.c.sfText_setOrigin(self.ptr, origin.toCSFML());
+    sf.c.sfText_setOrigin(self._ptr, origin._toCSFML());
 }
 
 /// Gets the rotation of this text
 pub fn getRotation(self: Text) f32 {
-    return sf.c.sfText_getRotation(self.ptr);
+    return sf.c.sfText_getRotation(self._ptr);
 }
 /// Sets the rotation of this text
 pub fn setRotation(self: Text, angle: f32) void {
-    sf.c.sfText_setRotation(self.ptr, angle);
+    sf.c.sfText_setRotation(self._ptr, angle);
 }
 /// Rotates this text by a given amount
 pub fn rotate(self: Text, angle: f32) void {
-    sf.c.sfText_rotate(self.ptr, angle);
+    sf.c.sfText_rotate(self._ptr, angle);
 }
 
 /// Gets the scale of this text
 pub fn getScale(self: Text) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfText_getScale(self.ptr));
+    return sf.Vector2f._fromCSFML(sf.c.sfText_getScale(self._ptr));
 }
 /// Sets the scale of this text
 pub fn setScale(self: Text, factor: sf.Vector2f) void {
-    sf.c.sfText_setScale(self.ptr, factor.toCSFML());
+    sf.c.sfText_setScale(self._ptr, factor._toCSFML());
 }
 /// Scales this text
 pub fn scale(self: Text, factor: sf.Vector2f) void {
-    sf.c.sfText_scale(self.ptr, factor.toCSFML());
+    sf.c.sfText_scale(self._ptr, factor._toCSFML());
 }
 
 /// return the position of the index-th character
 pub fn findCharacterPos(self: Text, index: usize) sf.Vector2f {
-    return sf.Vector2f.fromCSFML(sf.c.sfText_findCharacterPos(self.ptr, index));
+    return sf.Vector2f._fromCSFML(sf.c.sfText_findCharacterPos(self._ptr, index));
 }
 
 /// Gets the letter spacing factor
 pub fn getLetterSpacing(self: Text) f32 {
-    return sf.c.sfText_getLetterSpacing(self.ptr);
+    return sf.c.sfText_getLetterSpacing(self._ptr);
 }
 /// Sets the letter spacing factor
 pub fn setLetterSpacing(self: Text, spacing_factor: f32) void {
-    sf.c.sfText_setLetterSpacing(self.ptr, spacing_factor);
+    sf.c.sfText_setLetterSpacing(self._ptr, spacing_factor);
 }
 
 /// Gets the line spacing factor
 pub fn getLineSpacing(self: Text) f32 {
-    return sf.c.sfText_getLineSpacing(self.ptr);
+    return sf.c.sfText_getLineSpacing(self._ptr);
 }
 /// Sets the line spacing factor
 pub fn setLineSpacing(self: Text, spacing_factor: f32) void {
-    sf.c.sfText_setLineSpacing(self.ptr, spacing_factor);
+    sf.c.sfText_setLineSpacing(self._ptr, spacing_factor);
 }
 
 /// Gets the local bounding rectangle of the text
 pub fn getLocalBounds(self: Text) sf.FloatRect {
-    return sf.FloatRect.fromCSFML(sf.c.sfText_getLocalBounds(self.ptr));
+    return sf.FloatRect._fromCSFML(sf.c.sfText_getLocalBounds(self._ptr));
 }
 /// Gets the global bounding rectangle of the text
 pub fn getGlobalBounds(self: Text) sf.FloatRect {
-    return sf.FloatRect.fromCSFML(sf.c.sfText_getGlobalBounds(self.ptr));
+    return sf.FloatRect._fromCSFML(sf.c.sfText_getGlobalBounds(self._ptr));
 }
 
 pub const getTransform = @compileError("Function is not implemented yet.");
 pub const getInverseTransform = @compileError("Function is not implemented yet.");
 
 /// Pointer to the csfml font
-ptr: *sf.c.sfText,
+_ptr: *sf.c.sfText,
 
 test "text: sane getters and setters" {
     const tst = @import("std").testing;

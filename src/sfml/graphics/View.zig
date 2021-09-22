@@ -20,22 +20,22 @@ pub fn fromRect(rect: sf.FloatRect) View {
 
 /// Creates a view from a CSFML object
 /// This is mainly for the inner workings of this wrapper
-pub fn fromCSFML(view: *const sf.c.sfView) View {
+pub fn _fromCSFML(view: *const sf.c.sfView) View {
     var ret: View = undefined;
-    ret.center = sf.Vector2f.fromCSFML(sf.c.sfView_getCenter(view));
-    ret.size = sf.Vector2f.fromCSFML(sf.c.sfView_getSize(view));
-    ret.viewport = sf.FloatRect.fromCSFML(sf.c.sfView_getViewport(view));
+    ret.center = sf.Vector2f._fromCSFML(sf.c.sfView_getCenter(view));
+    ret.size = sf.Vector2f._fromCSFML(sf.c.sfView_getSize(view));
+    ret.viewport = sf.FloatRect._fromCSFML(sf.c.sfView_getViewport(view));
     return ret;
 }
 
 /// Creates a CSFML view from this view
 /// This is mainly for the inner workings of this wrapper
 /// The resulting view must be destroyed!
-pub fn toCSFML(self: View) *sf.c.sfView {
+pub fn _toCSFML(self: View) *sf.c.sfView {
     var view = sf.c.sfView_create().?;
-    sf.c.sfView_setCenter(view, self.center.toCSFML());
-    sf.c.sfView_setSize(view, self.size.toCSFML());
-    sf.c.sfView_setViewport(view, self.viewport.toCSFML());
+    sf.c.sfView_setCenter(view, self.center._toCSFML());
+    sf.c.sfView_setSize(view, self.size._toCSFML());
+    sf.c.sfView_setViewport(view, self.viewport._toCSFML());
     return view;
 }
 
@@ -74,13 +74,13 @@ test "view: from rect" {
     // Testing if the view from rect initialization works
     var rect = sf.FloatRect.init(10, -15, 700, 600);
 
-    var view = sf.c.sfView_createFromRect(rect.toCSFML());
+    var view = sf.c.sfView_createFromRect(rect._toCSFML());
     defer sf.c.sfView_destroy(view);
 
     var view2 = View.fromRect(rect);
 
-    var center = sf.Vector2f.fromCSFML(sf.c.sfView_getCenter(view));
-    var size = sf.Vector2f.fromCSFML(sf.c.sfView_getSize(view));
+    var center = sf.Vector2f._fromCSFML(sf.c.sfView_getCenter(view));
+    var size = sf.Vector2f._fromCSFML(sf.c.sfView_getSize(view));
 
     try tst.expectApproxEqAbs(center.x, view2.center.x, 0.00001);
     try tst.expectApproxEqAbs(center.y, view2.center.y, 0.00001);

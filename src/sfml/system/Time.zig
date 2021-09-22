@@ -8,13 +8,13 @@ const Time = @This();
 
 /// Converts a time from a csfml object
 /// For inner workings
-pub fn fromCSFML(time: sf.c.sfTime) Time {
+pub fn _fromCSFML(time: sf.c.sfTime) Time {
     return Time{ .us = time.microseconds };
 }
 
 /// Converts a time to a csfml object
 /// For inner workings
-pub fn toCSFML(self: Time) sf.c.sfTime {
+pub fn _toCSFML(self: Time) sf.c.sfTime {
     return sf.c.sfTime{ .microseconds = self.us };
 }
 
@@ -54,7 +54,7 @@ pub fn asSeconds(self: Time) f32 {
 
 /// Sleeps the amount of time specified
 pub fn sleep(time: Time) void {
-    sf.c.sfSleep(time.toCSFML());
+    sf.c.sfSleep(time._toCSFML());
 }
 
 /// A time of zero
@@ -75,19 +75,19 @@ pub const TimeSpan = struct {
 
     /// Converts a timespan from a csfml object
     /// For inner workings
-    pub fn fromCSFML(span: sf.c.sfTimeSpan) TimeSpan {
+    pub fn _fromCSFML(span: sf.c.sfTimeSpan) TimeSpan {
         return TimeSpan{
-            .offset = Time.fromCSFML(span.offset),
-            .length = Time.fromCSFML(span.length),
+            .offset = Time._fromCSFML(span.offset),
+            .length = Time._fromCSFML(span.length),
         };
     }
 
     /// Converts a timespan to a csfml object
     /// For inner workings
-    pub fn toCSFML(self: TimeSpan) sf.c.sfTimeSpan {
+    pub fn _toCSFML(self: TimeSpan) sf.c.sfTimeSpan {
         return sf.c.sfTimeSpan{
-            .offset = self.offset.toCSFML(),
-            .length = self.length.toCSFML(),
+            .offset = self.offset._toCSFML(),
+            .length = self.length._toCSFML(),
         };
     }
 

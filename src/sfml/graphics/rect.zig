@@ -29,14 +29,14 @@ pub fn Rect(comptime T: type) type {
 
         /// Makes a CSFML rect with this rect (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
-        pub fn toCSFML(self: Self) CsfmlEquivalent {
+        pub fn _toCSFML(self: Self) CsfmlEquivalent {
             if (CsfmlEquivalent == void) @compileError("This rectangle type doesn't have a CSFML equivalent.");
             return @bitCast(CsfmlEquivalent, self);
         }
 
         /// Creates a rect from a CSFML one (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
-        pub fn fromCSFML(rect: CsfmlEquivalent) Self {
+        pub fn _fromCSFML(rect: CsfmlEquivalent) Self {
             if (CsfmlEquivalent == void) @compileError("This rectangle type doesn't have a CSFML equivalent.");
             return @bitCast(Self, rect);
         }
@@ -124,11 +124,11 @@ test "rect: intersect" {
     var inter1: sf.c.sfIntRect = undefined;
     var inter2: sf.c.sfIntRect = undefined;
 
-    try tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r2.toCSFML(), &inter1), 1);
-    try tst.expectEqual(sf.c.sfIntRect_intersects(&r1.toCSFML(), &r3.toCSFML(), &inter2), 1);
+    try tst.expectEqual(sf.c.sfIntRect_intersects(&r1._toCSFML(), &r2._toCSFML(), &inter1), 1);
+    try tst.expectEqual(sf.c.sfIntRect_intersects(&r1._toCSFML(), &r3._toCSFML(), &inter2), 1);
 
-    try tst.expectEqual(Rect(c_int).fromCSFML(inter1), r1.intersects(r2).?);
-    try tst.expectEqual(Rect(c_int).fromCSFML(inter2), r1.intersects(r3).?);
+    try tst.expectEqual(Rect(c_int)._fromCSFML(inter1), r1.intersects(r2).?);
+    try tst.expectEqual(Rect(c_int)._fromCSFML(inter2), r1.intersects(r3).?);
 }
 
 test "rect: contains" {
@@ -147,14 +147,14 @@ test "rect: sane from/to CSFML rect" {
 
     inline for ([_]type{ c_int, f32 }) |T| {
         const rect = Rect(T).init(1, 3, 5, 10);
-        const crect = rect.toCSFML();
+        const crect = rect._toCSFML();
 
         try tst.expectEqual(rect.left, crect.left);
         try tst.expectEqual(rect.top, crect.top);
         try tst.expectEqual(rect.width, crect.width);
         try tst.expectEqual(rect.height, crect.height);
 
-        const rect2 = Rect(T).fromCSFML(crect);
+        const rect2 = Rect(T)._fromCSFML(crect);
 
         try tst.expectEqual(rect, rect2);
     }

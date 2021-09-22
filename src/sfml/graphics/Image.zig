@@ -15,10 +15,10 @@ const Image = @This();
 
 /// Creates a new image
 pub fn create(size: sf.Vector2u, color: sf.Color) !Image {
-    var img = sf.c.sfImage_createFromColor(size.x, size.y, color.toCSFML());
+    var img = sf.c.sfImage_createFromColor(size.x, size.y, color._toCSFML());
     if (img == null)
         return sf.Error.nullptrUnknownReason;
-    return Image{ .ptr = img.? };
+    return Image{ ._ptr = img.? };
 }
 
 /// Creates an image from a pixel array
@@ -31,7 +31,7 @@ pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Image {
 
     if (img == null)
         return sf.Error.nullptrUnknownReason;
-    return Image{ .ptr = img.? };
+    return Image{ ._ptr = img.? };
 }
 
 /// Loads an image from a file
@@ -39,17 +39,17 @@ pub fn createFromFile(path: [:0]const u8) !Image {
     var img = sf.c.sfImage_createFromFile(path);
     if (img == null)
         return sf.Error.resourceLoadingError;
-    return Image{ .ptr = img.? };
+    return Image{ ._ptr = img.? };
 }
 
 /// Destroys an image
 pub fn destroy(self: Image) void {
-    sf.c.sfImage_destroy(self.ptr);
+    sf.c.sfImage_destroy(self._ptr);
 }
 
 // Save an image to a file
 pub fn saveToFile(self: Image, path: [:0]const u8) !void {
-    if (sf.c.sfImage_saveToFile(self.ptr, path) != 1)
+    if (sf.c.sfImage_saveToFile(self._ptr, path) != 1)
         return sf.Error.savingInFileFailed;
 }
 
@@ -60,24 +60,24 @@ pub fn getPixel(self: Image, pixel_pos: sf.Vector2u) sf.Color {
     const size = self.getSize();
     assert(pixel_pos.x < size.x and pixel_pos.y < size.y);
 
-    return sf.Color.fromCSFML(sf.c.sfImage_getPixel(self.ptr, pixel_pos.x, pixel_pos.y));
+    return sf.Color._fromCSFML(sf.c.sfImage_getPixel(self._ptr, pixel_pos.x, pixel_pos.y));
 }
 /// Sets a pixel on this image (bounds are only checked in an assertion)
 pub fn setPixel(self: Image, pixel_pos: sf.Vector2u, color: sf.Color) void {
     const size = self.getSize();
     assert(pixel_pos.x < size.x and pixel_pos.y < size.y);
 
-    sf.c.sfImage_setPixel(self.ptr, pixel_pos.x, pixel_pos.y, color.toCSFML());
+    sf.c.sfImage_setPixel(self._ptr, pixel_pos.x, pixel_pos.y, color._toCSFML());
 }
 
 /// Gets the size of this image
 pub fn getSize(self: Image) sf.Vector2u {
-    const size = sf.c.sfImage_getSize(self.ptr);
+    const size = sf.c.sfImage_getSize(self._ptr);
     return sf.Vector2u{ .x = size.x, .y = size.y };
 }
 
 /// Pointer to the csfml texture
-ptr: *sf.c.sfImage,
+_ptr: *sf.c.sfImage,
 
 test "image: sane getters and setters" {
     const tst = std.testing;

@@ -10,14 +10,14 @@ pub fn createFromFile(path: [:0]const u8) !SoundBuffer {
     var sound = sf.c.sfSoundBuffer_createFromFile(path);
     if (sound == null)
         return sf.Error.resourceLoadingError;
-    return SoundBuffer{ .ptr = sound.? };
+    return SoundBuffer{ ._ptr = sound.? };
 }
 /// Creates a sound buffer from sample data
 pub fn createFromSamples(samples: []const i16, channel_count: usize, sample_rate: usize) !SoundBuffer {
     var sound = sf.c.sfSoundBuffer_createFromSamples(@ptrCast([*c]const c_short, samples.ptr), samples.len, @intCast(c_uint, channel_count), @intCast(c_uint, sample_rate));
     if (sound == null)
         return sf.Error.resourceLoadingError;
-    return SoundBuffer{ .ptr = sound.? };
+    return SoundBuffer{ ._ptr = sound.? };
 }
 
 pub const initFromMemory = @compileError("Function is not implemented yet.");
@@ -25,41 +25,41 @@ pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Destroys this music object
 pub fn destroy(self: SoundBuffer) void {
-    sf.c.sfSoundBuffer_destroy(self.ptr);
+    sf.c.sfSoundBuffer_destroy(self._ptr);
 }
 
 // Getters / Setters
 
 /// Gets the duration of the sound
 pub fn getDuration(self: SoundBuffer) sf.system.Time {
-    return sf.system.Time.fromCSFML(sf.c.sfSoundBuffer_getDuration(self.ptr));
+    return sf.system.Time._fromCSFML(sf.c.sfSoundBuffer_getDuration(self._ptr));
 }
 
 /// Gets the sample count of this sound
 pub fn getSampleCount(self: SoundBuffer) usize {
-    return @intCast(usize, sf.c.sfSoundBuffer_getSampleCount(self.ptr));
+    return @intCast(usize, sf.c.sfSoundBuffer_getSampleCount(self._ptr));
 }
 
 /// Gets the sample rate of this sound (n° of samples per second, often 44100)
 pub fn getSampleRate(self: SoundBuffer) usize {
-    return @intCast(usize, sf.c.sfSoundBuffer_getSampleRate(self.ptr));
+    return @intCast(usize, sf.c.sfSoundBuffer_getSampleRate(self._ptr));
 }
 
 /// Gets the channel count (2 is stereo for instance)
 pub fn getChannelCount(self: SoundBuffer) usize {
-    return @intCast(usize, sf.c.sfSoundBuffer_getChannelCount(self.ptr));
+    return @intCast(usize, sf.c.sfSoundBuffer_getChannelCount(self._ptr));
 }
 
 // Misc
 
 /// Save the sound buffer to an audio file
 pub fn saveToFile(self: SoundBuffer, path: [:0]const u8) !void {
-    if (sf.c.sfSoundBuffer_saveToFile(self.ptr, path) != 1)
+    if (sf.c.sfSoundBuffer_saveToFile(self._ptr, path) != 1)
         return sf.Error.savingInFileFailed;
 }
 
 /// Pointer to the csfml texture
-ptr: *sf.c.sfSoundBuffer,
+_ptr: *sf.c.sfSoundBuffer,
 
 test "sound buffer: sane getter and setters" {
     const std = @import("std");

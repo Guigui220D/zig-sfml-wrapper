@@ -6,13 +6,13 @@ const math = @import("std").math;
 pub const Color = packed struct {
     /// Converts a color from a csfml object
     /// For inner workings
-    pub fn fromCSFML(col: sf.c.sfColor) Color {
+    pub fn _fromCSFML(col: sf.c.sfColor) Color {
         return @bitCast(Color, col);
     }
 
     /// Converts this color to a csfml one
     /// For inner workings
-    pub fn toCSFML(self: Color) sf.c.sfColor {
+    pub fn _toCSFML(self: Color) sf.c.sfColor {
         return @bitCast(sf.c.sfColor, self);
     }
 
@@ -138,7 +138,7 @@ test "color: conversions" {
 
     var csfml_col = sf.c.sfColor_fromInteger(@as(c_uint, code));
 
-    try tst.expectEqual(Color.fromCSFML(csfml_col), col);
+    try tst.expectEqual(Color._fromCSFML(csfml_col), col);
 }
 
 test "color: hsv to rgb" {
@@ -153,14 +153,14 @@ test "color: sane from/to CSFML color" {
     const tst = @import("std").testing;
 
     const col = Color.fromRGBA(5, 12, 28, 127);
-    const ccol = col.toCSFML();
+    const ccol = col._toCSFML();
 
     try tst.expectEqual(col.r, ccol.r);
     try tst.expectEqual(col.g, ccol.g);
     try tst.expectEqual(col.b, ccol.b);
     try tst.expectEqual(col.a, ccol.a);
 
-    const col2 = Color.fromCSFML(ccol);
+    const col2 = Color._fromCSFML(ccol);
 
     try tst.expectEqual(col, col2);
 }
