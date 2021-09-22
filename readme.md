@@ -59,4 +59,4 @@ pub fn main() !void {
 
 ### Projects made with this wrapper
 
-[Pong clone I made]=https://github.com/Guigui220D/sfml-pong-zig)
+[Pong clone I made](https://github.com/Guigui220D/sfml-pong-zig)
