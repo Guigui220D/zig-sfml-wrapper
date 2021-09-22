@@ -43,6 +43,24 @@ pub fn setFillColor(self: CircleShape, color: sf.Color) void {
     sf.c.sfCircleShape_setFillColor(self.ptr, color.toCSFML());
 }
 
+/// Gets the outline color of this circle shape
+pub fn getOutlineColor(self: CircleShape) sf.Color {
+    return sf.Color.fromCSFML(sf.c.sfCircleShape_getOutlineColor(self.ptr));
+}
+/// Sets the outline color of this circle shape
+pub fn setOutlineColor(self: CircleShape, color: sf.Color) void {
+    sf.c.sfCircleShape_setOutlineColor(self.ptr, color.toCSFML());
+}
+
+/// Gets the outline thickness of this circle shape
+pub fn getOutlineThickness(self: CircleShape) f32 {
+    return sf.c.sfCircleShape_getOutlineThickness(self.ptr);
+}
+/// Sets the outline thickness of this circle shape
+pub fn setOutlineThickness(self: CircleShape, thickness: f32) void {
+    sf.c.sfCircleShape_setOutlineThickness(self.ptr, thickness);
+}
+ 
 /// Gets the radius of this circle shape
 pub fn getRadius(self: CircleShape) f32 {
     return sf.c.sfCircleShape_getRadius(self.ptr);
@@ -128,14 +146,17 @@ test "circle shape: sane getters and setters" {
     defer circle.destroy();
 
     circle.setFillColor(sf.Color.Yellow);
+    circle.setOutlineColor(sf.Color.Red);
+    circle.setOutlineThickness(3);
     circle.setRadius(50);
     circle.setRotation(15);
     circle.setPosition(.{ .x = 1, .y = 2 });
     circle.setOrigin(.{ .x = 20, .y = 25 });
     circle.setTexture(null);
 
-    // TODO : issue #2
     try tst.expectEqual(sf.Color.Yellow, circle.getFillColor());
+    try tst.expectEqual(sf.Color.Red, circle.getOutlineColor());
+    try tst.expectEqual(@as(f32, 3), circle.getOutlineThickness());
     try tst.expectEqual(@as(f32, 50), circle.getRadius());
     try tst.expectEqual(@as(f32, 15), circle.getRotation());
     try tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, circle.getPosition());

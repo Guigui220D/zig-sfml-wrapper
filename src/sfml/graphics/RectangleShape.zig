@@ -43,6 +43,24 @@ pub fn setFillColor(self: RectangleShape, color: sf.Color) void {
     sf.c.sfRectangleShape_setFillColor(self.ptr, color.toCSFML());
 }
 
+/// Gets the outline color of this rectangle shape
+pub fn getOutlineColor(self: RectangleShape) sf.Color {
+    return sf.Color.fromCSFML(sf.c.sfRectangleShape_getOutlineColor(self.ptr));
+}
+/// Sets the outline color of this rectangle shape
+pub fn setOutlineColor(self: RectangleShape, color: sf.Color) void {
+    sf.c.sfRectangleShape_setOutlineColor(self.ptr, color.toCSFML());
+}
+
+/// Gets the outline thickness of this rectangle shape
+pub fn getOutlineThickness(self: RectangleShape) f32 {
+    return sf.c.sfRectangleShape_getOutlineThickness(self.ptr);
+}
+/// Sets the outline thickness of this rectangle shape
+pub fn setOutlineThickness(self: RectangleShape, thickness: f32) void {
+    sf.c.sfRectangleShape_setOutlineThickness(self.ptr, thickness);
+}
+
 /// Gets the size of this rectangle shape
 pub fn getSize(self: RectangleShape) sf.Vector2f {
     return sf.Vector2f.fromCSFML(sf.c.sfRectangleShape_getSize(self.ptr));
@@ -131,6 +149,8 @@ test "rectangle shape: sane getters and setters" {
     try tst.expectEqual(sf.Vector2f{ .x = 30, .y = 50 }, rect.getSize());
 
     rect.setFillColor(sf.Color.Yellow);
+    rect.setOutlineColor(sf.Color.Red);
+    rect.setOutlineThickness(3);
     rect.setSize(.{ .x = 15, .y = 510 });
     rect.setRotation(15);
     rect.setPosition(.{ .x = 1, .y = 2 });
@@ -138,6 +158,8 @@ test "rectangle shape: sane getters and setters" {
     rect.setTexture(null);  //Weirdly, getTexture if texture wasn't set gives a wrong pointer
 
     try tst.expectEqual(sf.Color.Yellow, rect.getFillColor());
+    try tst.expectEqual(sf.Color.Red, rect.getOutlineColor());
+    try tst.expectEqual(@as(f32, 3), rect.getOutlineThickness());
     try tst.expectEqual(sf.Vector2f{ .x = 15, .y = 510 }, rect.getSize());
     try tst.expectEqual(@as(f32, 15), rect.getRotation());
     try tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, rect.getPosition());
