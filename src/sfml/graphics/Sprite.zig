@@ -25,7 +25,7 @@ pub fn createFromTexture(texture: sf.Texture) !Sprite {
     if (sprite == null)
         return sf.Error.nullptrUnknownReason;
 
-    sf.c.sfSprite_setTexture(sprite, texture.get(), 1);
+    sf.c.sfSprite_setTexture(sprite, texture._get(), 1);
 
     return Sprite{ ._ptr = sprite.? };
 }
@@ -36,8 +36,12 @@ pub fn destroy(self: Sprite) void {
 }
 
 // Draw function
-pub fn sfDraw(self: Sprite, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
-    sf.c.sfRenderWindow_drawSprite(window._ptr, self._ptr, states);
+pub fn sfDraw(self: Sprite, window: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(window)) {
+        sf.RenderWindow => sf.c.sfRenderWindow_drawSprite(window._ptr, self._ptr, states),
+        sf.RenderTexture => sf.c.sfRenderTexture_drawSprite(window._ptr, self._ptr, states),
+        else => @compileError("window must be a render target"),
+    }
 }
 
 // Getters/setters
@@ -108,7 +112,7 @@ pub fn getTexture(self: Sprite) ?sf.Texture {
 }
 /// Sets this sprite's texture (the sprite will take the texture's dimensions)
 pub fn setTexture(self: Sprite, texture: ?sf.Texture) void {
-    var tex = if (texture) |t| t.get() else null;
+    var tex = if (texture) |t| t._get() else null;
     sf.c.sfSprite_setTexture(self._ptr, tex, 1);
 }
 /// Gets the sub-rectangle of the texture that the sprite will display

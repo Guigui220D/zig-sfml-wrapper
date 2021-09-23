@@ -24,8 +24,12 @@ pub fn destroy(self: VertexArray) void {
 }
 
 // Draw function
-pub fn sfDraw(self: VertexArray, window: sf.graphics.RenderWindow, states: ?*sf.c.sfRenderStates) void {
-    sf.c.sfRenderWindow_drawVertexArray(window.ptr, self.ptr, states);
+pub fn sfDraw(self: VertexArray, window: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(window)) {
+        sf.graphics.RenderWindow => sf.c.sfRenderWindow_drawVertexArray(window._ptr, self._ptr, states),
+        sf.graphics.RenderTexture => sf.c.sfRenderTexture_drawVertexArray(window._ptr, self._ptr, states),
+        else => @compileError("window must be a render target"),
+    }
 }
 
 /// Pointer to the csfml structure

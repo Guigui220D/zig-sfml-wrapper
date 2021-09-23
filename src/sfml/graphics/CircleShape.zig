@@ -28,8 +28,12 @@ pub fn destroy(self: CircleShape) void {
 }
 
 // Draw function
-pub fn sfDraw(self: CircleShape, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
-    sf.c.sfRenderWindow_drawCircleShape(window._ptr, self._ptr, states);
+pub fn sfDraw(self: CircleShape, window: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(window)) {
+        sf.RenderWindow => sf.c.sfRenderWindow_drawCircleShape(window._ptr, self._ptr, states),
+        sf.RenderTexture => sf.c.sfRenderTexture_drawCircleShape(window._ptr, self._ptr, states),
+        else => @compileError("window must be a render target"),
+    }
 }
 
 // Getters/setters
@@ -60,7 +64,7 @@ pub fn getOutlineThickness(self: CircleShape) f32 {
 pub fn setOutlineThickness(self: CircleShape, thickness: f32) void {
     sf.c.sfCircleShape_setOutlineThickness(self._ptr, thickness);
 }
- 
+
 /// Gets the radius of this circle shape
 pub fn getRadius(self: CircleShape) f32 {
     return sf.c.sfCircleShape_getRadius(self._ptr);
@@ -114,7 +118,7 @@ pub fn getTexture(self: CircleShape) ?sf.Texture {
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: CircleShape, texture: ?sf.Texture) void {
-    var tex = if (texture) |t| t.get() else null;
+    var tex = if (texture) |t| t._get() else null;
     sf.c.sfCircleShape_setTexture(self._ptr, tex, 0);
 }
 /// Gets the sub-rectangle of the texture that the shape will display

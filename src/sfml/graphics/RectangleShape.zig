@@ -28,8 +28,12 @@ pub fn destroy(self: RectangleShape) void {
 }
 
 // Draw function
-pub fn sfDraw(self: RectangleShape, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
-    sf.c.sfRenderWindow_drawRectangleShape(window._ptr, self._ptr, states);
+pub fn sfDraw(self: RectangleShape, window: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(window)) {
+        sf.RenderWindow => sf.c.sfRenderWindow_drawRectangleShape(window._ptr, self._ptr, states),
+        sf.RenderTexture => sf.c.sfRenderTexture_drawRectangleShape(window._ptr, self._ptr, states),
+        else => @compileError("window must be a render target"),
+    }
 }
 
 // Getters/setters
@@ -110,12 +114,11 @@ pub fn getTexture(self: RectangleShape) ?sf.Texture {
     const t = sf.c.sfRectangleShape_getTexture(self._ptr);
     if (t) |tex| {
         return sf.Texture{ ._const_ptr = tex };
-    } else
-        return null;
+    } else return null;
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: RectangleShape, texture: ?sf.Texture) void {
-    var tex = if (texture) |t| t.get() else null;
+    var tex = if (texture) |t| t._get() else null;
     sf.c.sfRectangleShape_setTexture(self._ptr, tex, 0);
 }
 /// Gets the sub-rectangle of the texture that the shape will display
@@ -155,7 +158,7 @@ test "rectangle shape: sane getters and setters" {
     rect.setRotation(15);
     rect.setPosition(.{ .x = 1, .y = 2 });
     rect.setOrigin(.{ .x = 20, .y = 25 });
-    rect.setTexture(null);  //Weirdly, getTexture if texture wasn't set gives a wrong pointer
+    rect.setTexture(null); //Weirdly, getTexture if texture wasn't set gives a wrong pointer
 
     try tst.expectEqual(sf.Color.Yellow, rect.getFillColor());
     try tst.expectEqual(sf.Color.Red, rect.getOutlineColor());

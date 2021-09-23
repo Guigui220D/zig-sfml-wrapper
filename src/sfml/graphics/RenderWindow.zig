@@ -4,6 +4,7 @@ const sf = struct {
     pub usingnamespace @import("../sfml.zig");
     pub usingnamespace sf.system;
     pub usingnamespace sf.graphics;
+    pub usingnamespace sf.window;
 };
 
 const RenderWindow = @This();
@@ -25,12 +26,10 @@ pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32) !R
 
     if (window) |w| {
         ret._ptr = w;
-    } else
-        return sf.Error.windowCreationFailed;
+    } else return sf.Error.windowCreationFailed;
 
     return ret;
 }
-
 /// Inits a render window with a size and a title
 /// The window will have the default style
 pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
@@ -46,11 +45,17 @@ pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
 
     if (window) |w| {
         ret._ptr = w;
-    } else {
-        return sf.Error.windowCreationFailed;
-    }
+    } else return sf.Error.windowCreationFailed;
 
     return ret;
+}
+/// Inits a rendering plane from a window handle. The handle can actually be to any drawing surface.
+pub fn createFromHandle(handle: sf.WindowHandle) !RenderWindow {
+    const window = sf.c.sfRenderWindow_createFromHandle(handle, null);
+
+    if (window) |w| {
+        return .{ ._ptr = w };
+    } else return sf.Error.windowCreationFailed;
 }
 
 /// Destroys this window object
@@ -109,6 +114,7 @@ pub fn draw(self: RenderWindow, to_draw: anytype, states: ?*sf.c.sfRenderStates)
 }
 
 // Getters/setters
+
 /// Gets the current view of the window
 /// Unlike in SFML, you don't get a const pointer but a copy
 pub fn getView(self: RenderWindow) sf.View {
@@ -124,6 +130,10 @@ pub fn setView(self: RenderWindow, view: sf.View) void {
     var cview = view._toCSFML();
     defer sf.c.sfView_destroy(cview);
     sf.c.sfRenderWindow_setView(self._ptr, cview);
+}
+/// Gets the viewport of this render target
+pub fn getViewport(self: RenderWindow, view: sf.View) sf.IntRect {
+    return sf.IntRect._fromCSFML(sf.c.sfRenderWindow_getViewPort(self._ptr, view._ptr));
 }
 
 /// Gets the size of this window
@@ -167,7 +177,6 @@ pub fn mapPixelToCoords(self: RenderWindow, pixel: sf.Vector2i, view: ?sf.View) 
         return sf.Vector2f._fromCSFML(sf.c.sfRenderWindow_mapPixelToCoords(self._ptr, pixel._toCSFML(), cview));
     } else return sf.Vector2f._fromCSFML(sf.c.sfRenderWindow_mapPixelToCoords(self._ptr, pixel._toCSFML(), null));
 }
-
 /// Convert a point from world coordinates to target coordinates, using the current view (or the specified view)
 pub fn mapCoordsToPixel(self: RenderWindow, coords: sf.Vector2f, view: ?sf.View) sf.Vector2i {
     if (view) |v| {

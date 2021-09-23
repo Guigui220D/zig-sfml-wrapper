@@ -33,8 +33,12 @@ pub fn destroy(self: Text) void {
 }
 
 // Draw function
-pub fn sfDraw(self: Text, window: sf.RenderWindow, states: ?*sf.c.sfRenderStates) void {
-    sf.c.sfRenderWindow_drawText(window._ptr, self._ptr, states);
+pub fn sfDraw(self: Text, window: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(window)) {
+        sf.RenderWindow => sf.c.sfRenderWindow_drawText(window._ptr, self._ptr, states),
+        sf.RenderTexture => sf.c.sfRenderTexture_drawText(window._ptr, self._ptr, states),
+        else => @compileError("window must be a render target"),
+    }
 }
 
 // Getters/setters
