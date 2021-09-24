@@ -8,7 +8,7 @@ const sf = struct {
 };
 
 pub fn main() !void {
-    var window = try sf.RenderWindow.createDefault(.{ .x = 200, .y = 200 }, "SFML works!");
+    var window = try sf.RenderWindow.createDefault(.{ .x = 200, .y = 200 }, "SFML works!", null);
     defer window.destroy();
 
     var shape = try sf.CircleShape.create(100.0);

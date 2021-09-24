@@ -13,7 +13,7 @@ const RenderWindow = @This();
 
 /// Inits a render window with a size, a bits per pixel (most put 32), a title and a style
 /// The window will have the default style
-pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32) !RenderWindow {
+pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32, settings: ?sf.ContextSettings) !RenderWindow {
     var ret: RenderWindow = undefined;
 
     var mode: sf.c.sfVideoMode = .{
@@ -22,7 +22,8 @@ pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32) !R
         .bitsPerPixel = @intCast(c_uint, bpp),
     };
 
-    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), style, null);
+    const c_settings = if (settings) |s| s._toCSFML() else null;
+    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), style, if (c_settings) |s| &s else null);
 
     if (window) |w| {
         ret._ptr = w;
@@ -32,7 +33,7 @@ pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32) !R
 }
 /// Inits a render window with a size and a title
 /// The window will have the default style
-pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
+pub fn createDefault(size: sf.Vector2u, title: [:0]const u8, settings: ?sf.ContextSettings) !RenderWindow {
     var ret: RenderWindow = undefined;
 
     var mode: sf.c.sfVideoMode = .{
@@ -41,7 +42,8 @@ pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
         .bitsPerPixel = 32,
     };
 
-    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), sf.window.Style.defaultStyle, null);
+    const c_settings = if (settings) |s| s._toCSFML() else null;
+    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), sf.window.Style.defaultStyle, if (c_settings) |s| &s else null);
 
     if (window) |w| {
         ret._ptr = w;
@@ -50,8 +52,9 @@ pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
     return ret;
 }
 /// Inits a rendering plane from a window handle. The handle can actually be to any drawing surface.
-pub fn createFromHandle(handle: sf.WindowHandle) !RenderWindow {
-    const window = sf.c.sfRenderWindow_createFromHandle(handle, null);
+pub fn createFromHandle(handle: sf.WindowHandle, settings: ?sf.ContextSettings) !RenderWindow {
+    const c_settings = if (settings) |s| s._toCSFML() else null;
+    const window = sf.c.sfRenderWindow_createFromHandle(handle, if (c_settings) |s| &s else null);
 
     if (window) |w| {
         return .{ ._ptr = w };

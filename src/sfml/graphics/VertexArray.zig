@@ -14,13 +14,13 @@ pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphic
         sf.c.sfVertexArray_resize(vert, vertex.len);
         for (vertex) |v, i|
             sf.c.sfVertexArray_getVertex(vert, i).* = @bitCast(sf.c.sfVertex, v);
-        return VertexArray{ .ptr = vert };
+        return VertexArray{ ._ptr = vert };
     } else return sf.Error.nullptrUnknownReason;
 }
 
 /// Destroys a vertex array
 pub fn destroy(self: VertexArray) void {
-    sf.c.sfVertexArray_destroy(self.ptr);
+    sf.c.sfVertexArray_destroy(self._ptr);
 }
 
 // Draw function
@@ -33,4 +33,4 @@ pub fn sfDraw(self: VertexArray, window: anytype, states: ?*sf.c.sfRenderStates)
 }
 
 /// Pointer to the csfml structure
-ptr: *sf.c.sfVertexArray,
+_ptr: *sf.c.sfVertexArray,

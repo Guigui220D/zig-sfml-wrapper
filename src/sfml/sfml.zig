@@ -18,6 +18,7 @@ pub const window = struct {
     pub const Event = @import("window/event.zig").Event;
     pub const Style = @import("window/Style.zig");
     pub const WindowHandle = c.sfWindowHandle;
+    pub const ContextSettings = @import("window/context_settings.zig").ContextSettings;
     pub const keyboard = @import("window/keyboard.zig");
     pub const mouse = @import("window/mouse.zig");
 };

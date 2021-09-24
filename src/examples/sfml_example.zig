@@ -11,7 +11,7 @@ const sf = struct {
 
 pub fn main() !void {
     // Create the main window
-    var window = try sf.RenderWindow.create(.{ .x = 800, .y = 600 }, 32, "SFML window", sf.Style.defaultStyle);
+    var window = try sf.RenderWindow.create(.{ .x = 800, .y = 600 }, 32, "SFML window", sf.Style.defaultStyle, null);
     defer window.destroy();
 
     // Load a sprite to display
