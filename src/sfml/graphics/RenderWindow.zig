@@ -33,7 +33,7 @@ pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32, se
 }
 /// Inits a render window with a size and a title
 /// The window will have the default style
-pub fn createDefault(size: sf.Vector2u, title: [:0]const u8, settings: ?sf.ContextSettings) !RenderWindow {
+pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
     var ret: RenderWindow = undefined;
 
     var mode: sf.c.sfVideoMode = .{
@@ -42,8 +42,7 @@ pub fn createDefault(size: sf.Vector2u, title: [:0]const u8, settings: ?sf.Conte
         .bitsPerPixel = 32,
     };
 
-    const c_settings = if (settings) |s| s._toCSFML() else null;
-    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), sf.window.Style.defaultStyle, if (c_settings) |s| &s else null);
+    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), sf.window.Style.defaultStyle, null);
 
     if (window) |w| {
         ret._ptr = w;
