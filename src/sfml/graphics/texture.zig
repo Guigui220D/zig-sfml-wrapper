@@ -16,21 +16,21 @@ pub const Texture = union(TextureType) {
 
     /// Creates a texture from nothing
     pub fn create(size: sf.Vector2u) !Texture {
-        var tex = sf.c.sfTexture_create(@intCast(c_uint, size.x), @intCast(c_uint, size.y));
+        const tex = sf.c.sfTexture_create(@intCast(c_uint, size.x), @intCast(c_uint, size.y));
         if (tex == null)
             return sf.Error.nullptrUnknownReason;
         return Texture{ ._ptr = tex.? };
     }
     /// Loads a texture from a file
     pub fn createFromFile(path: [:0]const u8) !Texture {
-        var tex = sf.c.sfTexture_createFromFile(path, null);
+        const tex = sf.c.sfTexture_createFromFile(path, null);
         if (tex == null)
             return sf.Error.resourceLoadingError;
         return Texture{ ._ptr = tex.? };
     }
     /// Creates an texture from an image
     pub fn createFromImage(image: sf.Image, area: ?sf.IntRect) !Texture {
-        var tex = if (area) |a|
+        const tex = if (area) |a|
             sf.c.sfTexture_createFromImage(image._ptr, &a._toCSFML())
         else
             sf.c.sfTexture_createFromImage(image._ptr, null);
@@ -63,7 +63,7 @@ pub const Texture = union(TextureType) {
 
     /// Clones this texture (the clone won't be const)
     pub fn copy(self: Texture) !Texture {
-        var cpy = sf.c.sfTexture_copy(self._get());
+        const cpy = sf.c.sfTexture_copy(self._get());
         if (cpy == null)
             return sf.Error.nullptrUnknownReason;
         return Texture{ ._ptr = cpy.? };
@@ -85,7 +85,7 @@ pub const Texture = union(TextureType) {
     }
     /// Gets the pixel count of this image
     pub fn getPixelCount(self: Texture) usize {
-        var dim = self.getSize();
+        const dim = self.getSize();
         return dim.x * dim.y;
     }
 

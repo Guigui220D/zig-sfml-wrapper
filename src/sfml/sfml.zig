@@ -5,11 +5,14 @@ pub const c = @import("sfml_import.zig").c;
 pub const Error = @import("sfml_errors.zig").Error;
 
 pub const system = struct {
-    pub const Vector2 = @import("system/vector.zig").Vector2;
+    const vector = @import("system/vector.zig");
+    pub const Vector2 = vector.Vector2;
+    pub const Vector3 = vector.Vector3;
+    pub const Vector4 = vector.Vector4;
     pub const Vector2i = Vector2(c_int);
     pub const Vector2u = Vector2(c_uint);
     pub const Vector2f = Vector2(f32);
-    pub const Vector3f = @import("system/vector.zig").Vector3f;
+    pub const Vector3f = Vector3(f32);
     pub const Time = @import("system/Time.zig");
     pub const Clock = @import("system/Clock.zig");
 };
@@ -41,6 +44,8 @@ pub const graphics = struct {
     pub const Vertex = @import("graphics/vertex.zig").Vertex;
     pub const VertexArray = @import("graphics/VertexArray.zig");
     pub const PrimitiveType = @import("graphics/primitive_type.zig").PrimitiveType;
+    pub const glsl = @import("graphics/glsl.zig");
+    pub const Shader = @import("graphics/Shader.zig");
 };
 
 pub const audio = struct {
@@ -54,7 +59,6 @@ pub const network = @compileError("network module: to be implemented one day");
 pub const VertexBuffer = @compileError("VertexArray not available yet");
 pub const BlendMode = @compileError("BlendMode not available yet");
 pub const RenderStates = @compileError("RenderStates not available yet");
-pub const Shader = @compileError("Shader not available yet");
 pub const Transform = @compileError("Transform not available yet");
 
 pub const touch = @compileError("touch not available yet");

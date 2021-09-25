@@ -11,7 +11,7 @@ My goal is to make things close enought to SFML, with nice methods.
 
 Most of the classes are wrapped and you should be able to write games with this wrapper. However, some things aren't ready and help is welcome, here are some examples:
 
-- Shaders
+- Transforms
 - Convex Shapes
 - Context Settings
 

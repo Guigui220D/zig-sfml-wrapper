@@ -97,6 +97,25 @@ pub const Color = packed struct {
         };
     }
 
+    /// Get a GLSL float vector for this color (for shaders)
+    pub fn toFVec4(self: Color) sf.graphics.glsl.FVec4 {
+        return .{
+            .x = @intToFloat(f32, self.r) / 255.0,
+            .y = @intToFloat(f32, self.g) / 255.0,
+            .z = @intToFloat(f32, self.b) / 255.0,
+            .w = @intToFloat(f32, self.a) / 255.0
+        };
+    }
+    /// Get a GLSL int vector for this color (for shaders)
+    pub fn toIVec4(self: Color) sf.graphcis.glsl.IVec4 {
+        return .{
+            .x = self.r,
+            .y = self.g,
+            .z = self.b,
+            .w = self.a
+        };
+    }
+
     // Colors
     /// Black color
     pub const Black = Color.fromRGB(0, 0, 0);
