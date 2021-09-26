@@ -13,6 +13,7 @@ pub const system = struct {
     pub const Vector2u = Vector2(c_uint);
     pub const Vector2f = Vector2(f32);
     pub const Vector3f = Vector3(f32);
+
     pub const Time = @import("system/Time.zig");
     pub const Clock = @import("system/Clock.zig");
 };
@@ -28,24 +29,34 @@ pub const window = struct {
 
 pub const graphics = struct {
     pub const Color = @import("graphics/color.zig").Color;
+
     pub const RenderWindow = @import("graphics/RenderWindow.zig");
     pub const RenderTexture = @import("graphics/RenderTexture.zig");
+
+    pub const View = @import("graphics/View.zig");
+
     pub const Image = @import("graphics/Image.zig");
     pub const Texture = @import("graphics/texture.zig").Texture;
+
     pub const Sprite = @import("graphics/Sprite.zig");
     pub const CircleShape = @import("graphics/CircleShape.zig");
     pub const RectangleShape = @import("graphics/RectangleShape.zig");
-    pub const Rect = @import("graphics/rect.zig").Rect;
-    pub const IntRect = Rect(c_int);
-    pub const FloatRect = Rect(f32);
-    pub const View = @import("graphics/View.zig");
-    pub const Font = @import("graphics/Font.zig");
-    pub const Text = @import("graphics/Text.zig");
+
     pub const Vertex = @import("graphics/vertex.zig").Vertex;
     pub const VertexArray = @import("graphics/VertexArray.zig");
     pub const PrimitiveType = @import("graphics/primitive_type.zig").PrimitiveType;
+
+    pub const Rect = @import("graphics/rect.zig").Rect;
+    pub const IntRect = Rect(c_int);
+    pub const FloatRect = Rect(f32);
+    
+    pub const Font = @import("graphics/Font.zig");
+    pub const Text = @import("graphics/Text.zig");
+    
     pub const glsl = @import("graphics/glsl.zig");
     pub const Shader = @import("graphics/Shader.zig");
+    pub const BlendMode = @import("graphics/BlendMode.zig");
+    //pub const RenderStates = @import("graphics/RenderStates.zig");
 };
 
 pub const audio = struct {
@@ -57,8 +68,6 @@ pub const audio = struct {
 pub const network = @compileError("network module: to be implemented one day");
 
 pub const VertexBuffer = @compileError("VertexArray not available yet");
-pub const BlendMode = @compileError("BlendMode not available yet");
-pub const RenderStates = @compileError("RenderStates not available yet");
 pub const Transform = @compileError("Transform not available yet");
 
 pub const touch = @compileError("touch not available yet");
