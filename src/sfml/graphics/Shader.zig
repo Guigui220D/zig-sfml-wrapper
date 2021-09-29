@@ -38,8 +38,8 @@ pub fn isGeometryAvailable() bool {
     return sf.c.sfShader_isAvailable();
 }
 
-
-pub const CurrentTexture: void = {};
+const CurrentTextureT = struct{};
+pub const CurrentTexture: CurrentTextureT = .{};
 
 // Uniform 
 
@@ -63,8 +63,8 @@ pub fn setUniform(self: Shader, name: [:0]const u8, value: anytype) void {
         glsl.Mat3 => sf.c.sfShader_setMat3Uniform(self._ptr, name, @bitCast(sf.c.sfGlslMat3, value)), 
         glsl.Mat4 => sf.c.sfShader_setMat4Uniform(self._ptr, name, @bitCast(sf.c.sfGlslMat4, value)),
         sf.graphics.Texture => sf.c.sfShader_setTextureUniform(self._ptr, name, value._get()),
-        @TypeOf(CurrentTexture) => sf.c.sfShader_setCurrentTextureUniform(self._ptr, name),
-        else => @compileError("Uniform of type " ++ @typeName(T) ++ " cannot be set inside shader.")
+        CurrentTextureT => sf.c.sfShader_setCurrentTextureUniform(self._ptr, name),
+        else => @compileError("Uniform of type \"" ++ @typeName(T) ++ "\" cannot be set inside shader.")
     }
 }
 
