@@ -1,3 +1,6 @@
+//! Blending modes for drawing (for render states)
+
+// Enums
 pub const Factor = enum(c_int) {
     zero,
     one,
@@ -19,7 +22,8 @@ pub const Equation = enum(c_int) {
 
 const BlendMode = @This();
 
-pub const BlendAlpha = .{
+// Preset blend modes
+pub const BlendAlpha = BlendMode{
     .color_src_factor = .srcAlpha,
     .color_dst_factor = .oneMinusSrcAlpha,
     .color_equation = .add,
@@ -28,7 +32,7 @@ pub const BlendAlpha = .{
     .alpha_equation = .add
 };
 
-pub const BlendAdd = .{
+pub const BlendAdd = BlendMode{
     .color_src_factor = .srcAlpha,
     .color_dst_factor = .one,
     .color_equation = .add,
@@ -37,7 +41,7 @@ pub const BlendAdd = .{
     .alpha_equation = .add
 };
 
-pub const BlendMultiply = .{
+pub const BlendMultiply = BlendMode{
     .color_src_factor = .dstColor,
     .color_dst_factor = .zero,
     .color_equation = .add,
@@ -46,7 +50,7 @@ pub const BlendMultiply = .{
     .alpha_equation = .add
 };
 
-pub const BlendMin = .{
+pub const BlendMin = BlendMode{
     .color_src_factor = .one,
     .color_dst_factor = .one,
     .color_equation = .min,
@@ -55,7 +59,7 @@ pub const BlendMin = .{
     .alpha_equation = .min
 };
 
-pub const BlendMax = .{
+pub const BlendMax = BlendMode{
     .color_src_factor = .one,
     .color_dst_factor = .one,
     .color_equation = .max,
@@ -64,7 +68,7 @@ pub const BlendMax = .{
     .alpha_equation = .max
 };
 
-pub const BlendNone = .{
+pub const BlendNone = BlendMode{
     .color_src_factor = .one,
     .color_dst_factor = .zero,
     .color_equation = .add,
@@ -72,6 +76,13 @@ pub const BlendNone = .{
     .alpha_dst_factor = .zero,
     .alpha_equation = .add
 };
+
+const sfBlendMode = @import("../sfml_import.zig").c.sfBlendMode;
+/// Bitcasts this blendmode to the csfml struct
+/// For inner workings
+pub fn _toCSFML(self: BlendMode) sfBlendMode {
+    return @bitCast(sfBlendMode, self);
+}
 
 color_src_factor: Factor,
 color_dst_factor: Factor,

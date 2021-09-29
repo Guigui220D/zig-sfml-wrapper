@@ -56,7 +56,7 @@ pub const graphics = struct {
     pub const glsl = @import("graphics/glsl.zig");
     pub const Shader = @import("graphics/Shader.zig");
     pub const BlendMode = @import("graphics/BlendMode.zig");
-    //pub const RenderStates = @import("graphics/RenderStates.zig");
+    pub const RenderStates = @import("graphics/RenderStates.zig");
 };
 
 pub const audio = struct {
