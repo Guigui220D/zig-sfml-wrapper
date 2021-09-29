@@ -15,12 +15,12 @@ pub fn isButtonPressed(button: Button) bool {
 /// Gets the position of the mouse cursor relative to the window passed or desktop
 pub fn getPosition(window: ?sf.graphics.RenderWindow) sf.system.Vector2i {
     if (window) |w| {
-        return sf.system.Vector2i._fromCSFML(sf.c.sfMouse_getPosition(@ptrCast(*sf.c.sfWindow, w.ptr)));
+        return sf.system.Vector2i._fromCSFML(sf.c.sfMouse_getPosition(@ptrCast(*sf.c.sfWindow, w._ptr)));
     } else return sf.system.Vector2i._fromCSFML(sf.c.sfMouse_getPosition(null));
 }
 /// Set the position of the mouse cursor relative to the window passed or desktop
 pub fn setPosition(position: sf.system.Vector2i, window: ?sf.graphics.RenderWindow) void {
     if (window) |w| {
-        sf.c.sfMouse_setPosition(position._toCSFML(), @ptrCast(*sf.c.sfWindow, w.ptr));
+        sf.c.sfMouse_setPosition(position._toCSFML(), @ptrCast(*sf.c.sfWindow, w._ptr));
     } else sf.c.sfMouse_setPosition(position._toCSFML(), null);
 }
