@@ -1,4 +1,4 @@
-const sf = @import("sfml").system;
+const sf = @import("../sfml.zig").system;
 
 pub const FVec2 = sf.Vector2(f32);
 pub const FVec3 = sf.Vector3(f32);
