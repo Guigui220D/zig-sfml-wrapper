@@ -22,6 +22,21 @@ pub fn createFromFile(
         return Shader{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;
 }
+/// Create a shader object from glsl code as string, you can omit some shader types by passing null
+pub fn createFromMemory(
+    vertex_shader: ?[:0]const u8, 
+    geometry_shader: ?[:0]const u8, 
+    fragment_shader: ?[:0]const u8
+) !Shader {
+    const shader = sf.c.sfShader_createFromMemory(
+        if (vertex_shader) |vs| @ptrCast([*c]const u8, vs) else null, 
+        if (geometry_shader) |gs| @ptrCast([*c]const u8, gs) else null, 
+        if (fragment_shader) |fs| @ptrCast([*c]const u8, fs) else null
+    );
+    if (shader) |s| {
+        return Shader{ ._ptr = s };
+    } else return sf.Error.nullptrUnknownReason;
+}
 /// Destroys this shader object
 pub fn destroy(self: Shader) void {
     sf.c.sfShader_destroy(self._ptr);
@@ -39,12 +54,15 @@ pub fn isGeometryAvailable() bool {
 }
 
 const CurrentTextureT = struct{};
+/// Special value to pass to setUniform to have an uniform of the texture used for drawing
+/// which cannot be known in advance
 pub const CurrentTexture: CurrentTextureT = .{};
 
 // Uniform 
 
 /// Sets an uniform for the shader
 /// Colors are vectors so if you want to pass a color use .toIVec4() or .toFVec4()
+/// Pass CurrentTexture if you want to have the drawing texture as an uniform, which cannot be known in advance
 pub fn setUniform(self: Shader, name: [:0]const u8, value: anytype) void {
     const T = @TypeOf(value);
     switch (T) {
@@ -64,6 +82,12 @@ pub fn setUniform(self: Shader, name: [:0]const u8, value: anytype) void {
         glsl.Mat4 => sf.c.sfShader_setMat4Uniform(self._ptr, name, @bitCast(sf.c.sfGlslMat4, value)),
         sf.graphics.Texture => sf.c.sfShader_setTextureUniform(self._ptr, name, value._get()),
         CurrentTextureT => sf.c.sfShader_setCurrentTextureUniform(self._ptr, name),
+        []const f32 => sf.c.sfShader_setFloatUniformArray(self._ptr, name, value.ptr, value.len),
+        []const glsl.FVec2 => sf.c.sfShader_setVec2UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslVec2, value.ptr), value.len),
+        []const glsl.FVec3 => sf.c.sfShader_setVec3UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslVec3, value.ptr), value.len),
+        []const glsl.FVec4 => sf.c.sfShader_setVec4UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslVec4, value.ptr), value.len),
+        []const glsl.Mat3 => sf.c.sfShader_setMat3UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslMat3, value.ptr), value.len),
+        []const glsl.Mat4 => sf.c.sfShader_setMat4UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslVec4, value.ptr), value.len),
         else => @compileError("Uniform of type \"" ++ @typeName(T) ++ "\" cannot be set inside shader.")
     }
 }

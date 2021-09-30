@@ -31,7 +31,8 @@ pub fn main() !void {
     var sprite = try sf.Sprite.createFromTexture(render_texture.getTexture());
     sprite.setPosition(.{ .x = 100, .y = 150 });
 
-    var shader = try sf.Shader.createFromFile("heat_shader.vs", null, "heat_shader.fs");
+    //var shader = try sf.Shader.createFromFile("heat_shader.vs", null, "heat_shader.fs");
+    var shader = try sf.Shader.createFromMemory(@embedFile("../../heat_shader.vs"), null, @embedFile("../../heat_shader.fs"));
     defer shader.destroy();
     shader.setUniform("currentTexture", sf.Shader.CurrentTexture);
     shader.setUniform("distortionMapTexture", distortion_map);
