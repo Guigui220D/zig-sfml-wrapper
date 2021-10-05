@@ -79,7 +79,7 @@ pub fn isSmooth(self: RenderTexture) bool {
 }
 /// Enables or disables texture smoothing
 pub fn setSmooth(self: RenderTexture, smooth: bool) void {
-    sf.c.sfRenderTexture_setSmooth(self._ptr, if (smooth) 1 else 0);
+    sf.c.sfRenderTexture_setSmooth(self._ptr, @boolToInt(smooth));
 }
 
 /// Tells whether or not the texture should repeat when rendering outside its bounds
@@ -88,7 +88,7 @@ pub fn isRepeated(self: RenderTexture) bool {
 }
 /// Enables or disables texture repeating
 pub fn setRepeated(self: RenderTexture, repeated: bool) void {
-    sf.c.sfRenderTexture_setRepeated(self._ptr, if (repeated) 1 else 0);
+    sf.c.sfRenderTexture_setRepeated(self._ptr, @boolToInt(repeated));
 }
 
 /// Gets the size of this window

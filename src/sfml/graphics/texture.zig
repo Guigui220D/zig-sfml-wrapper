@@ -157,7 +157,7 @@ pub const Texture = union(TextureType) {
         if (self == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
-        sf.c.sfTexture_setSmooth(self._ptr, if (smooth) 1 else 0);
+        sf.c.sfTexture_setSmooth(self._ptr, @boolToInt(smooth));
     }
 
     /// Tells whether or not this texture should repeat when rendering outside its bounds
@@ -169,7 +169,7 @@ pub const Texture = union(TextureType) {
         if (self == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
-        sf.c.sfTexture_setRepeated(self._ptr, if (repeated) 1 else 0);
+        sf.c.sfTexture_setRepeated(self._ptr, @boolToInt(repeated));
     }
 
     /// Tells whether or not this texture has colors in the SRGB format
@@ -182,7 +182,7 @@ pub const Texture = union(TextureType) {
         if (self == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
-        sf.c.sfTexture_setSrgb(self._ptr, if (srgb) 1 else 0);
+        sf.c.sfTexture_setSrgb(self._ptr, @boolToInt(srgb));
     }
 
     /// Swaps this texture's contents with an other texture

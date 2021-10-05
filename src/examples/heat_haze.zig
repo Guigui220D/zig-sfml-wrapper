@@ -12,6 +12,7 @@ const sf = struct {
 pub fn main() !void {
     var window = try sf.RenderWindow.createDefault(.{ .x = 600, .y = 600 }, "Heat");
     defer window.destroy();
+    window.setVerticalSyncEnabled(true);
 
     var object_texture = try sf.Texture.createFromFile("cute_image.png");
     defer object_texture.destroy();

@@ -14,8 +14,8 @@ pub const ContextSettings = packed struct {
 
     pub const Attribute = struct {
         pub const default: u32 = 0;
-        pub const core: u32 = 0;
-        pub const debug: u32 = 0;
+        pub const core: u32 = 1;
+        pub const debug: u32 = 4;
     };
 
     pub fn _toCSFML(self: ContextSettings) sf.c.sfContextSettings {

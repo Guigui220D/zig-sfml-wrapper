@@ -172,7 +172,7 @@ pub fn setFramerateLimit(self: RenderWindow, fps: c_uint) void {
 }
 /// Enables or disables vertical sync
 pub fn setVerticalSyncEnabled(self: RenderWindow, enabled: bool) void {
-    sf.c.sfRenderWindow_setFramerateLimit(self._ptr, if (enabled) 1 else 0);
+    sf.c.sfRenderWindow_setVerticalSyncEnabled(self._ptr, @boolToInt(enabled));
 }
 
 /// Convert a point from target coordinates to world coordinates, using the current view (or the specified view)

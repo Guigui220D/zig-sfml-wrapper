@@ -74,7 +74,7 @@ pub fn getLoop(self: Sound) bool {
 }
 /// Enable or disable auto loop
 pub fn setLoop(self: Sound, loop: bool) void {
-    sf.c.sfSound_setLoop(self._ptr, if (loop) 1 else 0);
+    sf.c.sfSound_setLoop(self._ptr, @boolToInt(loop));
 }
 
 /// Sets the pitch of the sound
