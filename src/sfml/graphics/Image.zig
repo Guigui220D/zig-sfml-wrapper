@@ -43,7 +43,7 @@ pub fn createFromFile(path: [:0]const u8) !Image {
 }
 
 /// Destroys an image
-pub fn destroy(self: Image) void {
+pub fn destroy(self: *Image) void {
     sf.c.sfImage_destroy(self._ptr);
 }
 
@@ -63,7 +63,7 @@ pub fn getPixel(self: Image, pixel_pos: sf.Vector2u) sf.Color {
     return sf.Color._fromCSFML(sf.c.sfImage_getPixel(self._ptr, pixel_pos.x, pixel_pos.y));
 }
 /// Sets a pixel on this image (bounds are only checked in an assertion)
-pub fn setPixel(self: Image, pixel_pos: sf.Vector2u, color: sf.Color) void {
+pub fn setPixel(self: *Image, pixel_pos: sf.Vector2u, color: sf.Color) void {
     const size = self.getSize();
     assert(pixel_pos.x < size.x and pixel_pos.y < size.y);
 

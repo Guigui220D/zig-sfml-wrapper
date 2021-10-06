@@ -21,7 +21,7 @@ pub fn create() !Clock {
 }
 
 /// Destroys this clock
-pub fn destroy(self: Clock) void {
+pub fn destroy(self: *Clock) void {
     sf.c.sfClock_destroy(self._ptr);
 }
 
@@ -33,7 +33,7 @@ pub fn getElapsedTime(self: Clock) sf.Time {
 }
 
 /// Gets the elapsed seconds and restarts the timer
-pub fn restart(self: Clock) sf.Time {
+pub fn restart(self: *Clock) sf.Time {
     var time = sf.c.sfClock_restart(self._ptr).microseconds;
     return sf.Time{ .us = time };
 }

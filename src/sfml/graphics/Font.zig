@@ -14,7 +14,7 @@ pub fn createFromFile(path: [:0]const u8) !Font {
     return Font{ ._ptr = font.? };
 }
 /// Destroys a font
-pub fn destroy(self: Font) void {
+pub fn destroy(self: *Font) void {
     sf.c.sfFont_destroy(self._ptr);
 }
 

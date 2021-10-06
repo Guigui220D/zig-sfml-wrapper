@@ -31,7 +31,7 @@ pub fn createFromTexture(texture: sf.Texture) !Sprite {
 }
 
 /// Destroys this sprite
-pub fn destroy(self: Sprite) void {
+pub fn destroy(self: *Sprite) void {
     sf.c.sfSprite_destroy(self._ptr);
 }
 
@@ -51,11 +51,11 @@ pub fn getPosition(self: Sprite) sf.Vector2f {
     return sf.Vector2f._fromCSFML(sf.c.sfSprite_getPosition(self._ptr));
 }
 /// Sets the position of this sprite
-pub fn setPosition(self: Sprite, pos: sf.Vector2f) void {
+pub fn setPosition(self: *Sprite, pos: sf.Vector2f) void {
     sf.c.sfSprite_setPosition(self._ptr, pos._toCSFML());
 }
 /// Adds the offset to this shape's position
-pub fn move(self: Sprite, offset: sf.Vector2f) void {
+pub fn move(self: *Sprite, offset: sf.Vector2f) void {
     sf.c.sfSprite_move(self._ptr, offset._toCSFML());
 }
 
@@ -64,11 +64,11 @@ pub fn getScale(self: Sprite) sf.Vector2f {
     return sf.Vector2f._fromCSFML(sf.c.sfSprite_getScale(self._ptr));
 }
 /// Sets the scale of this sprite
-pub fn setScale(self: Sprite, factor: sf.Vector2f) void {
+pub fn setScale(self: *Sprite, factor: sf.Vector2f) void {
     sf.c.sfSprite_setScale(self._ptr, factor._toCSFML());
 }
 /// Scales this sprite
-pub fn scale(self: Sprite, factor: sf.Vector2f) void {
+pub fn scale(self: *Sprite, factor: sf.Vector2f) void {
     sf.c.sfSprite_scale(self._ptr, factor._toCSFML());
 }
 
@@ -77,7 +77,7 @@ pub fn getOrigin(self: Sprite) sf.Vector2f {
     return sf.Vector2f._fromCSFML(sf.c.sfSprite_getOrigin(self._ptr));
 }
 /// Sets the origin of this sprite
-pub fn setOrigin(self: Sprite, origin: sf.Vector2f) void {
+pub fn setOrigin(self: *Sprite, origin: sf.Vector2f) void {
     sf.c.sfSprite_setOrigin(self._ptr, origin._toCSFML());
 }
 
@@ -86,11 +86,11 @@ pub fn getRotation(self: Sprite) f32 {
     return sf.c.sfSprite_getRotation(self._ptr);
 }
 /// Sets the rotation of this sprite
-pub fn setRotation(self: Sprite, angle: f32) void {
+pub fn setRotation(self: *Sprite, angle: f32) void {
     sf.c.sfSprite_setRotation(self._ptr, angle);
 }
 /// Rotates this shape by a given amount
-pub fn rotate(self: Sprite, angle: f32) void {
+pub fn rotate(self: *Sprite, angle: f32) void {
     sf.c.sfSprite_rotate(self._ptr, angle);
 }
 
@@ -99,7 +99,7 @@ pub fn getColor(self: Sprite) sf.Color {
     return sf.Color._fromCSFML(sf.c.sfSprite_getColor(self._ptr));
 }
 /// Sets the color of this sprite
-pub fn setColor(self: Sprite, color: sf.Color) void {
+pub fn setColor(self: *Sprite, color: sf.Color) void {
     sf.c.sfSprite_setColor(self._ptr, color._toCSFML());
 }
 
@@ -111,7 +111,7 @@ pub fn getTexture(self: Sprite) ?sf.Texture {
     } else return null;
 }
 /// Sets this sprite's texture (the sprite will take the texture's dimensions)
-pub fn setTexture(self: Sprite, texture: ?sf.Texture) void {
+pub fn setTexture(self: *Sprite, texture: ?sf.Texture) void {
     var tex = if (texture) |t| t._get() else null;
     sf.c.sfSprite_setTexture(self._ptr, tex, 1);
 }
@@ -120,7 +120,7 @@ pub fn getTextureRect(self: Sprite) sf.IntRect {
     return sf.IntRect._fromCSFML(sf.c.sfSprite_getTextureRect(self._ptr));
 }
 /// Sets the sub-rectangle of the texture that the sprite will display
-pub fn setTextureRect(self: Sprite, rect: sf.IntRect) void {
+pub fn setTextureRect(self: *Sprite, rect: sf.IntRect) void {
     sf.c.sfSprite_setTextureRect(self._ptr, rect._toCSFML());
 }
 

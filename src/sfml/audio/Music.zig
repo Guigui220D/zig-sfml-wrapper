@@ -18,22 +18,22 @@ pub const initFromMemory = @compileError("Function is not implemented yet.");
 pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Destroys this music object
-pub fn destroy(self: Music) void {
+pub fn destroy(self: *Music) void {
     sf.c.sfMusic_destroy(self._ptr);
 }
 
 // Music control functions
 
 /// Plays the music
-pub fn play(self: Music) void {
+pub fn play(self: *Music) void {
     sf.c.sfMusic_play(self._ptr);
 }
 /// Pauses the music
-pub fn pause(self: Music) void {
+pub fn pause(self: *Music) void {
     sf.c.sfMusic_pause(self._ptr);
 }
 /// Stops the music and resets the player position
-pub fn stop(self: Music) void {
+pub fn stop(self: *Music) void {
     sf.c.sfMusic_stop(self._ptr);
 }
 
@@ -49,7 +49,7 @@ pub fn getPlayingOffset(self: Music) sf.Time {
     return sf.Time._fromCSFML(sf.c.sfMusic_getPlayingOffset(self._ptr));
 }
 /// Sets the current stream position of the music
-pub fn setPlayingOffset(self: Music, offset: sf.Time) void {
+pub fn setPlayingOffset(self: *Music, offset: sf.Time) void {
     sf.c.sfMusic_setPlayingOffset(self._ptr, offset._toCSFML());
 }
 
@@ -58,7 +58,7 @@ pub fn getLoopPoints(self: Music) sf.TimeSpan {
     return sf.TimeSpan._fromCSFML(sf.c.sfMusic_getLoopPoints(self._ptr));
 }
 /// Gets the loop points of the music
-pub fn setLoopPoints(self: Music, span: sf.TimeSpan) void {
+pub fn setLoopPoints(self: *Music, span: sf.TimeSpan) void {
     sf.c.sfMusic_setLoopPoints(self._ptr, span._toCSFML());
 }
 
@@ -67,7 +67,7 @@ pub fn getLoop(self: Music) bool {
     return sf.c.sfMusic_getLoop(self._ptr) != 0;
 }
 /// Enable or disable auto loop
-pub fn setLoop(self: Music, loop: bool) void {
+pub fn setLoop(self: *Music, loop: bool) void {
     sf.c.sfMusic_setLoop(self._ptr, @boolToInt(loop));
 }
 
@@ -76,7 +76,7 @@ pub fn getPitch(self: Music) f32 {
     return sf.c.sfMusic_getPitch(self._ptr);
 }
 /// Gets the pitch of the music
-pub fn setPitch(self: Music, pitch: f32) void {
+pub fn setPitch(self: *Music, pitch: f32) void {
     sf.c.sfMusic_setPitch(self._ptr, pitch);
 }
 
@@ -85,7 +85,7 @@ pub fn getVolume(self: Music) f32 {
     return sf.c.sfMusic_getVolume(self._ptr);
 }
 /// Gets the volume of the music
-pub fn setVolume(self: Music, volume: f32) void {
+pub fn setVolume(self: *Music, volume: f32) void {
     sf.c.sfMusic_setVolume(self._ptr, volume);
 }
 

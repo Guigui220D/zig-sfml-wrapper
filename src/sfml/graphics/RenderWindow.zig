@@ -61,7 +61,7 @@ pub fn createFromHandle(handle: sf.WindowHandle, settings: ?sf.ContextSettings) 
 }
 
 /// Destroys this window object
-pub fn destroy(self: RenderWindow) void {
+pub fn destroy(self: *RenderWindow) void {
     sf.c.sfRenderWindow_destroy(self._ptr);
 }
 
@@ -73,13 +73,13 @@ pub fn isOpen(self: RenderWindow) bool {
 }
 
 /// Closes this window
-pub fn close(self: RenderWindow) void {
+pub fn close(self: *RenderWindow) void {
     sf.c.sfRenderWindow_close(self._ptr);
 }
 
 /// Gets an event from the queue, returns null is theres none
 /// Use while on this to get all the events in your game loop
-pub fn pollEvent(self: RenderWindow) ?sf.window.Event {
+pub fn pollEvent(self: *RenderWindow) ?sf.window.Event {
     var event: sf.c.sfEvent = undefined;
     if (sf.c.sfRenderWindow_pollEvent(self._ptr, &event) == 0)
         return null;
@@ -94,27 +94,27 @@ pub fn pollEvent(self: RenderWindow) ?sf.window.Event {
 // Drawing functions
 
 /// Clears the drawing screen with a color
-pub fn clear(self: RenderWindow, color: sf.Color) void {
+pub fn clear(self: *RenderWindow, color: sf.Color) void {
     sf.c.sfRenderWindow_clear(self._ptr, color._toCSFML());
 }
 
 /// Displays what has been drawn on the render area
-pub fn display(self: RenderWindow) void {
+pub fn display(self: *RenderWindow) void {
     sf.c.sfRenderWindow_display(self._ptr);
 }
 
 /// Draw something on the screen (won't be visible until display is called)
 /// Object must have a sfDraw function (look at CircleShape for reference)
 /// You can pass a render state or null for default
-pub fn draw(self: RenderWindow, to_draw: anytype, states: ?sf.RenderStates) void {
+pub fn draw(self: *RenderWindow, to_draw: anytype, states: ?sf.RenderStates) void {
     const T = @TypeOf(to_draw);
     if (comptime @import("std").meta.trait.hasFn("sfDraw")(T)) {
         // Inline call of object's draw function
         if (states) |s| {
             var cstates = s._toCSFML();
-            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self, &cstates });
+            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, &cstates });
         } else
-            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self, null });
+            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, null });
         // to_draw.sfDraw(self, states);
     } else @compileError("You must provide a drawable object (struct with \"sfDraw\" method).");
 }
@@ -132,7 +132,7 @@ pub fn getDefaultView(self: RenderWindow) sf.View {
     return sf.View._fromCSFML(sf.c.sfRenderWindow_getDefaultView(self._ptr).?);
 }
 /// Sets the view of this window
-pub fn setView(self: RenderWindow, view: sf.View) void {
+pub fn setView(self: *RenderWindow, view: sf.View) void {
     var cview = view._toCSFML();
     defer sf.c.sfView_destroy(cview);
     sf.c.sfRenderWindow_setView(self._ptr, cview);
@@ -147,7 +147,7 @@ pub fn getSize(self: RenderWindow) sf.Vector2u {
     return sf.Vector2u._fromCSFML(sf.c.sfRenderWindow_getSize(self._ptr));
 }
 /// Sets the size of this window
-pub fn setSize(self: RenderWindow, size: sf.Vector2u) void {
+pub fn setSize(self: *RenderWindow, size: sf.Vector2u) void {
     sf.c.sfRenderWindow_setSize(self._ptr, size._toCSFML());
 }
 
@@ -156,22 +156,22 @@ pub fn getPosition(self: RenderWindow) sf.Vector2i {
     return sf.Vector2i._fromCSFML(sf.c.sfRenderWindow_getPosition(self._ptr));
 }
 /// Sets the position of this window
-pub fn setPosition(self: RenderWindow, pos: sf.Vector2i) void {
+pub fn setPosition(self: *RenderWindow, pos: sf.Vector2i) void {
     sf.c.sfRenderWindow_setPosition(self._ptr, pos._toCSFML());
 }
 
 // TODO : unicode title?
 /// Sets the title of this window
-pub fn setTitle(self: RenderWindow, title: [:0]const u8) void {
+pub fn setTitle(self: *RenderWindow, title: [:0]const u8) void {
     sf.c.sfRenderWindow_setTitle(self._ptr, title);
 }
 
 /// Sets the windows's framerate limit
-pub fn setFramerateLimit(self: RenderWindow, fps: c_uint) void {
+pub fn setFramerateLimit(self: *RenderWindow, fps: c_uint) void {
     sf.c.sfRenderWindow_setFramerateLimit(self._ptr, fps);
 }
 /// Enables or disables vertical sync
-pub fn setVerticalSyncEnabled(self: RenderWindow, enabled: bool) void {
+pub fn setVerticalSyncEnabled(self: *RenderWindow, enabled: bool) void {
     sf.c.sfRenderWindow_setVerticalSyncEnabled(self._ptr, @boolToInt(enabled));
 }
 

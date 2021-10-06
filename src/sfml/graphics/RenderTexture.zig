@@ -28,34 +28,34 @@ pub fn createWithDepthBuffer(size: sf.Vector2u) !RenderTexture {
 }
 
 /// Destroys this render texture
-pub fn destroy(self: RenderTexture) void {
+pub fn destroy(self: *RenderTexture) void {
     sf.c.sfRenderTexture_destroy(self._ptr);
 }
 
 // Drawing functions
 
 /// Clears the drawing target with a color
-pub fn clear(self: RenderTexture, color: sf.Color) void {
+pub fn clear(self: *RenderTexture, color: sf.Color) void {
     sf.c.sfRenderTexture_clear(self._ptr, color._toCSFML());
 }
 
 /// Updates the texture with what has been drawn on the render area
-pub fn display(self: RenderTexture) void {
+pub fn display(self: *RenderTexture) void {
     sf.c.sfRenderTexture_display(self._ptr);
 }
 
 /// Draw something on the texture (won't be visible until display is called)
 /// Object must have a sfDraw function (look at CircleShape for reference)
 /// You can pass a render state or null for default
-pub fn draw(self: RenderTexture, to_draw: anytype, states: ?sf.RenderStates) void {
+pub fn draw(self: *RenderTexture, to_draw: anytype, states: ?sf.RenderStates) void {
     const T = @TypeOf(to_draw);
     if (comptime @import("std").meta.trait.hasFn("sfDraw")(T)) {
         // Inline call of object's draw function
         if (states) |s| {
             var cstates = s._toCSFML();
-            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self, &cstates });
+            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, &cstates });
         } else
-            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self, null });
+            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, null });
         // to_draw.sfDraw(self, states);
     } else @compileError("You must provide a drawable object (struct with \"sfDraw\" method).");
 }
@@ -69,7 +69,7 @@ pub fn getTexture(self: RenderTexture) sf.Texture {
 // Texture related stuff
 
 /// Generates a mipmap for the current texture data, returns true if the operation succeeded
-pub fn generateMipmap(self: RenderTexture) bool {
+pub fn generateMipmap(self: *RenderTexture) bool {
     return sf.c.sfRenderTexture_generateMipmap(self._ptr) != 0;
 }
 
@@ -78,7 +78,7 @@ pub fn isSmooth(self: RenderTexture) bool {
     return sf.c.sfRenderTexture_isSmooth(self._ptr) != 0;
 }
 /// Enables or disables texture smoothing
-pub fn setSmooth(self: RenderTexture, smooth: bool) void {
+pub fn setSmooth(self: *RenderTexture, smooth: bool) void {
     sf.c.sfRenderTexture_setSmooth(self._ptr, @boolToInt(smooth));
 }
 
@@ -87,7 +87,7 @@ pub fn isRepeated(self: RenderTexture) bool {
     return sf.c.sfRenderTexture_isRepeated(self._ptr) != 0;
 }
 /// Enables or disables texture repeating
-pub fn setRepeated(self: RenderTexture, repeated: bool) void {
+pub fn setRepeated(self: *RenderTexture, repeated: bool) void {
     sf.c.sfRenderTexture_setRepeated(self._ptr, @boolToInt(repeated));
 }
 
@@ -109,7 +109,7 @@ pub fn getDefaultView(self: RenderTexture) sf.View {
     return sf.View._fromCSFML(sf.c.sfRenderTexture_getDefaultView(self._ptr).?);
 }
 /// Sets the view of this target
-pub fn setView(self: RenderTexture, view: sf.View) void {
+pub fn setView(self: *RenderTexture, view: sf.View) void {
     var cview = view._toCSFML();
     defer sf.c.sfView_destroy(cview);
     sf.c.sfRenderTexture_setView(self._ptr, cview);
@@ -169,7 +169,7 @@ test "rendertexture tests" {
     try tst.expectEqual(sf.Vector2u{ .x = 10, .y = 10 }, tex.getSize());
     try tst.expectEqual(sf.Vector2u{ .x = 10, .y = 10 }, rentex.getSize());
 
-    const img = tex.copyToImage();
+    var img = tex.copyToImage();
     defer img.destroy();
 
     try tst.expectEqual(sf.Color.Blue, img.getPixel(.{ .x = 1, .y = 1 }));

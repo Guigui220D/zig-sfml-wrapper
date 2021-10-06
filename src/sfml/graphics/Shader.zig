@@ -38,7 +38,7 @@ pub fn createFromMemory(
     } else return sf.Error.nullptrUnknownReason;
 }
 /// Destroys this shader object
-pub fn destroy(self: Shader) void {
+pub fn destroy(self: *Shader) void {
     sf.c.sfShader_destroy(self._ptr);
 }
 
@@ -63,7 +63,7 @@ pub const CurrentTexture: CurrentTextureT = .{};
 /// Sets an uniform for the shader
 /// Colors are vectors so if you want to pass a color use .toIVec4() or .toFVec4()
 /// Pass CurrentTexture if you want to have the drawing texture as an uniform, which cannot be known in advance
-pub fn setUniform(self: Shader, name: [:0]const u8, value: anytype) void {
+pub fn setUniform(self: *Shader, name: [:0]const u8, value: anytype) void {
     const T = @TypeOf(value);
     switch (T) {
         f32 => sf.c.sfShader_setFloatUniform(self._ptr, name, value),

@@ -42,10 +42,10 @@ pub const Texture = union(TextureType) {
 
     /// Destroys a texture
     /// Be careful, you can only destroy non const textures
-    pub fn destroy(self: Texture) void {
+    pub fn destroy(self: *Texture) void {
         // TODO : is it possible to detect that comptime?
         // Should this panic?
-        if (self == ._const_ptr)
+        if (self.* == ._const_ptr)
             @panic("Can't destroy a const texture pointer");
         sf.c.sfTexture_destroy(self._ptr);
     }
@@ -90,8 +90,8 @@ pub const Texture = union(TextureType) {
     }
 
     /// Updates the pixels of the image from an array of pixels (colors)
-    pub fn updateFromPixels(self: Texture, pixels: []const sf.Color, zone: ?sf.Rect(c_uint)) !void {
-        if (self == ._const_ptr)
+    pub fn updateFromPixels(self: *Texture, pixels: []const sf.Color, zone: ?sf.Rect(c_uint)) !void {
+        if (self.* == ._const_ptr)
             @panic("Can't set pixels on a const texture");
         if (self.isSrgb())
             @panic("Updating an srgb from a pixel array isn't implemented");
@@ -122,7 +122,7 @@ pub const Texture = union(TextureType) {
         sf.c.sfTexture_updateFromPixels(self._ptr, @ptrCast([*]const u8, pixels.ptr), real_zone.width, real_zone.height, real_zone.left, real_zone.top);
     }
     /// Updates the pixels of the image from an other texture
-    pub fn updateFromTexture(self: Texture, other: Texture, copy_pos: ?sf.Vector2u) void {
+    pub fn updateFromTexture(self: *Texture, other: Texture, copy_pos: ?sf.Vector2u) void {
         if (self == ._const_ptr)
             @panic("Can't set pixels on a const texture");
 
@@ -135,8 +135,8 @@ pub const Texture = union(TextureType) {
         sf.c.sfTexture_updateFromTexture(self._ptr, other._get(), pos.x, pos.y);
     }
     /// Updates the pixels of the image from an image
-    pub fn updateFromImage(self: Texture, image: sf.Image, copy_pos: ?sf.Vector2u) void {
-        if (self == ._const_ptr)
+    pub fn updateFromImage(self: *Texture, image: sf.Image, copy_pos: ?sf.Vector2u) void {
+        if (self.* == ._const_ptr)
             @panic("Can't set pixels on a const texture");
 
         var pos = if (copy_pos) |a| a else sf.Vector2u{ .x = 0, .y = 0 };
@@ -153,8 +153,8 @@ pub const Texture = union(TextureType) {
         return sf.c.sfTexture_isSmooth(self._ptr) != 0;
     }
     /// Enables or disables texture smoothing
-    pub fn setSmooth(self: Texture, smooth: bool) void {
-        if (self == ._const_ptr)
+    pub fn setSmooth(self: *Texture, smooth: bool) void {
+        if (self.* == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
         sf.c.sfTexture_setSmooth(self._ptr, @boolToInt(smooth));
@@ -165,8 +165,8 @@ pub const Texture = union(TextureType) {
         return sf.c.sfTexture_isRepeated(self._ptr) != 0;
     }
     /// Enables or disables texture repeating
-    pub fn setRepeated(self: Texture, repeated: bool) void {
-        if (self == ._const_ptr)
+    pub fn setRepeated(self: *Texture, repeated: bool) void {
+        if (self.* == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
         sf.c.sfTexture_setRepeated(self._ptr, @boolToInt(repeated));
@@ -178,16 +178,16 @@ pub const Texture = union(TextureType) {
         return sf.c.sfTexture_isSrgb(self._ptr) != 0;
     }
     /// Enables or disables SRGB
-    pub fn setSrgb(self: Texture, srgb: bool) void {
-        if (self == ._const_ptr)
+    pub fn setSrgb(self: *Texture, srgb: bool) void {
+        if (self.* == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
         sf.c.sfTexture_setSrgb(self._ptr, @boolToInt(srgb));
     }
 
     /// Swaps this texture's contents with an other texture
-    pub fn swap(self: Texture, other: Texture) void {
-        if (self == ._const_ptr or other == ._const_ptr)
+    pub fn swap(self: *Texture, other: *Texture) void {
+        if (self.* == ._const_ptr or other.* == ._const_ptr)
             @panic("Texture swapping must be done between two non const textures");
 
         sf.c.sfTexture_swap(self._ptr, other._ptr);
@@ -196,7 +196,7 @@ pub const Texture = union(TextureType) {
     // Others
 
     /// Generates a mipmap for the current texture data, returns true if the operation succeeded
-    pub fn generateMipmap(self: Texture) bool {
+    pub fn generateMipmap(self: *Texture) bool {
         if (self == ._const_ptr)
             @panic("Can't act on a const texture");
 
@@ -241,7 +241,7 @@ test "texture: sane getters and setters" {
     try tst.expect(tex.isSmooth());
     try tst.expect(tex.isRepeated());
 
-    const img = tex.copyToImage();
+    var img = tex.copyToImage();
     defer img.destroy();
 
     try tst.expectEqual(sf.Color.Green, img.getPixel(.{ .x = 0, .y = 0 }));
@@ -258,7 +258,7 @@ test "texture: sane getters and setters" {
     var tex2 = try Texture.create(.{ .x = 100, .y = 100 });
     defer tex2.destroy();
 
-    copy.swap(tex2);
+    copy.swap(&tex2);
 
     try tst.expectEqual(@as(usize, 100 * 100), copy.getPixelCount());
     try tst.expectEqual(@as(usize, 120), tex2.getPixelCount());

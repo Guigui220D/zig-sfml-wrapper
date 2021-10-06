@@ -23,7 +23,7 @@ pub fn create(radius: f32) !CircleShape {
 }
 
 /// Destroys a circle shape
-pub fn destroy(self: CircleShape) void {
+pub fn destroy(self: *CircleShape) void {
     sf.c.sfCircleShape_destroy(self._ptr);
 }
 
@@ -43,7 +43,7 @@ pub fn getFillColor(self: CircleShape) sf.Color {
     return sf.Color._fromCSFML(sf.c.sfCircleShape_getFillColor(self._ptr));
 }
 /// Sets the fill color of this circle shape
-pub fn setFillColor(self: CircleShape, color: sf.Color) void {
+pub fn setFillColor(self: *CircleShape, color: sf.Color) void {
     sf.c.sfCircleShape_setFillColor(self._ptr, color._toCSFML());
 }
 
@@ -52,7 +52,7 @@ pub fn getOutlineColor(self: CircleShape) sf.Color {
     return sf.Color._fromCSFML(sf.c.sfCircleShape_getOutlineColor(self._ptr));
 }
 /// Sets the outline color of this circle shape
-pub fn setOutlineColor(self: CircleShape, color: sf.Color) void {
+pub fn setOutlineColor(self: *CircleShape, color: sf.Color) void {
     sf.c.sfCircleShape_setOutlineColor(self._ptr, color._toCSFML());
 }
 
@@ -61,7 +61,7 @@ pub fn getOutlineThickness(self: CircleShape) f32 {
     return sf.c.sfCircleShape_getOutlineThickness(self._ptr);
 }
 /// Sets the outline thickness of this circle shape
-pub fn setOutlineThickness(self: CircleShape, thickness: f32) void {
+pub fn setOutlineThickness(self: *CircleShape, thickness: f32) void {
     sf.c.sfCircleShape_setOutlineThickness(self._ptr, thickness);
 }
 
@@ -70,7 +70,7 @@ pub fn getRadius(self: CircleShape) f32 {
     return sf.c.sfCircleShape_getRadius(self._ptr);
 }
 /// Sets the radius of this circle shape
-pub fn setRadius(self: CircleShape, radius: f32) void {
+pub fn setRadius(self: *CircleShape, radius: f32) void {
     sf.c.sfCircleShape_setRadius(self._ptr, radius);
 }
 
@@ -79,11 +79,11 @@ pub fn getPosition(self: CircleShape) sf.Vector2f {
     return sf.Vector2f._fromCSFML(sf.c.sfCircleShape_getPosition(self._ptr));
 }
 /// Sets the position of this circle shape
-pub fn setPosition(self: CircleShape, pos: sf.Vector2f) void {
+pub fn setPosition(self: *CircleShape, pos: sf.Vector2f) void {
     sf.c.sfCircleShape_setPosition(self._ptr, pos._toCSFML());
 }
 /// Adds the offset to this shape's position
-pub fn move(self: CircleShape, offset: sf.Vector2f) void {
+pub fn move(self: *CircleShape, offset: sf.Vector2f) void {
     sf.c.sfCircleShape_move(self._ptr, offset._toCSFML());
 }
 
@@ -92,7 +92,7 @@ pub fn getOrigin(self: CircleShape) sf.Vector2f {
     return sf.Vector2f._fromCSFML(sf.c.sfCircleShape_getOrigin(self._ptr));
 }
 /// Sets the origin of this circle shape
-pub fn setOrigin(self: CircleShape, origin: sf.Vector2f) void {
+pub fn setOrigin(self: *CircleShape, origin: sf.Vector2f) void {
     sf.c.sfCircleShape_setOrigin(self._ptr, origin._toCSFML());
 }
 
@@ -101,11 +101,11 @@ pub fn getRotation(self: CircleShape) f32 {
     return sf.c.sfCircleShape_getRotation(self._ptr);
 }
 /// Sets the rotation of this circle shape
-pub fn setRotation(self: CircleShape, angle: f32) void {
+pub fn setRotation(self: *CircleShape, angle: f32) void {
     sf.c.sfCircleShape_setRotation(self._ptr, angle);
 }
 /// Rotates this shape by a given amount
-pub fn rotate(self: CircleShape, angle: f32) void {
+pub fn rotate(self: *CircleShape, angle: f32) void {
     sf.c.sfCircleShape_rotate(self._ptr, angle);
 }
 
@@ -117,7 +117,7 @@ pub fn getTexture(self: CircleShape) ?sf.Texture {
     } else return null;
 }
 /// Sets the texture of this shape
-pub fn setTexture(self: CircleShape, texture: ?sf.Texture) void {
+pub fn setTexture(self: *CircleShape, texture: ?sf.Texture) void {
     var tex = if (texture) |t| t._get() else null;
     sf.c.sfCircleShape_setTexture(self._ptr, tex, 0);
 }
@@ -126,7 +126,7 @@ pub fn getTextureRect(self: CircleShape) sf.FloatRect {
     return sf.FloatRect._fromCSFML(sf.c.sfCircleShape_getTextureRect(self._ptr));
 }
 /// Sets the sub-rectangle of the texture that the shape will display
-pub fn setTextureRect(self: CircleShape, rect: sf.FloatRect) void {
+pub fn setTextureRect(self: *CircleShape, rect: sf.FloatRect) void {
     sf.c.sfCircleShape_getCircleRect(self._ptr, rect._toCSFML());
 }
 

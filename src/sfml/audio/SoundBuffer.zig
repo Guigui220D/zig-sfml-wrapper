@@ -24,7 +24,7 @@ pub const initFromMemory = @compileError("Function is not implemented yet.");
 pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Destroys this music object
-pub fn destroy(self: SoundBuffer) void {
+pub fn destroy(self: *SoundBuffer) void {
     sf.c.sfSoundBuffer_destroy(self._ptr);
 }
 
