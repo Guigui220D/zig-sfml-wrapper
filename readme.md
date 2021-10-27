@@ -14,7 +14,7 @@ Most of the classes are wrapped and you should be able to write games with this 
 - Transforms
 - Convex Shapes
 
-I do not plan to implement the network module, since there is already some pretty nice (networking libraries)[https://github.com/MasterQ32/zig-network] available for zig for udp and tcp stuff.
+I do not plan to implement the network module, since there is already some pretty nice [networking libraries](https://github.com/MasterQ32/zig-network) vailable for zig for udp and tcp stuff.
 
 ### Compiling
 
