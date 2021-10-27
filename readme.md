@@ -57,4 +57,6 @@ pub fn main() !void {
 
 ### Projects made with this wrapper
 
-[Pong clone I made](https://github.com/Guigui220D/sfml-pong-zig)
+Feel free to add your project to this list!
+
+- [Pong clone I made](https://github.com/Guigui220D/sfml-pong-zig)
