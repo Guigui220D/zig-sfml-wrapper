@@ -13,28 +13,16 @@ Most of the classes are wrapped and you should be able to write games with this 
 
 - Transforms
 - Convex Shapes
-- Context Settings
 
 I do not plan to implement the network module, since there is already some pretty nice (networking libraries)[https://github.com/MasterQ32/zig-network] available for zig for udp and tcp stuff.
 
 ### Compiling
 
-You need to add csfml first at the top of the tree, like that
-
-sfml-wrapper
-+ csfml
-+ + include
-+ + lib
-+ src
-+ build.zig
-
-Use `zig build run-sfml_example` (or an other example name) to run the example program
-
-Use `zig build test` to run the tests (which arent that useful)
+Check the [wiki](../../wiki) for a small guide on how to compile your project or the examples.
 
 ### Small example
 
-This is how you get started :
+This is a small example of how you use this sfml wrapper:
 
 ```zig
 //! This is a translation of the c++ code the sfml website gives you to test if SFML works
