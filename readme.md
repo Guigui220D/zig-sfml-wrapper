@@ -5,7 +5,7 @@
 ### What this is
 
 This is a wrapper for CSFML. Theres no problem importing CSFML in Zig, but the resulting code can be a little bit messy.
-My goal is to make things close enought to SFML, with nice methods.
+My goal is to make things close enough to SFML, with nice methods.
 
 ### How much is done
 
@@ -14,7 +14,7 @@ Most of the classes are wrapped and you should be able to write games with this 
 - Transforms
 - Convex Shapes
 
-I do not plan to implement the network module, since there is already some pretty nice [networking libraries](https://github.com/MasterQ32/zig-network) vailable for zig for udp and tcp stuff.
+I do not plan to implement the network module, since there is already some pretty nice [networking libraries](https://github.com/MasterQ32/zig-network) available for zig for udp and tcp stuff.
 
 ### Compiling
 
