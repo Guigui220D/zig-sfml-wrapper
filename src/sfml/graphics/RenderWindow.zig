@@ -142,6 +142,16 @@ pub fn getViewport(self: RenderWindow, view: sf.View) sf.IntRect {
     return sf.IntRect._fromCSFML(sf.c.sfRenderWindow_getViewPort(self._ptr, view._ptr));
 }
 
+/// Set mouse cursor grabbing
+pub fn setMouseCursorGrabbed(self: *RenderWindow, grab: bool) void {
+    sf.c.sfRenderWindow_setMouseCursorGrabbed(self._ptr, @boolToInt(grab));
+}
+
+/// Set mouse cursor visibility
+pub fn setMouseCursorVisible(self: *RenderWindow, visible: bool) void {
+    sf.c.sfRenderWindow_setMouseCursorVisible(self._ptr, @boolToInt(visible));
+}
+
 /// Gets the size of this window
 pub fn getSize(self: RenderWindow) sf.Vector2u {
     return sf.Vector2u._fromCSFML(sf.c.sfRenderWindow_getSize(self._ptr));
