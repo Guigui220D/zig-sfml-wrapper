@@ -44,6 +44,7 @@ pub const graphics = struct {
 
     pub const Vertex = @import("graphics/vertex.zig").Vertex;
     pub const VertexArray = @import("graphics/VertexArray.zig");
+    pub const VertexBuffer = @import("graphics/VertexBuffer.zig");
     pub const PrimitiveType = @import("graphics/primitive_type.zig").PrimitiveType;
 
     pub const Rect = @import("graphics/rect.zig").Rect;
@@ -67,7 +68,6 @@ pub const audio = struct {
 
 pub const network = @compileError("network module: to be implemented one day");
 
-pub const VertexBuffer = @compileError("VertexArray not available yet");
 pub const Transform = @compileError("Transform not available yet");
 
 pub const touch = @compileError("touch not available yet");

@@ -1,9 +1,11 @@
-//! Define a set of one or more 2D primitives. 
+//! Define a set of one or more 2D primitives. The vertices are stored in ram.
 
 const sf = @import("../sfml.zig");
 const std = @import("std");
 
 const VertexArray = @This();
+
+// Constructors/destructors
 
 /// Creates a vertex array from a slice of vertices
 pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphics.PrimitiveType) !VertexArray {
@@ -31,6 +33,7 @@ pub fn copy(self: VertexArray) !VertexArray {
 }
 
 // Wtf github copilot wrote that for me (all of the functions below here)
+// Methods and getters/setters
 
 /// Gets the vertex count of the vertex array
 pub fn getVertexCount(self: VertexArray) usize {
@@ -74,7 +77,7 @@ pub fn getBounds(self: VertexArray) sf.graphics.FloatRect {
     return sf.graphics.FloatRect._fromCSFML(sf.c.sfVertexArray_getBounds(self._ptr));
 }
 
-// Draw function
+/// Draw function
 pub fn sfDraw(self: VertexArray, window: anytype, states: ?*sf.c.sfRenderStates) void {
     switch (@TypeOf(window)) {
         sf.graphics.RenderWindow => sf.c.sfRenderWindow_drawVertexArray(window._ptr, self._ptr, states),
@@ -86,7 +89,7 @@ pub fn sfDraw(self: VertexArray, window: anytype, states: ?*sf.c.sfRenderStates)
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfVertexArray,
 
-test "vertex array: sane getters and setters" {
+test "VertexArray: sane getters and setters" {
     const tst = std.testing;
 
     const va_slice = [_]sf.graphics.Vertex{
@@ -95,6 +98,7 @@ test "vertex array: sane getters and setters" {
         .{ .position = .{ .x = -1, .y = 1 }, .color = sf.graphics.Color.Blue },
     };
     var va = try createFromSlice(va_slice[0..], sf.graphics.PrimitiveType.Triangles);
+    defer va.destroy();
 
     va.append(.{ .position = .{ .x = 1, .y = 1 }, .color = sf.graphics.Color.Yellow });
     va.setPrimitiveType(sf.graphics.PrimitiveType.Quads);
