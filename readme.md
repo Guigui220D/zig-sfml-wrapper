@@ -31,7 +31,6 @@ This is a small example of how you use this sfml wrapper:
 const sf = struct {
     usingnamespace @import("sfml");
     usingnamespace sf.graphics;
-    usingnamespace sf.window;
 };
 
 pub fn main() !void {
