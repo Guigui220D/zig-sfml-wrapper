@@ -103,19 +103,18 @@ test "VertexArray: sane getters and setters" {
     va.append(.{ .position = .{ .x = 1, .y = 1 }, .color = sf.graphics.Color.Yellow });
     va.setPrimitiveType(sf.graphics.PrimitiveType.Quads);
 
-    try tst.expectEqual(va.getVertexCount(), 4);
-    try tst.expectEqual(va.getPrimitiveType(), sf.graphics.PrimitiveType.Quads);
-    try tst.expectEqual(va.getBounds(), sf.graphics.FloatRect{ .left = -1, .top = 0, .width = 2, .height = 1 });
+    try tst.expectEqual(@as(usize, 4), va.getVertexCount());
+    try tst.expectEqual(sf.graphics.PrimitiveType.Quads, va.getPrimitiveType());
+    try tst.expectEqual(sf.graphics.FloatRect{ .left = -1, .top = 0, .width = 2, .height = 1 }, va.getBounds());
 
     va.resize(3);
     va.setPrimitiveType(sf.graphics.PrimitiveType.TriangleFan);
-    try tst.expectEqual(va.getVertexCount(), 3);
+    try tst.expectEqual(@as(usize, 3), va.getVertexCount());
 
     const vert = va.getVertex(0);
-    try tst.expectEqual(vert.position.x, -1);
-    try tst.expectEqual(vert.position.y, 0);
-    try tst.expectEqual(vert.color, sf.graphics.Color.Red);
+    try tst.expectEqual(sf.system.Vector2f{ .x = -1, .y = 0 }, vert.position);
+    try tst.expectEqual(sf.graphics.Color.Red, vert.color);
 
     va.clear();
-    try tst.expectEqual(va.getVertexCount(), 0);
+    try tst.expectEqual(@as(usize, 0), va.getVertexCount());
 }

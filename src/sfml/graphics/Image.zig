@@ -76,6 +76,34 @@ pub fn getSize(self: Image) sf.Vector2u {
     return sf.Vector2u{ .x = size.x, .y = size.y };
 }
 
+/// Changes the pixels of the image matching color to be transparent
+pub fn createMaskFromColor(self: *Image, color: sf.Color, alpha: u8) void {
+    sf.c.sfImage_createMaskFromColor(self._ptr, color._toCSFML(), alpha);
+}
+
+/// Flip an image horizontally (left <-> right)
+pub fn flipHorizontally(self: *Image) void {
+    sf.c.sfImage_flipHorizontally(self._ptr);
+}
+/// Flip an image vertically (top <-> bottom)
+pub fn flipVertically(self: *Image) void {
+    sf.c.sfImage_flipVertically(self._ptr);
+}
+
+/// Get a read-only pointer to the array of pixels of the image
+pub fn getPixelsSlice(self: Image) []const sf.Color {
+    const ptr = sf.c.sfImage_getPixelsPtr(self._ptr);
+
+    const size = self.getSize();
+    const len = size.x * size.y;
+
+    var ret: []const sf.Color = undefined;
+    ret.len = len;
+    ret.ptr = @ptrCast([*]const sf.Color, @alignCast(4, ptr));
+
+    return ret;
+}
+
 /// Pointer to the csfml texture
 _ptr: *sf.c.sfImage,
 
@@ -100,4 +128,8 @@ test "image: sane getters and setters" {
 
     var tex = try sf.Texture.createFromImage(img, null);
     defer tex.destroy();
+
+    img.setPixel(.{ .x = 1, .y = 2 }, sf.Color.Red);
+    var slice = img.getPixelsSlice();
+    try tst.expectEqual(sf.Color.Red, slice[0]);
 }

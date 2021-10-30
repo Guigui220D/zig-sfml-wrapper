@@ -61,7 +61,7 @@ test "VertexBuffer: sane getters and setters" {
     var va = try createFromSlice(va_slice[0..], sf.graphics.PrimitiveType.Triangles, Usage.Static);
     defer va.destroy();
 
-    try tst.expectEqual(va.getVertexCount(), 3);
-    try tst.expectEqual(va.getPrimitiveType(), sf.graphics.PrimitiveType.Triangles);
-    try tst.expectEqual(va.getUsage(), Usage.Static);
+    try tst.expectEqual(@as(usize, 3), va.getVertexCount());
+    try tst.expectEqual(sf.graphics.PrimitiveType.Triangles, va.getPrimitiveType());
+    try tst.expectEqual(Usage.Static, va.getUsage());
 }
