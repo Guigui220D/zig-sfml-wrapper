@@ -170,10 +170,15 @@ pub fn setPosition(self: *RenderWindow, pos: sf.Vector2i) void {
     sf.c.sfRenderWindow_setPosition(self._ptr, pos._toCSFML());
 }
 
-// TODO : unicode title?
 /// Sets the title of this window
 pub fn setTitle(self: *RenderWindow, title: [:0]const u8) void {
     sf.c.sfRenderWindow_setTitle(self._ptr, title);
+}
+/// Sets the title of this window, in unicode
+pub fn setUnicodeTitle(self: *RenderWindow, comptime title_utf8: []const u8) void {
+    const utils = @import("../utils.zig");
+    const u32string = utils.utf8toUnicode(title_utf8);
+    sf.c.sfRenderWindow_setUnicodeTitle(self._ptr, u32string.ptr);
 }
 
 /// Sets the windows's framerate limit

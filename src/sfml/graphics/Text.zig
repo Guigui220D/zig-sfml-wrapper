@@ -169,6 +169,12 @@ pub fn getGlobalBounds(self: Text) sf.FloatRect {
     return sf.FloatRect._fromCSFML(sf.c.sfText_getGlobalBounds(self._ptr));
 }
 
+/// Puts the origin at the center of the bounding box
+pub fn centerOrigin(self: *Text) void {
+    const bounds = self.getLocalBounds();
+    self.setOrigin(sf.Vector2f{ .x = bounds.width / 2, .y = bounds.height / 2 });
+}
+
 pub const getTransform = @compileError("Function is not implemented yet.");
 pub const getInverseTransform = @compileError("Function is not implemented yet.");
 
