@@ -1,5 +1,6 @@
 //! Graphical text that can be drawn to a render target.
 
+const std = @import("std");
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
     pub usingnamespace sf.system;
@@ -46,6 +47,15 @@ pub fn sfDraw(self: Text, window: anytype, states: ?*sf.c.sfRenderStates) void {
 /// Sets the content of this text
 pub fn setString(self: *Text, string: [:0]const u8) void {
     sf.c.sfText_setString(self._ptr, string);
+}
+/// Sets the content of this text, but using fmt
+pub fn setStringFmt(self: *Text, comptime format: []const u8, args: anytype) std.fmt.AllocPrintError!void {
+    const alloc = std.heap.c_allocator;
+
+    const buf = try std.fmt.allocPrintZ(alloc, format, args);
+    defer alloc.free(buf);
+
+    sf.c.sfText_setString(self._ptr, buf);
 }
 
 /// Sets the font of this text
@@ -182,12 +192,13 @@ pub const getInverseTransform = @compileError("Function is not implemented yet."
 _ptr: *sf.c.sfText,
 
 test "text: sane getters and setters" {
-    const tst = @import("std").testing;
+    const tst = std.testing;
 
     var text = try Text.create();
     defer text.destroy();
 
     text.setString("hello");
+    try text.setStringFmt("An int: {}", .{ 42 });
     text.setFillColor(sf.Color.Yellow);
     text.setOutlineColor(sf.Color.Red);
     text.setOutlineThickness(2);
