@@ -25,6 +25,7 @@ pub const window = struct {
     pub const ContextSettings = @import("window/context_settings.zig").ContextSettings;
     pub const keyboard = @import("window/keyboard.zig");
     pub const mouse = @import("window/mouse.zig");
+    pub const Joystick = @import("window/Joystick.zig");
 };
 
 pub const graphics = struct {
@@ -71,7 +72,6 @@ pub const network = @compileError("network module: to be implemented one day");
 pub const Transform = @compileError("Transform not available yet");
 
 pub const touch = @compileError("touch not available yet");
-pub const joystick = @compileError("Joystick not available yet");
 pub const sensor = @compileError("Sensor not available yet");
 pub const clipboard = @compileError("Clipboard not available yet");
 pub const Cursor = @compileError("Cursor not available yet");
