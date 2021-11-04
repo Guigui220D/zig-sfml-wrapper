@@ -5,12 +5,19 @@ const sf = @import("../sfml.zig");
 const SoundBuffer = @This();
 
 // Constructor/destructor
-/// Loads music from a file
+/// Loads sound from a file
 pub fn createFromFile(path: [:0]const u8) !SoundBuffer {
     var sound = sf.c.sfSoundBuffer_createFromFile(path);
-    if (sound == null)
-        return sf.Error.resourceLoadingError;
-    return SoundBuffer{ ._ptr = sound.? };
+    if (sound) |s| {
+        return SoundBuffer{ ._ptr = s };
+    } else return sf.Error.resourceLoadingError;
+}
+/// Loads sound from a file in memory
+pub fn createFromMemory(data: []const u8) !SoundBuffer {
+    var sound = sf.c.sfSoundBuffer_createFromMemory(@ptrCast(?*const c_void, data.ptr), data.len);
+    if (sound) |s| {
+        return SoundBuffer{ ._ptr = s };
+    } else return sf.Error.resourceLoadingError;
 }
 /// Creates a sound buffer from sample data
 pub fn createFromSamples(samples: []const i16, channel_count: usize, sample_rate: usize) !SoundBuffer {
@@ -20,7 +27,6 @@ pub fn createFromSamples(samples: []const i16, channel_count: usize, sample_rate
     return SoundBuffer{ ._ptr = sound.? };
 }
 
-pub const initFromMemory = @compileError("Function is not implemented yet.");
 pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Destroys this music object

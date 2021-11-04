@@ -16,11 +16,10 @@ const Image = @This();
 /// Creates a new image
 pub fn create(size: sf.Vector2u, color: sf.Color) !Image {
     var img = sf.c.sfImage_createFromColor(size.x, size.y, color._toCSFML());
-    if (img == null)
-        return sf.Error.nullptrUnknownReason;
-    return Image{ ._ptr = img.? };
+    if (img) |i| {
+        return Image{ ._ptr = i };
+    } else return sf.Error.nullptrUnknownReason;
 }
-
 /// Creates an image from a pixel array
 pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Image {
     // Check if there is enough data
@@ -29,17 +28,23 @@ pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Image {
 
     var img = sf.c.sfImage_createFromPixels(size.x, size.y, @ptrCast([*]const u8, pixels.ptr));
 
-    if (img == null)
-        return sf.Error.nullptrUnknownReason;
-    return Image{ ._ptr = img.? };
+    if (img) |i| {
+        return Image{ ._ptr = i };
+    } else return sf.Error.nullptrUnknownReason;
 }
-
 /// Loads an image from a file
 pub fn createFromFile(path: [:0]const u8) !Image {
     var img = sf.c.sfImage_createFromFile(path);
-    if (img == null)
-        return sf.Error.resourceLoadingError;
-    return Image{ ._ptr = img.? };
+    if (img) |i| {
+        return Image{ ._ptr = i };
+    } else return sf.Error.resourceLoadingError;
+}
+/// Loads an image from a file in memory
+pub fn createFromMemory(data: []const u8) !Image {
+    var img = sf.c.sfImage_createFromMemory(@ptrCast(?*const c_void, data.ptr), data.len);
+    if (img) |i| {
+        return Image{ ._ptr = i };
+    } else return sf.Error.resourceLoadingError;
 }
 
 /// Destroys an image

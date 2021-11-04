@@ -55,10 +55,10 @@ pub fn main() !void {
                         .Down => distortion_factor /= 2,
                         .Right => rise_factor *= 2,
                         .Left => rise_factor /= 2,
-                        else => {}
+                        else => {},
                     }
                 },
-                else => {}
+                else => {},
             }
         }
 

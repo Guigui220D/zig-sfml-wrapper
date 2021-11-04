@@ -51,10 +51,10 @@ pub const graphics = struct {
     pub const Rect = @import("graphics/rect.zig").Rect;
     pub const IntRect = Rect(c_int);
     pub const FloatRect = Rect(f32);
-    
+
     pub const Font = @import("graphics/Font.zig");
     pub const Text = @import("graphics/Text.zig");
-    
+
     pub const glsl = @import("graphics/glsl.zig");
     pub const Shader = @import("graphics/Shader.zig");
     pub const BlendMode = @import("graphics/BlendMode.zig");

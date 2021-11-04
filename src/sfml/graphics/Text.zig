@@ -198,7 +198,7 @@ test "text: sane getters and setters" {
     defer text.destroy();
 
     text.setString("hello");
-    try text.setStringFmt("An int: {}", .{ 42 });
+    try text.setStringFmt("An int: {}", .{42});
     text.setFillColor(sf.Color.Yellow);
     text.setOutlineColor(sf.Color.Red);
     text.setOutlineThickness(2);
