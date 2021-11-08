@@ -47,11 +47,25 @@ pub fn getVertexCount(self: VertexArray) usize {
     return sf.c.sfVertexArray_getVertexCount(self._ptr);
 }
 
-/// Getsa a pointer to a vertex using its index
+/// Gets a a pointer to a vertex using its index
+/// Don't keep the returned pointer, it can be invalidated by other functions
 pub fn getVertex(self: VertexArray, index: usize) *sf.graphics.Vertex {
+    // TODO: Should this use a pointer to the vertexarray?
     var ptr = sf.c.sfVertexArray_getVertex(self._ptr, index);
     std.debug.assert(index < self.getVertexCount());
     return @ptrCast(*sf.graphics.Vertex, ptr.?);
+}
+
+/// Gets a slice to the vertices of the vertex array
+/// Don't keep the returned pointer, it can be invalidated by other function
+pub fn getSlice(self: VertexArray) []sf.graphics.Vertex {
+    // TODO: Should this use a pointer to the vertexarray?
+    var ret: []sf.graphics.Vertex = undefined;
+
+    ret.len = self.getVertexCount();
+    ret.ptr = @ptrCast([*]sf.graphics.Vertex, self.getVertex(0));
+
+    return ret;
 }
 
 /// Clears the vertex array
@@ -123,6 +137,10 @@ test "VertexArray: sane getters and setters" {
     try tst.expectEqual(sf.graphics.Color.Red, vert.color);
 
     va.getVertex(1).* = .{ .position = .{ .x = 1, .y = 1 }, .color = sf.graphics.Color.Yellow };
+
+    var slice = va.getSlice();
+    try tst.expectEqual(sf.graphics.Color.Yellow, slice[1].color);
+    try tst.expectEqual(@as(usize, 3), slice.len);
 
     va.clear();
     try tst.expectEqual(@as(usize, 0), va.getVertexCount());
