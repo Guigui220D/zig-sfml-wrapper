@@ -1,7 +1,8 @@
 //! Utility class for manipulating RGBA colors.
 
 const sf = @import("../sfml_import.zig");
-const math = @import("std").math;
+const std = @import("std");
+const math = std.math;
 
 pub const Color = packed struct {
     /// Converts a color from a csfml object
@@ -64,6 +65,16 @@ pub const Color = packed struct {
         };
     }
 
+    /// Comptime helper function to create a color from a hexadecimal string
+    pub fn fromHex(comptime hex: []const u8) Color {
+        if (hex.len != 7 or hex[0] != '#')
+            @compileError("Invalid hexadecimal color");
+
+        const int = comptime try std.fmt.parseInt(u32, hex[1..7], 16);
+
+        return comptime fromInteger((int << 8) | 0xff);
+    }
+
     /// Creates a color from HSV and transparency components (this is not part of the SFML)
     /// hue is in degrees, saturation and value are in percents
     pub fn fromHSVA(hue: f32, saturation: f32, value: f32, alpha: f32) Color {
@@ -99,21 +110,11 @@ pub const Color = packed struct {
 
     /// Get a GLSL float vector for this color (for shaders)
     pub fn toFVec4(self: Color) sf.graphics.glsl.FVec4 {
-        return .{
-            .x = @intToFloat(f32, self.r) / 255.0,
-            .y = @intToFloat(f32, self.g) / 255.0,
-            .z = @intToFloat(f32, self.b) / 255.0,
-            .w = @intToFloat(f32, self.a) / 255.0
-        };
+        return .{ .x = @intToFloat(f32, self.r) / 255.0, .y = @intToFloat(f32, self.g) / 255.0, .z = @intToFloat(f32, self.b) / 255.0, .w = @intToFloat(f32, self.a) / 255.0 };
     }
     /// Get a GLSL int vector for this color (for shaders)
     pub fn toIVec4(self: Color) sf.graphcis.glsl.IVec4 {
-        return .{
-            .x = self.r,
-            .y = self.g,
-            .z = self.b,
-            .w = self.a
-        };
+        return .{ .x = self.r, .y = self.g, .z = self.b, .w = self.a };
     }
 
     // Colors
@@ -152,6 +153,7 @@ test "color: conversions" {
     var code: u32 = 0x4BDA9CFF;
     var col = Color.fromInteger(code);
 
+    try tst.expectEqual(Color.fromHex("#4BDA9C"), col);
     try tst.expectEqual(Color.fromRGB(75, 218, 156), col);
     try tst.expectEqual(code, col.toInteger());
 

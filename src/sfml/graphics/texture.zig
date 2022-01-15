@@ -17,16 +17,23 @@ pub const Texture = union(TextureType) {
     /// Creates a texture from nothing
     pub fn create(size: sf.Vector2u) !Texture {
         const tex = sf.c.sfTexture_create(@intCast(c_uint, size.x), @intCast(c_uint, size.y));
-        if (tex == null)
-            return sf.Error.nullptrUnknownReason;
-        return Texture{ ._ptr = tex.? };
+        if (tex) |t| {
+            return Texture{ ._ptr = t };
+        } else return sf.Error.resourceLoadingError;
     }
     /// Loads a texture from a file
     pub fn createFromFile(path: [:0]const u8) !Texture {
         const tex = sf.c.sfTexture_createFromFile(path, null);
-        if (tex == null)
-            return sf.Error.resourceLoadingError;
-        return Texture{ ._ptr = tex.? };
+        if (tex) |t| {
+            return Texture{ ._ptr = t };
+        } else return sf.Error.resourceLoadingError;
+    }
+    /// Loads a texture from a file in memory
+    pub fn createFromMemory(data: []const u8) !Texture {
+        const tex = sf.c.sfTexture_createFromMemory(@ptrCast(?*const c_void, data.ptr), data.len);
+        if (tex) |t| {
+            return Texture{ ._ptr = t };
+        } else return sf.Error.resourceLoadingError;
     }
     /// Creates an texture from an image
     pub fn createFromImage(image: sf.Image, area: ?sf.IntRect) !Texture {
@@ -35,9 +42,9 @@ pub const Texture = union(TextureType) {
         else
             sf.c.sfTexture_createFromImage(image._ptr, null);
 
-        if (tex == null)
-            return sf.Error.nullptrUnknownReason;
-        return Texture{ ._ptr = tex.? };
+        if (tex) |t| {
+            return Texture{ ._ptr = t };
+        } else return sf.Error.nullptrUnknownReason;
     }
 
     /// Destroys a texture

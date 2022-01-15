@@ -7,6 +7,13 @@ const VertexArray = @This();
 
 // Constructors/destructors
 
+/// Creates an empty vertex array
+pub fn create() !VertexArray {
+    var va = sf.c.sfVertexArray_create();
+    if (va) |vert| {
+        return VertexArray{ ._ptr = vert };
+    } else return sf.Error.nullptrUnknownReason;
+}
 /// Creates a vertex array from a slice of vertices
 pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphics.PrimitiveType) !VertexArray {
     var va = sf.c.sfVertexArray_create();
@@ -40,11 +47,25 @@ pub fn getVertexCount(self: VertexArray) usize {
     return sf.c.sfVertexArray_getVertexCount(self._ptr);
 }
 
-/// Gets the vertex using its index
-pub fn getVertex(self: VertexArray, index: usize) sf.graphics.Vertex {
-    var v = sf.c.sfVertexArray_getVertex(self._ptr, index);
+/// Gets a a pointer to a vertex using its index
+/// Don't keep the returned pointer, it can be invalidated by other functions
+pub fn getVertex(self: VertexArray, index: usize) *sf.graphics.Vertex {
+    // TODO: Should this use a pointer to the vertexarray?
+    var ptr = sf.c.sfVertexArray_getVertex(self._ptr, index);
     std.debug.assert(index < self.getVertexCount());
-    return @bitCast(sf.graphics.Vertex, v.?.*);
+    return @ptrCast(*sf.graphics.Vertex, ptr.?);
+}
+
+/// Gets a slice to the vertices of the vertex array
+/// Don't keep the returned pointer, it can be invalidated by other function
+pub fn getSlice(self: VertexArray) []sf.graphics.Vertex {
+    // TODO: Should this use a pointer to the vertexarray?
+    var ret: []sf.graphics.Vertex = undefined;
+
+    ret.len = self.getVertexCount();
+    ret.ptr = @ptrCast([*]sf.graphics.Vertex, self.getVertex(0));
+
+    return ret;
 }
 
 /// Clears the vertex array
@@ -111,10 +132,21 @@ test "VertexArray: sane getters and setters" {
     va.setPrimitiveType(sf.graphics.PrimitiveType.TriangleFan);
     try tst.expectEqual(@as(usize, 3), va.getVertexCount());
 
-    const vert = va.getVertex(0);
+    const vert = va.getVertex(0).*;
     try tst.expectEqual(sf.system.Vector2f{ .x = -1, .y = 0 }, vert.position);
     try tst.expectEqual(sf.graphics.Color.Red, vert.color);
 
+    va.getVertex(1).* = .{ .position = .{ .x = 1, .y = 1 }, .color = sf.graphics.Color.Yellow };
+
+    var slice = va.getSlice();
+    try tst.expectEqual(sf.graphics.Color.Yellow, slice[1].color);
+    try tst.expectEqual(@as(usize, 3), slice.len);
+
     va.clear();
     try tst.expectEqual(@as(usize, 0), va.getVertexCount());
+
+    var va2 = try create();
+    defer va2.destroy();
+
+    try tst.expectEqual(@as(usize, 0), va2.getVertexCount());
 }

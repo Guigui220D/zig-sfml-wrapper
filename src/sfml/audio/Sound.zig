@@ -12,9 +12,9 @@ const Sound = @This();
 /// Inits an empty sound
 pub fn create() !Sound {
     var sound = sf.c.sfSound_create();
-    if (sound == null)
-        return sf.Error.nullptrUnknownReason;
-    return Sound{ ._ptr = sound.? };
+    if (sound) |s| {
+        return Sound{ ._ptr = s };
+    } else return sf.Error.nullptrUnknownReason;
 }
 
 /// Inits a sound with a SoundBuffer object

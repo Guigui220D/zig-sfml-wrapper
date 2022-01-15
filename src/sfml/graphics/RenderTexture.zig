@@ -54,8 +54,7 @@ pub fn draw(self: *RenderTexture, to_draw: anytype, states: ?sf.RenderStates) vo
         if (states) |s| {
             var cstates = s._toCSFML();
             @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, &cstates });
-        } else
-            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, null });
+        } else @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, null });
         // to_draw.sfDraw(self, states);
     } else @compileError("You must provide a drawable object (struct with \"sfDraw\" method).");
 }

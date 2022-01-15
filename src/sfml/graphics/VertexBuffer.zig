@@ -4,11 +4,7 @@ const sf = @import("../sfml.zig");
 
 const VertexBuffer = @This();
 
-pub const Usage = enum(c_uint) {
-    Static = 0,
-    Dynamic = 1,
-    Stream = 2
-};
+pub const Usage = enum(c_uint) { Static = 0, Dynamic = 1, Stream = 2 };
 
 // Constructors/destructors
 

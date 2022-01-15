@@ -11,16 +11,7 @@ pub const MaxButtonCount = 32;
 pub const MaxAxisCount = 8;
 
 /// Joystick axis
-pub const Axis = enum(c_uint) {
-    X,
-    Y,
-    Z,
-    R,
-    U,
-    V,
-    PovX,
-    PovY
-};
+pub const Axis = enum(c_uint) { X, Y, Z, R, U, V, PovX, PovY };
 
 /// Gets a joystick if it is connected, null if it is not
 /// Technically, you can use a joystick's getters if it's not connected or before it connects
@@ -29,8 +20,7 @@ pub fn get(joystick: c_uint) ?Joystick {
     std.debug.assert(joystick < MaxJoystickCount);
     if (sf.c.sfJoystick_isConnected(joystick) != 0) {
         return Joystick{ ._joystick_number = joystick };
-    } else
-        return null;
+    } else return null;
 }
 
 /// Check if this joystick is still connected
