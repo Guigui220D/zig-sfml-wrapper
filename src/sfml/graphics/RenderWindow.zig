@@ -170,10 +170,6 @@ pub fn setPosition(self: *RenderWindow, pos: sf.Vector2i) void {
     sf.c.sfRenderWindow_setPosition(self._ptr, pos._toCSFML());
 }
 
-pub fn setTitle(self: *RenderWindow: title: anytype) void {
-    
-}
-
 /// Sets the title of this window
 pub fn setTitle(self: *RenderWindow, title: [:0]const u8) void {
     sf.c.sfRenderWindow_setTitle(self._ptr, title);
