@@ -23,6 +23,12 @@ pub fn destroy(self: *VertexBuffer) void {
 
 // Getters/setters and methods
 
+/// Updates the vertex buffer with new data
+pub fn updateFromSlice(self: VertexBuffer, vertices: []const sf.graphics.Vertex) !void {
+    if (sf.c.sfVertexBuffer_update(self._ptr, @ptrCast([*]const sf.c.sfVertex, @alignCast(4, vertices.ptr)), @truncate(c_uint, vertices.len), 0) != 1)
+        return sf.Error.resourceLoadingError;
+}
+
 /// Gets the vertex count of this vertex buffer
 pub fn getVertexCount(self: VertexBuffer) usize {
     return sf.c.sfVertexBuffer_getVertexCount(self._ptr);
@@ -41,6 +47,15 @@ pub fn getUsage(self: VertexBuffer) Usage {
 /// Tells whether or not vertex buffers are available in the system
 pub fn isAvailable() bool {
     return sf.c.sfVertexBuffer_isAvailable() != 0;
+}
+
+/// Draw function
+pub fn sfDraw(self: VertexBuffer, window: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(window)) {
+        sf.graphics.RenderWindow => sf.c.sfRenderWindow_drawVertexBuffer(window._ptr, self._ptr, states),
+        sf.graphics.RenderTexture => sf.c.sfRenderTexture_drawVertexBuffer(window._ptr, self._ptr, states),
+        else => @compileError("window must be a render target"),
+    }
 }
 
 /// Pointer to the csfml structure
