@@ -32,23 +32,26 @@ pub const PrimitiveType = enum(c_uint) {
             else => @panic("Primitive type not supported")
         };
     }
+
+    //TODO: Note: these structs should be packed but zig has bugs with that as of now and it doesn't work
+
     /// A single point
-    pub const PointPrimitive = packed struct {
+    pub const PointPrimitive = struct {
         a: Vertex
     };
     /// A line between two points
-    pub const LinePrimitive = packed struct {
+    pub const LinePrimitive = struct {
         a: Vertex,
         b: Vertex
     };
     /// A triangle between three points
-    pub const TrianglePrimitive = packed struct {
+    pub const TrianglePrimitive = struct {
         a: Vertex,
         b: Vertex,
         c: Vertex
     };
     /// A quad between four points
-    pub const QuadPrimitive = packed struct {
+    pub const QuadPrimitive = struct {
         a: Vertex,
         b: Vertex,
         c: Vertex,
