@@ -15,7 +15,7 @@ pub fn createFromFile(path: [:0]const u8) !Font {
 }
 /// Loads a font from a file in memory
 pub fn createFromMemory(data: []const u8) !Font {
-    var font = sf.c.sfFont_createFromMemory(@ptrCast(?*const c_void, data.ptr), data.len);
+    var font = sf.c.sfFont_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
     if (font) |f| {
         return Font{ ._ptr = f };
     } else return sf.Error.resourceLoadingError;

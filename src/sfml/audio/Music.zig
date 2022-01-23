@@ -15,7 +15,7 @@ pub fn createFromFile(path: [:0]const u8) !Music {
 }
 /// Loads music from a file in memory
 pub fn createFromMemory(data: []const u8) !Music {
-    var music = sf.c.sfMusic_createFromMemory(@ptrCast(?*const c_void, data.ptr), data.len);
+    var music = sf.c.sfMusic_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
     if (music) |m| {
         return Music{ ._ptr = m };
     } else return sf.Error.resourceLoadingError;

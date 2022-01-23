@@ -108,7 +108,7 @@ pub fn Rect(comptime T: type) type {
         /// width of the rectangle
         width: T,
         /// height of the rectangle
-        height: T
+        height: T,
     };
 }
 

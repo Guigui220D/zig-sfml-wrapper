@@ -18,7 +18,7 @@ pub fn _fromCSFML(transform: sf.c.sfTransform) Transform {
     return @bitCast(Transform, transform);
 }
 
-// Matrix transformations 
+// Matrix transformations
 /// Transforms a point by this matrix
 pub fn transformPoint(self: Transform, point: sf.system.Vector2f) sf.system.Vector2f {
     const ptr = @ptrCast(*const sf.c.sfTransform, &self);

@@ -41,7 +41,7 @@ pub fn createFromFile(path: [:0]const u8) !Image {
 }
 /// Loads an image from a file in memory
 pub fn createFromMemory(data: []const u8) !Image {
-    var img = sf.c.sfImage_createFromMemory(@ptrCast(?*const c_void, data.ptr), data.len);
+    var img = sf.c.sfImage_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
     if (img) |i| {
         return Image{ ._ptr = i };
     } else return sf.Error.resourceLoadingError;

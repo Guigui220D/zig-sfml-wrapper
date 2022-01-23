@@ -19,7 +19,7 @@ pub const PrimitiveType = enum(c_uint) {
             .Lines => LinePrimitive,
             .Triangles => TrianglePrimitive,
             .Quads => QuadPrimitive,
-            else => @compileError("Primitive type not supported")
+            else => @compileError("Primitive type not supported"),
         };
     }
     /// Says how many vertices each primitive is composed of
@@ -29,32 +29,18 @@ pub const PrimitiveType = enum(c_uint) {
             .Lines => 2,
             .Triangles => 3,
             .Quads => 4,
-            else => @panic("Primitive type not supported")
+            else => @panic("Primitive type not supported"),
         };
     }
 
     //TODO: Note: these structs should be packed but zig has bugs with that as of now and it doesn't work
 
     /// A single point
-    pub const PointPrimitive = struct {
-        a: Vertex
-    };
+    pub const PointPrimitive = struct { a: Vertex };
     /// A line between two points
-    pub const LinePrimitive = struct {
-        a: Vertex,
-        b: Vertex
-    };
+    pub const LinePrimitive = struct { a: Vertex, b: Vertex };
     /// A triangle between three points
-    pub const TrianglePrimitive = struct {
-        a: Vertex,
-        b: Vertex,
-        c: Vertex
-    };
+    pub const TrianglePrimitive = struct { a: Vertex, b: Vertex, c: Vertex };
     /// A quad between four points
-    pub const QuadPrimitive = struct {
-        a: Vertex,
-        b: Vertex,
-        c: Vertex,
-        d: Vertex
-    };
+    pub const QuadPrimitive = struct { a: Vertex, b: Vertex, c: Vertex, d: Vertex };
 };

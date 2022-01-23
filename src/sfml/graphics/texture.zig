@@ -30,7 +30,7 @@ pub const Texture = union(TextureType) {
     }
     /// Loads a texture from a file in memory
     pub fn createFromMemory(data: []const u8) !Texture {
-        const tex = sf.c.sfTexture_createFromMemory(@ptrCast(?*const c_void, data.ptr), data.len);
+        const tex = sf.c.sfTexture_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
         if (tex) |t| {
             return Texture{ ._ptr = t };
         } else return sf.Error.resourceLoadingError;
@@ -213,7 +213,7 @@ pub const Texture = union(TextureType) {
     /// Pointer to the csfml texture
     _ptr: *sf.c.sfTexture,
     /// Const pointer to the csfml texture
-    _const_ptr: *const sf.c.sfTexture
+    _const_ptr: *const sf.c.sfTexture,
 };
 
 test "texture: sane getters and setters" {

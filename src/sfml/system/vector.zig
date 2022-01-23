@@ -47,7 +47,7 @@ pub fn Vector2(comptime T: type) type {
         /// x component of the vector
         x: T,
         /// y component of the vector
-        y: T
+        y: T,
     };
 }
 
@@ -90,7 +90,7 @@ pub fn Vector3(comptime T: type) type {
         /// y component of the vector
         y: T,
         /// z component of the vector
-        z: T
+        z: T,
     };
 }
 
@@ -106,7 +106,7 @@ pub fn Vector4(comptime T: type) type {
         /// z component of the vector
         z: T,
         /// w component of the vector
-        w: T
+        w: T,
     };
 }
 

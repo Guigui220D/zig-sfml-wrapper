@@ -2,7 +2,7 @@
 
 const sf = @import("../sfml.zig");
 
-pub const Vertex = packed struct { 
+pub const Vertex = packed struct {
     /// Position of the vertex
     position: sf.system.Vector2f = sf.system.Vector2f{ .x = 0, .y = 0 },
     /// Color of the vertex

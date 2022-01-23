@@ -14,7 +14,7 @@ pub fn createFromFile(path: [:0]const u8) !SoundBuffer {
 }
 /// Loads sound from a file in memory
 pub fn createFromMemory(data: []const u8) !SoundBuffer {
-    var sound = sf.c.sfSoundBuffer_createFromMemory(@ptrCast(?*const c_void, data.ptr), data.len);
+    var sound = sf.c.sfSoundBuffer_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
     if (sound) |s| {
         return SoundBuffer{ ._ptr = s };
     } else return sf.Error.resourceLoadingError;
