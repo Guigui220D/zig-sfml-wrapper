@@ -115,8 +115,6 @@ pub fn setRelativeToListener(self: *Music, loop: bool) void {
 }
 
 pub const getStatus = @compileError("Function is not implemented yet.");
-pub const setRelativeToListener = @compileError("Function is not implemented yet.");
-pub const isRelativeToListener = @compileError("Function is not implemented yet.");
 pub const setMinDistance = @compileError("Function is not implemented yet.");
 pub const setAttenuation = @compileError("Function is not implemented yet.");
 pub const getMinDistance = @compileError("Function is not implemented yet.");
