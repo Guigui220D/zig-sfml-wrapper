@@ -105,6 +105,15 @@ pub fn getChannelCount(self: Music) usize {
     return @intCast(usize, sf.c.sfMusic_getChannelCount(self._ptr));
 }
 
+/// Tell whether the sound's position is relative to the listener or is absolute 
+pub fn isRelativeToListener(self: Music) bool {
+    return sf.c.sfMusic_getRelativeToListener(self._ptr) != 0;
+}
+/// Make the sound's position relative to the listener or absolute
+pub fn setRelativeToListener(self: *Music, loop: bool) void {
+    sf.c.sfMusic_setRelativeToListener(self._ptr, @boolToInt(loop));
+}
+
 pub const getStatus = @compileError("Function is not implemented yet.");
 pub const setRelativeToListener = @compileError("Function is not implemented yet.");
 pub const isRelativeToListener = @compileError("Function is not implemented yet.");

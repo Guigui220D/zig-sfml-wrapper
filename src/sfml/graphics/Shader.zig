@@ -52,7 +52,7 @@ pub fn setUniform(self: *Shader, name: [:0]const u8, value: anytype) void {
     switch (T) {
         f32 => sf.c.sfShader_setFloatUniform(self._ptr, name, value),
         c_int => sf.c.sfShader_setIntUniform(self._ptr, name, value),
-        bool => sf.c.sfShader_setBoolUniform(self._ptr, name, value),
+        bool => sf.c.sfShader_setBoolUniform(self._ptr, name, if (value) 1 else 0),
         glsl.FVec2 => sf.c.sfShader_setVec2Uniform(self._ptr, name, value._toCSFML()),
         glsl.FVec3 => sf.c.sfShader_setVec3Uniform(self._ptr, name, value._toCSFML()),
         glsl.FVec4 => sf.c.sfShader_setVec4Uniform(self._ptr, name, @bitCast(sf.c.sfGlslVec4, value)),
