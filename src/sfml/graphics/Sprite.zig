@@ -124,6 +124,16 @@ pub fn setTextureRect(self: *Sprite, rect: sf.IntRect) void {
     sf.c.sfSprite_setTextureRect(self._ptr, rect._toCSFML());
 }
 
+/// Gets the bounds in the local coordinates system
+pub fn getLocalBounds(self: Sprite) sf.FloatRect {
+    return sf.FloatRect._fromCSFML(sf.c.sfSprite_getLocalBounds(self._ptr));
+}
+
+/// Gets the bounds in the global coordinates
+pub fn getGlobalBounds(self: Sprite) sf.FloatRect {
+    return sf.FloatRect._fromCSFML(sf.c.sfSprite_getGlobalBounds(self._ptr));
+}
+
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfSprite,
 
