@@ -29,11 +29,14 @@ pub fn destroy(self: *CircleShape) void {
 }
 
 // Draw function
-pub fn sfDraw(self: CircleShape, window: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(window)) {
-        sf.RenderWindow => sf.c.sfRenderWindow_drawCircleShape(window._ptr, self._ptr, states),
-        sf.RenderTexture => sf.c.sfRenderTexture_drawCircleShape(window._ptr, self._ptr, states),
-        else => @compileError("window must be a render target"),
+
+/// The draw function of this shape
+/// Meant to be called by your_target.draw(your_shape, .{});
+pub fn sfDraw(self: CircleShape, target: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(target)) {
+        sf.RenderWindow => sf.c.sfRenderWindow_drawCircleShape(target._ptr, self._ptr, states),
+        sf.RenderTexture => sf.c.sfRenderTexture_drawCircleShape(target._ptr, self._ptr, states),
+        else => @compileError("target must be a render target"),
     }
 }
 
@@ -123,11 +126,11 @@ pub fn setTexture(self: *CircleShape, texture: ?sf.Texture) void {
     sf.c.sfCircleShape_setTexture(self._ptr, tex, 0);
 }
 /// Gets the sub-rectangle of the texture that the shape will display
-pub fn getTextureRect(self: CircleShape) sf.FloatRect {
-    return sf.FloatRect._fromCSFML(sf.c.sfCircleShape_getTextureRect(self._ptr));
+pub fn getTextureRect(self: CircleShape) sf.IntRect {
+    return sf.IntRect._fromCSFML(sf.c.sfCircleShape_getTextureRect(self._ptr));
 }
 /// Sets the sub-rectangle of the texture that the shape will display
-pub fn setTextureRect(self: *CircleShape, rect: sf.FloatRect) void {
+pub fn setTextureRect(self: *CircleShape, rect: sf.IntRect) void {
     sf.c.sfCircleShape_getCircleRect(self._ptr, rect._toCSFML());
 }
 
@@ -173,4 +176,8 @@ test "circle shape: sane getters and setters" {
 
     try tst.expectEqual(@as(f32, 20), circle.getRotation());
     try tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, circle.getPosition());
+
+    _ = circle.getGlobalBounds();
+    _ = circle.getLocalBounds();
+    _ = circle.getTextureRect();
 }

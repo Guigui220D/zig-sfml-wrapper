@@ -50,11 +50,12 @@ pub const Texture = union(TextureType) {
     /// Destroys a texture
     /// Be careful, you can only destroy non const textures
     pub fn destroy(self: *Texture) void {
-        // TODO : is it possible to detect that comptime?
-        // Should this panic?
-        if (self.* == ._const_ptr)
-            @panic("Can't destroy a const texture pointer");
-        sf.c.sfTexture_destroy(self._ptr);
+        // TODO: is it possible to detect that comptime?
+        if (self.* == ._ptr) {
+            sf.c.sfTexture_destroy(self._ptr);
+        } else
+            std.debug.print("SFML Debug: Trying to destroy a const texture!");
+        
         self._ptr = undefined;
     }
 

@@ -22,6 +22,18 @@ pub fn destroy(self: *VertexBuffer) void {
     self._ptr = undefined;
 }
 
+// Draw function
+
+/// The draw function of this vertex buffer
+/// Meant to be called by your_target.draw(your_vertices, .{});
+pub fn sfDraw(self: VertexBuffer, target: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(target)) {
+        sf.graphics.RenderWindow => sf.c.sfRenderWindow_drawVertexBuffer(target._ptr, self._ptr, states),
+        sf.graphics.RenderTexture => sf.c.sfRenderTexture_drawVertexBuffer(target._ptr, self._ptr, states),
+        else => @compileError("target must be a render target"),
+    }
+}
+
 // Getters/setters and methods
 
 /// Updates the vertex buffer with new data
@@ -48,15 +60,6 @@ pub fn getUsage(self: VertexBuffer) Usage {
 /// Tells whether or not vertex buffers are available in the system
 pub fn isAvailable() bool {
     return sf.c.sfVertexBuffer_isAvailable() != 0;
-}
-
-/// Draw function
-pub fn sfDraw(self: VertexBuffer, window: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(window)) {
-        sf.graphics.RenderWindow => sf.c.sfRenderWindow_drawVertexBuffer(window._ptr, self._ptr, states),
-        sf.graphics.RenderTexture => sf.c.sfRenderTexture_drawVertexBuffer(window._ptr, self._ptr, states),
-        else => @compileError("window must be a render target"),
-    }
 }
 
 /// Pointer to the csfml structure
