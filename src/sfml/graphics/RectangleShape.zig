@@ -25,6 +25,7 @@ pub fn create(size: sf.Vector2f) !RectangleShape {
 /// Destroys a rectangle shape
 pub fn destroy(self: *RectangleShape) void {
     sf.c.sfRectangleShape_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Draw function

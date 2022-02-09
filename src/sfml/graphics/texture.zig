@@ -55,6 +55,7 @@ pub const Texture = union(TextureType) {
         if (self.* == ._const_ptr)
             @panic("Can't destroy a const texture pointer");
         sf.c.sfTexture_destroy(self._ptr);
+        self._ptr = undefined;
     }
 
     // Getters/Setters
@@ -83,6 +84,13 @@ pub const Texture = union(TextureType) {
     /// Makes this texture constant (I don't know why you would do that)
     pub fn makeConst(self: *Texture) void {
         self.* = Texture{ ._const_ptr = self._get() };
+    }
+
+    /// Gets a const reference to this texture
+    pub fn getConst(self: Texture) void {
+        var cpy = self;
+        cpy.makeConst();
+        return cpy;
     }
 
     /// Gets the size of this image

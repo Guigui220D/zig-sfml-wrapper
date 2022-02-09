@@ -23,6 +23,7 @@ pub fn create() !Clock {
 /// Destroys this clock
 pub fn destroy(self: *Clock) void {
     sf.c.sfClock_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Clock control

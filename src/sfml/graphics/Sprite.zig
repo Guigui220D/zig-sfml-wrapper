@@ -33,6 +33,7 @@ pub fn createFromTexture(texture: sf.Texture) !Sprite {
 /// Destroys this sprite
 pub fn destroy(self: *Sprite) void {
     sf.c.sfSprite_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Draw function

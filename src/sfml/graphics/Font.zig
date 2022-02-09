@@ -23,6 +23,7 @@ pub fn createFromMemory(data: []const u8) !Font {
 /// Destroys a font
 pub fn destroy(self: *Font) void {
     sf.c.sfFont_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 /// Gets the family name of this font

@@ -31,6 +31,7 @@ pub fn createWithText(string: [:0]const u8, font: sf.Font, character_size: usize
 /// Destroys a text
 pub fn destroy(self: *Text) void {
     sf.c.sfText_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Draw function

@@ -25,6 +25,7 @@ pub fn create(radius: f32) !CircleShape {
 /// Destroys a circle shape
 pub fn destroy(self: *CircleShape) void {
     sf.c.sfCircleShape_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Draw function

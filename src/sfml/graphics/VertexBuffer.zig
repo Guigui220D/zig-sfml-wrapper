@@ -19,6 +19,7 @@ pub fn createFromSlice(vertices: []const sf.graphics.Vertex, primitive: sf.graph
 /// Destroyes this vertex buffer
 pub fn destroy(self: *VertexBuffer) void {
     sf.c.sfVertexBuffer_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Getters/setters and methods

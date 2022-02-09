@@ -30,6 +30,7 @@ pub fn createWithDepthBuffer(size: sf.Vector2u) !RenderTexture {
 /// Destroys this render texture
 pub fn destroy(self: *RenderTexture) void {
     sf.c.sfRenderTexture_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Drawing functions

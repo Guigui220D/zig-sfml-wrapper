@@ -29,6 +29,7 @@ pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphic
 /// Destroys a vertex array
 pub fn destroy(self: *VertexArray) void {
     sf.c.sfVertexArray_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 /// Copies the vertex array
