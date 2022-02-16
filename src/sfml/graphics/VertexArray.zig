@@ -40,18 +40,6 @@ pub fn copy(self: VertexArray) !VertexArray {
     } else return sf.Error.nullptrUnknownReason;
 }
 
-// Draw function
-
-/// The draw function of this vertex array
-/// Meant to be called by your_target.draw(your_vertices, .{});
-pub fn sfDraw(self: VertexArray, target: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(target)) {
-        sf.graphics.RenderWindow => sf.c.sfRenderWindow_drawVertexArray(target._ptr, self._ptr, states),
-        sf.graphics.RenderTexture => sf.c.sfRenderTexture_drawVertexArray(target._ptr, self._ptr, states),
-        else => @compileError("target must be a render target"),
-    }
-}
-
 // Wtf github copilot wrote that for me (all of the functions below here)
 // Methods and getters/setters
 
@@ -111,6 +99,8 @@ pub fn setPrimitiveType(self: *VertexArray, primitive: sf.graphics.PrimitiveType
 pub fn getBounds(self: VertexArray) sf.graphics.FloatRect {
     return sf.graphics.FloatRect._fromCSFML(sf.c.sfVertexArray_getBounds(self._ptr));
 }
+
+pub const draw_suffix = "VertexArray";
 
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfVertexArray,

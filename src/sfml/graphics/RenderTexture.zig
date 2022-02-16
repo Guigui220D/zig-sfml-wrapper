@@ -46,18 +46,14 @@ pub fn display(self: *RenderTexture) void {
 }
 
 /// Draw something on the texture (won't be visible until display is called)
-/// Object must have a sfDraw function (look at CircleShape for reference)
 /// You can pass a render state or null for default
-pub fn draw(self: *RenderTexture, to_draw: anytype, states: ?sf.RenderStates) void {
-    const T = @TypeOf(to_draw);
-    if (comptime @import("std").meta.trait.hasFn("sfDraw")(T)) {
-        // Inline call of object's draw function
-        if (states) |s| {
-            var cstates = s._toCSFML();
-            @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, &cstates });
-        } else @call(.{ .modifier = .always_inline }, T.sfDraw, .{ to_draw, self.*, null });
-        // to_draw.sfDraw(self, states);
-    } else @compileError("You must provide a drawable object (struct with \"sfDraw\" method).");
+pub fn draw(self: *RenderTexture, to_draw: anytype, states: ?sf.RenderStates) void { 
+    const draw_fn = @field(sf.c, "sfRenderTexture_draw" ++ @TypeOf(to_draw).draw_suffix);
+    if (states) |s| {
+        var cstates = s._toCSFML();
+        draw_fn(self._ptr, to_draw._ptr, &cstates);
+    } else
+        draw_fn(self._ptr, to_draw._ptr, null);
 }
 
 /// Gets a const reference to the target texture (the reference doesn't change)

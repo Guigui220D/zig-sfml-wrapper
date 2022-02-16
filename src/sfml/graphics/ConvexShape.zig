@@ -26,18 +26,6 @@ pub fn destroy(self: *ConvexShape) void {
     self._ptr = undefined;
 }
 
-// Draw function
-
-/// The draw function of this shape
-/// Meant to be called by your_target.draw(your_shape, .{});
-pub fn sfDraw(self: ConvexShape, target: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(target)) {
-        sf.RenderWindow => sf.c.sfRenderWindow_drawConvexShape(target._ptr, self._ptr, states),
-        sf.RenderTexture => sf.c.sfRenderTexture_drawConvexShape(target._ptr, self._ptr, states),
-        else => @compileError("target must be a render target"),
-    }
-}
-
 // Getters/setters
 
 /// Gets how many points this convex polygon shape has
@@ -154,6 +142,8 @@ pub fn getLocalBounds(self: ConvexShape) sf.FloatRect {
 pub fn getGlobalBounds(self: ConvexShape) sf.FloatRect {
     return sf.FloatRect._fromCSFML(sf.c.sfConvexShape_getGlobalBounds(self._ptr));
 }
+
+pub const draw_suffix = "ConvexShape";
 
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfConvexShape,

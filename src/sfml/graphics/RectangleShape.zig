@@ -28,18 +28,6 @@ pub fn destroy(self: *RectangleShape) void {
     self._ptr = undefined;
 }
 
-// Draw function
-
-/// The draw function of this shape
-/// Meant to be called by your_target.draw(your_shape, .{});
-pub fn sfDraw(self: RectangleShape, target: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(target)) {
-        sf.RenderWindow => sf.c.sfRenderWindow_drawRectangleShape(target._ptr, self._ptr, states),
-        sf.RenderTexture => sf.c.sfRenderTexture_drawRectangleShape(target._ptr, self._ptr, states),
-        else => @compileError("target must be a render target"),
-    }
-}
-
 // Getters/setters
 
 /// Gets the fill color of this rectangle shape
@@ -143,6 +131,8 @@ pub fn getLocalBounds(self: RectangleShape) sf.FloatRect {
 pub fn getGlobalBounds(self: RectangleShape) sf.FloatRect {
     return sf.FloatRect._fromCSFML(sf.c.sfRectangleShape_getGlobalBounds(self._ptr));
 }
+
+pub const draw_suffix = "RectangleShape";
 
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfRectangleShape,

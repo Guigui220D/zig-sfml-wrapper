@@ -137,6 +137,8 @@ pub fn getGlobalBounds(self: Sprite) sf.FloatRect {
     return sf.FloatRect._fromCSFML(sf.c.sfSprite_getGlobalBounds(self._ptr));
 }
 
+pub const draw_suffix = "Sprite";
+
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfSprite,
 

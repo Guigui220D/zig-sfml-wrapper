@@ -34,18 +34,6 @@ pub fn destroy(self: *Text) void {
     self._ptr = undefined;
 }
 
-// Draw function
-
-/// The draw function of this shape
-/// Meant to be called by your_target.draw(your_shape, .{});
-pub fn sfDraw(self: Text, target: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(target)) {
-        sf.RenderWindow => sf.c.sfRenderWindow_drawText(target._ptr, self._ptr, states),
-        sf.RenderTexture => sf.c.sfRenderTexture_drawText(target._ptr, self._ptr, states),
-        else => @compileError("target must be a render target"),
-    }
-}
-
 // Getters/setters
 
 /// Sets the content of this text
@@ -191,6 +179,8 @@ pub fn centerOrigin(self: *Text) void {
 
 pub const getTransform = @compileError("Function is not implemented yet.");
 pub const getInverseTransform = @compileError("Function is not implemented yet.");
+
+pub const draw_suffix = "Text";
 
 /// Pointer to the csfml font
 _ptr: *sf.c.sfText,
