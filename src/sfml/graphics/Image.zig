@@ -50,6 +50,7 @@ pub fn createFromMemory(data: []const u8) !Image {
 /// Destroys an image
 pub fn destroy(self: *Image) void {
     sf.c.sfImage_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Save an image to a file

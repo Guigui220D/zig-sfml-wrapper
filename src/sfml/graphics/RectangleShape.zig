@@ -25,14 +25,18 @@ pub fn create(size: sf.Vector2f) !RectangleShape {
 /// Destroys a rectangle shape
 pub fn destroy(self: *RectangleShape) void {
     sf.c.sfRectangleShape_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Draw function
-pub fn sfDraw(self: RectangleShape, window: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(window)) {
-        sf.RenderWindow => sf.c.sfRenderWindow_drawRectangleShape(window._ptr, self._ptr, states),
-        sf.RenderTexture => sf.c.sfRenderTexture_drawRectangleShape(window._ptr, self._ptr, states),
-        else => @compileError("window must be a render target"),
+
+/// The draw function of this shape
+/// Meant to be called by your_target.draw(your_shape, .{});
+pub fn sfDraw(self: RectangleShape, target: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(target)) {
+        sf.RenderWindow => sf.c.sfRenderWindow_drawRectangleShape(target._ptr, self._ptr, states),
+        sf.RenderTexture => sf.c.sfRenderTexture_drawRectangleShape(target._ptr, self._ptr, states),
+        else => @compileError("target must be a render target"),
     }
 }
 
@@ -122,11 +126,11 @@ pub fn setTexture(self: *RectangleShape, texture: ?sf.Texture) void {
     sf.c.sfRectangleShape_setTexture(self._ptr, tex, 0);
 }
 /// Gets the sub-rectangle of the texture that the shape will display
-pub fn getTextureRect(self: RectangleShape) sf.FloatRect {
-    return sf.FloatRect._fromCSFML(sf.c.sfRectangleShape_getTextureRect(self._ptr));
+pub fn getTextureRect(self: RectangleShape) sf.IntRect {
+    return sf.IntRect._fromCSFML(sf.c.sfRectangleShape_getTextureRect(self._ptr));
 }
 /// Sets the sub-rectangle of the texture that the shape will display
-pub fn setTextureRect(self: *RectangleShape, rect: sf.FloatRect) void {
+pub fn setTextureRect(self: *RectangleShape, rect: sf.IntRect) void {
     sf.c.sfRectangleShape_getTextureRect(self._ptr, rect._toCSFML());
 }
 
@@ -174,4 +178,8 @@ test "rectangle shape: sane getters and setters" {
 
     try tst.expectEqual(@as(f32, 20), rect.getRotation());
     try tst.expectEqual(sf.Vector2f{ .x = -4, .y = 7 }, rect.getPosition());
+
+    _ = rect.getGlobalBounds();
+    _ = rect.getLocalBounds();
+    _ = rect.getTextureRect();
 }

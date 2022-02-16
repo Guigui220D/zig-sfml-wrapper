@@ -31,14 +31,18 @@ pub fn createWithText(string: [:0]const u8, font: sf.Font, character_size: usize
 /// Destroys a text
 pub fn destroy(self: *Text) void {
     sf.c.sfText_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Draw function
-pub fn sfDraw(self: Text, window: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(window)) {
-        sf.RenderWindow => sf.c.sfRenderWindow_drawText(window._ptr, self._ptr, states),
-        sf.RenderTexture => sf.c.sfRenderTexture_drawText(window._ptr, self._ptr, states),
-        else => @compileError("window must be a render target"),
+
+/// The draw function of this shape
+/// Meant to be called by your_target.draw(your_shape, .{});
+pub fn sfDraw(self: Text, target: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(target)) {
+        sf.RenderWindow => sf.c.sfRenderWindow_drawText(target._ptr, self._ptr, states),
+        sf.RenderTexture => sf.c.sfRenderTexture_drawText(target._ptr, self._ptr, states),
+        else => @compileError("target must be a render target"),
     }
 }
 

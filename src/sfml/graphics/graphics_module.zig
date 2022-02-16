@@ -9,8 +9,10 @@ pub const Image = @import("Image.zig");
 pub const Texture = @import("texture.zig").Texture;
 
 pub const Sprite = @import("Sprite.zig");
+
 pub const CircleShape = @import("CircleShape.zig");
 pub const RectangleShape = @import("RectangleShape.zig");
+pub const ConvexShape = @import("ConvexShape.zig");
 
 pub const Vertex = @import("vertex.zig").Vertex;
 pub const VertexArray = @import("VertexArray.zig");

@@ -33,14 +33,17 @@ pub fn createFromTexture(texture: sf.Texture) !Sprite {
 /// Destroys this sprite
 pub fn destroy(self: *Sprite) void {
     sf.c.sfSprite_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Draw function
-pub fn sfDraw(self: Sprite, window: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(window)) {
-        sf.RenderWindow => sf.c.sfRenderWindow_drawSprite(window._ptr, self._ptr, states),
-        sf.RenderTexture => sf.c.sfRenderTexture_drawSprite(window._ptr, self._ptr, states),
-        else => @compileError("window must be a render target"),
+/// The draw function of this sprite
+/// Meant to be called by your_target.draw(your_sprite, .{});
+pub fn sfDraw(self: Sprite, target: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(target)) {
+        sf.RenderWindow => sf.c.sfRenderWindow_drawSprite(target._ptr, self._ptr, states),
+        sf.RenderTexture => sf.c.sfRenderTexture_drawSprite(target._ptr, self._ptr, states),
+        else => @compileError("target must be a render target"),
     }
 }
 

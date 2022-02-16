@@ -26,6 +26,7 @@ pub const initFromStream = @compileError("Function is not implemented yet.");
 /// Destroys this music object
 pub fn destroy(self: *Music) void {
     sf.c.sfMusic_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Music control functions

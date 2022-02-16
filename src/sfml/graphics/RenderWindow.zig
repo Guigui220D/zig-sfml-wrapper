@@ -63,6 +63,7 @@ pub fn createFromHandle(handle: sf.WindowHandle, settings: ?sf.ContextSettings) 
 /// Destroys this window object
 pub fn destroy(self: *RenderWindow) void {
     sf.c.sfRenderWindow_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Event related

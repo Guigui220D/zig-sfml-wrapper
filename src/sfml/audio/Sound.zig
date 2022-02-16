@@ -27,6 +27,7 @@ pub fn createFromBuffer(buffer: sf.SoundBuffer) !Sound {
 /// Destroys this sound object
 pub fn destroy(self: *Sound) void {
     sf.c.sfSound_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Sound control functions

@@ -29,6 +29,7 @@ pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphic
 /// Destroys a vertex array
 pub fn destroy(self: *VertexArray) void {
     sf.c.sfVertexArray_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 /// Copies the vertex array
@@ -37,6 +38,18 @@ pub fn copy(self: VertexArray) !VertexArray {
     if (va) |vert| {
         return VertexArray{ ._ptr = vert };
     } else return sf.Error.nullptrUnknownReason;
+}
+
+// Draw function
+
+/// The draw function of this vertex array
+/// Meant to be called by your_target.draw(your_vertices, .{});
+pub fn sfDraw(self: VertexArray, target: anytype, states: ?*sf.c.sfRenderStates) void {
+    switch (@TypeOf(target)) {
+        sf.graphics.RenderWindow => sf.c.sfRenderWindow_drawVertexArray(target._ptr, self._ptr, states),
+        sf.graphics.RenderTexture => sf.c.sfRenderTexture_drawVertexArray(target._ptr, self._ptr, states),
+        else => @compileError("target must be a render target"),
+    }
 }
 
 // Wtf github copilot wrote that for me (all of the functions below here)
@@ -51,6 +64,7 @@ pub fn getVertexCount(self: VertexArray) usize {
 /// Don't keep the returned pointer, it can be invalidated by other functions
 pub fn getVertex(self: VertexArray, index: usize) *sf.graphics.Vertex {
     // TODO: Should this use a pointer to the vertexarray?
+    // Me, later, what did that comment even mean? ^
     var ptr = sf.c.sfVertexArray_getVertex(self._ptr, index);
     std.debug.assert(index < self.getVertexCount());
     return @ptrCast(*sf.graphics.Vertex, ptr.?);
@@ -96,15 +110,6 @@ pub fn setPrimitiveType(self: *VertexArray, primitive: sf.graphics.PrimitiveType
 /// Gets the bounding rectangle of the vertex array
 pub fn getBounds(self: VertexArray) sf.graphics.FloatRect {
     return sf.graphics.FloatRect._fromCSFML(sf.c.sfVertexArray_getBounds(self._ptr));
-}
-
-/// Draw function
-pub fn sfDraw(self: VertexArray, window: anytype, states: ?*sf.c.sfRenderStates) void {
-    switch (@TypeOf(window)) {
-        sf.graphics.RenderWindow => sf.c.sfRenderWindow_drawVertexArray(window._ptr, self._ptr, states),
-        sf.graphics.RenderTexture => sf.c.sfRenderTexture_drawVertexArray(window._ptr, self._ptr, states),
-        else => @compileError("window must be a render target"),
-    }
 }
 
 /// Pointer to the csfml structure

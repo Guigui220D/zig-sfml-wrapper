@@ -24,6 +24,7 @@ pub fn createFromMemory(vertex_shader: ?[:0]const u8, geometry_shader: ?[:0]cons
 /// Destroys this shader object
 pub fn destroy(self: *Shader) void {
     sf.c.sfShader_destroy(self._ptr);
+    self._ptr = undefined;
 }
 
 // Availability
