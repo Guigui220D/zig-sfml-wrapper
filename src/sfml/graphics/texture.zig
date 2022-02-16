@@ -54,7 +54,7 @@ pub const Texture = union(TextureType) {
         if (self.* == ._ptr) {
             sf.c.sfTexture_destroy(self._ptr);
         } else
-            std.debug.print("SFML Debug: Trying to destroy a const texture!");
+            std.debug.print("SFML Debug: Trying to destroy a const texture!", .{});
         
         self._ptr = undefined;
     }
