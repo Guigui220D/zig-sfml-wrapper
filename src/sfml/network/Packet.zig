@@ -1,9 +1,7 @@
 //! Utility class to build blocks of data to transfer over the network. 
 
 const std = @import("std");
-const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-};
+const sf = @import("../sfml.zig");
 
 const Packet = @This();
 
