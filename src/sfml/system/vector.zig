@@ -15,6 +15,10 @@ pub fn Vector2(comptime T: type) type {
             else => void,
         };
 
+        pub fn new(x: T, y: T) Self {
+            return .{ .x = x, .y = y };
+        }
+
         /// Makes a CSFML vector with this vector (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
         pub fn _toCSFML(self: Self) CsfmlEquivalent {
@@ -45,9 +49,9 @@ pub fn Vector2(comptime T: type) type {
         }
 
         /// x component of the vector
-        x: T,
+        x: T = 0,
         /// y component of the vector
-        y: T,
+        y: T = 0,
     };
 }
 
@@ -55,6 +59,10 @@ pub fn Vector2(comptime T: type) type {
 pub fn Vector3(comptime T: type) type {
     return packed struct {
         const Self = @This();
+
+        pub fn new(x: T, y: T, z: T) Self {
+            return .{ .x = x, .y = y, .z = z };
+        }
 
         /// Makes a CSFML vector with this vector (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
@@ -86,11 +94,11 @@ pub fn Vector3(comptime T: type) type {
         }
 
         /// x component of the vector
-        x: T,
+        x: T = 0,
         /// y component of the vector
-        y: T,
+        y: T = 0,
         /// z component of the vector
-        z: T,
+        z: T = 0,
     };
 }
 
@@ -99,14 +107,19 @@ pub fn Vector3(comptime T: type) type {
 pub fn Vector4(comptime T: type) type {
     return packed struct {
         const Self = @This();
+
+        pub fn new(x: T, y: T, z: T, w: T) Self {
+            return .{ .x = x, .y = y, .z = z, .w = w };
+        }
+
         /// x component of the vector
-        x: T,
+        x: T = 0,
         /// y component of the vector
-        y: T,
+        y: T = 0,
         /// z component of the vector
-        z: T,
+        z: T = 0,
         /// w component of the vector
-        w: T,
+        w: T = 0,
     };
 }
 
