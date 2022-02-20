@@ -3,8 +3,6 @@
 const std = @import("std");
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
-    pub usingnamespace sf.graphics;
 };
 
 const Packet = @This();
