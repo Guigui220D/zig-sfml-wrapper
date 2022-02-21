@@ -54,7 +54,7 @@ pub fn getDataSize(self: Packet) usize {
 /// Appends bytes to the packet. You can also use the writer()
 pub fn append(self: *Packet, data: []const u8) !void {
     const size_a = self.getDataSize();
-    sf.c.sfPacket_append(self._ptr, @ptrCast([*]const anyopaque, data.ptr), data.len);
+    sf.c.sfPacket_append(self._ptr, data.ptr, data.len);
     const size_b = self.getDataSize();
     const size = size_b - size_a;
     if (size != data.len)
@@ -72,6 +72,7 @@ fn checkLastRead(self: Packet) !void {
 }
 
 /// Reads a type from the packet
+/// Slightly faster than using a reader for bigger types
 pub fn read(self: *Packet, comptime T: type) !T {
     const res: T = switch (T) {
         bool => (sf.c.sfPacket_readBool(self._ptr) != 0),
@@ -83,9 +84,8 @@ pub fn read(self: *Packet, comptime T: type) !T {
         u32 => sf.c.sfPacket_readUint32(self._ptr),
         f32 => sf.c.sfPacket_readFloat(self._ptr),
         f64 => sf.c.sfPacket_readDouble(self._ptr),
-        // TODO
-        [*:0]const u8 => @compileError("Unimplemented: reading string from packet"),
-        [*:0]const u16 => @compileError("Unimplemented: reading string from packet"),
+        [*:0]const u8 => sf.c.sfPacket_readString(self._ptr),
+        [*:0]const u16 => sf.c.sfPacket_readWideString(self._ptr),
         else => @compileError("Can't read type " ++ @typeName(T) ++ " from packet")
     };
     try self.checkLastRead();
@@ -93,10 +93,11 @@ pub fn read(self: *Packet, comptime T: type) !T {
 }
 
 /// Writes a value to the packet
+/// Slightly faster than using a writer for bigger types
 pub fn write(self: *Packet, comptime T: type, value: T) !void {
     // TODO: find how to make this safer
     switch (T) {
-        bool => sf.c.sfPacket_writeBool(@boolToInt(value)),
+        bool => sf.c.sfPacket_writeBool(self._ptr, @boolToInt(value)),
         i8 => sf.c.sfPacket_writeInt8(self._ptr, value),
         u8 => sf.c.sfPacket_writeUint8(self._ptr, value),
         i16 => sf.c.sfPacket_writeInt16(self._ptr, value),
@@ -114,6 +115,7 @@ pub fn write(self: *Packet, comptime T: type, value: T) !void {
 /// Writer type for a packet
 pub const Writer = std.io.Writer(*Packet, sf.Error, writeFn);
 /// Initializes a Writer which will write to the packet
+/// Slightly slower than write for bigger types but more convinient for some things
 pub fn writer(self: *Packet) Writer {
     return .{ .context = self };
 }
@@ -132,6 +134,7 @@ fn writeFn(self: *Packet, m: []const u8) sf.Error!usize {
 /// Reader type for a packet
 pub const Reader = std.io.Reader(*Packet, sf.Error, readFn);
 /// Initializes a Reader which will read the packet's bytes
+/// Slightly slower than read for bigger types but more convinient for some things
 pub fn reader(self: *Packet) Reader {
     return .{ .context = self };
 }
@@ -156,36 +159,43 @@ test "packet: reading and writing" {
     var pack1 = try Packet.create();
     defer pack1.destroy();
 
-    // writing
-    {
-        // Using a std writer
-        var w = pack1.writer();
-        try w.writeIntNative(i32, -135);
-    }
-    // Using the packet's methods
+    // writing to the packet
+    // using its methods
     try pack1.write(u16, 1999);
-    try tst.expectEqual(@as(usize, 6), pack1.getDataSize());
+    try pack1.write(bool, true);
+    // using a writer
+    {
+        var w = pack1.writer();
+        try w.writeIntNative(u64, 12345678);
+        try w.writeAll("oh:");
+    }
+    // using append
+    const str = "abc";
+    try pack1.append(str);
+    try tst.expectEqual(@as(usize, 17), pack1.getDataSize());
 
     var pack2 =  try pack1.copy();
     defer pack2.destroy();
-
     pack1.clear();
     try tst.expectEqual(@as(usize, 0), pack1.getDataSize());
     try tst.expect(pack1.isAtEnd());
 
     // reading tests
+    // read method
+    try tst.expectEqual(@as(u16, 1999), try pack2.read(u16));
+    try tst.expect(try pack2.read(bool));
+    // reader
     {
-        // Using a std reader
+        var buf: [16]u8 = undefined;
         var r = pack2.reader();
-        try tst.expectEqual(@as(u16, 1999), try r.readIntNative(u16));
+        try tst.expectEqual(@as(u64, 12345678), try r.readIntNative(u64));
+        var count = try r.readAll(&buf);
+        try tst.expectEqual(@as(usize, 6), count);
+        try tst.expectEqualStrings("oh:abc", buf[0..count]);
     }
-    try tst.expectEqual(@as(i32, -135), try pack2.read(i32));
-    try tst.expect(pack1.isAtEnd());
-    // Using the data slice
-    //const slice = pack2.getData();
-    //try tst.expectEqual(@as(usize, 4), slice.len);
-    //const bp = @ptrCast(*const [2]u8, slice);
-    //try tst.expectEqual(@as(i32, -135), std.mem.readIntNative(u16, bp));
-    // Using the packet's methods
-    
+    // getdata
+    const dat = pack2.getData();
+    try tst.expectEqual(@as(usize, 17), dat.len);
+    try tst.expectEqualStrings("oh", dat[3..6]);
+    try tst.expect(pack2.isAtEnd());
 }

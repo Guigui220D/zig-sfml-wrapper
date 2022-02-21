@@ -59,17 +59,38 @@ pub fn getPublicAddress(timeout: ?sf.system.Time) !IpAddress {
 pub fn equals(self: IpAddress, other: IpAddress) bool {
     return std.mem.eql(u8, self.bytes(), other.bytes());
 }
-
+/// Gets the full slice of the contents
 fn bytes(self: IpAddress) []const u8 {
     return @ptrCast(*const [16]u8, &self._ip)[0..];
 }
 
 // Getter
 
+/// Gets the ip as it is stored but as a slice
+pub fn toString(self: IpAddress) []const u8 {
+    var slice = self.bytes();
+    for (slice) |s, i| {
+        if (s == 0) {
+            slice.len = i;
+            break;
+        }
+    }
+    return slice;
+}
+
 /// Gets the ip as an int
 pub fn toInt(self: IpAddress) u32 {
-    // TODO: this doesn't compile because of c abi problems, find a workaround
-    return sf.c.sfIpAddress_toInteger(self._ip);
+    // TODO: This is a workaround to
+    //return sf.c.sfIpAddress_toInteger(self._ip);
+    const str = self.toString();
+    var iter = std.mem.split(u8, str, ".");
+    var a = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 24;
+    var b = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 16;
+    var c = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 8;
+    var d = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 0;
+    if (iter.next()) |_|
+        unreachable;
+    return a + b + c + d;
 }
 
 /// Csfml structure
@@ -79,11 +100,11 @@ test "ipaddress" {
     const tst = std.testing;
 
     var ip = IpAddress.init(0x01, 0x23, 0x45, 0x67);
-    try tst.expect(ip.equals(IpAddress.initFromInt(0x01234567)));
+    try tst.expectEqual(@as(u32, 0x01234567), ip.toInt());
     ip = IpAddress.initFromInt(0xabababab);
     try tst.expect(ip.equals(IpAddress.init(0xab, 0xab, 0xab, 0xab)));
     ip = IpAddress.initFromString("localhost");
-    try tst.expect(ip.equals(IpAddress.localhost()));
+    try tst.expectEqualStrings("127.0.0.1", ip.toString());
 
     //toInt();
 

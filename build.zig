@@ -23,6 +23,7 @@ pub fn build(b: *Builder) void {
     example(b, target, "sfml_example");
     example(b, target, "green_circle");
     example(b, target, "heat_haze");
+    example(b, target, "test");
 }
 
 fn example(b: *Builder, targ: anytype, comptime name: []const u8) void {
