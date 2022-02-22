@@ -37,6 +37,8 @@ pub fn clear(self: *Packet) void {
 
 /// Gets a const slice of this packet's content
 /// Do not store, pointer may be changed when editing data
+/// Be careful when using that in conjunction with read or reader
+/// This gets all the data and does not move the reader
 pub fn getData(self: Packet) []const u8 {
     const data = sf.c.sfPacket_getData(self._ptr);
     const size = sf.c.sfPacket_getDataSize(self._ptr);
@@ -196,6 +198,6 @@ test "packet: reading and writing" {
     // getdata
     const dat = pack2.getData();
     try tst.expectEqual(@as(usize, 17), dat.len);
-    try tst.expectEqualStrings("oh", dat[3..6]);
+    try tst.expectEqualStrings("h:a", dat[12..15]);
     try tst.expect(pack2.isAtEnd());
 }
