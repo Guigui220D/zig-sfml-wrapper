@@ -11,8 +11,7 @@ const RenderWindow = @This();
 
 // Constructor/destructor
 
-/// Inits a render window with a size, a bits per pixel (most put 32), a title and a style
-/// The window will have the default style
+/// Inits a render window with a size, a bits per pixel (most put 32) a title, a style and context settings
 pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32, settings: ?sf.ContextSettings) !RenderWindow {
     var ret: RenderWindow = undefined;
 
