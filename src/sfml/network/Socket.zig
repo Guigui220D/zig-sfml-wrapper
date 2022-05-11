@@ -5,6 +5,7 @@ const sf = struct {
     pub usingnamespace sf.network;
 };
 
+/// Miscellaneous errors that can occur when handling sockets (connecting, sending, receiving, etc...)
 pub const Error = error {
     notReady,
     partial,
@@ -12,7 +13,9 @@ pub const Error = error {
     otherError
 };
 
-pub fn codeToErr(code: sf.c.sfSocketStatus) Error!void {
+/// Turns a csfml error code into a proper zig error
+/// For this wrapper's internal workings
+pub fn __codeToErr(code: sf.c.sfSocketStatus) Error!void {
     switch (code) {
         sf.c.sfSocketDone => return,
         sf.c.sfSocketNotReady => return error.notReady,
@@ -22,8 +25,3 @@ pub fn codeToErr(code: sf.c.sfSocketStatus) Error!void {
         else => unreachable
     }
 }
-
-pub const ReceivedRaw = struct {
-    data: []const u8,
-    sender: sf.IpAndPort
-};
