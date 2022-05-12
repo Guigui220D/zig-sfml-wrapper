@@ -34,12 +34,12 @@ pub fn setBlocking(self: *TcpSocket, blocking: bool) void {
 pub fn isBlocking(self: TcpSocket) bool {
     return sf.c.sfTcpSocket_isBlocking(self._ptr) != 0;
 }
+
 /// Gets the port this socket is bound to (null for no port)
 pub fn getLocalPort(self: TcpSocket) ?u16 {
     const port = sf.c.sfTcpSocket_getLocalPort(self._ptr);
     return if (port == 0) null else port;
 }
-
 /// Gets the address of the other tcp socket that is currently connected
 pub fn getRemote(self: TcpSocket) error{notConnected}!sf.IpAndPort {
     const port = sf.c.sfTcpSocket_getRemotePort(self._ptr);
