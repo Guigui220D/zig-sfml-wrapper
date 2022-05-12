@@ -1,5 +1,6 @@
 //! Socket using the TCP protocol
 
+const std = @import("std");
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
     pub usingnamespace sf.network;
@@ -41,76 +42,68 @@ pub fn getLocalPort(self: TcpSocket) ?u16 {
 
 /// Gets the address of the other tcp socket that is currently connected
 pub fn getRemote(self: TcpSocket) error{notConnected}!sf.IpAndPort {
-
+    const port = sf.c.sfTcpSocket_getRemotePort(self._ptr);
+    if (port == 0)
+        return error.notConnected
+    const ip = sf.c.sfTcpSocket_getRemoteAddress(self._ptr);
+    const ip_and_port = sf.IpAndPort{ .ip = { ._ip = ip, .port = port } };
+    std.debug.assert(!ip_and_port.ip.equals(sf.IpAddress.None));
+    return ip_and_port;
 }
 
 /// Connects to a server (the server typically has a Tcp Listener)
 /// To connect to clients, use a tcp listener instead and wait for connections
 pub fn connect(self: *TcpSocket, remote: sf.IpAndPort) sf.Socket.Error!void {
-
+    const code = sf.c.sfTcpSocket_connect(self._ptr, remote.ip._ip, remote.port);
+    try sf.Socket._codeToErr(code);
 }
 /// Disconnects from the remote
 pub fn disconnect(self: *TcpSocket) void {
-
+    sf.c.sfTcpSocket_disconnect(self._ptr);
 }
 
 /// Sends raw data to the remote
 pub fn send(self: *TcpSocket, data: []const u8) sf.Socket.Error!void {
-
+    const code = sf.c.sfTcpSocket_send(self._ptr, data.ptr, data.len);
+    try sf.Socket._codeToErr(code);
 }
 /// Sends part of the buffer to the remote
 /// Returns the slice of the rest of the data that hasn't been sent, what is left to send
 pub fn sendPartial(self: *TcpSocket, data: []const u8) sf.Socket.Error![]const u8 {
-
+    var sent: usize = undefined;
+    var ret = data;
+    const code = sf.c.sfTcpSocket_sendPartial(self._ptr, data.ptr, data.len, &sent);
+    try sf.Socket._codeToErr(code);
+    ret.ptr += sent;
+    ret.len -= sent;
+    return ret;
 }
 /// Sends a packet to the remote
 pub fn sendPacket(self: *TcpSocket, packet: sf.Packet) sf.Socket.Error!void {
-
+    const code = sf.c.sfTcpSocket_sendPacket(self._ptr, packet._ptr);
+    try sf.Socket._codeToErr(code);
 }
 
 /// Receives raw data from the remote
 /// Pass in a buffer large enough
 /// Returns the slice of the received data
 pub fn receive(self: *TcpSocket, buf: []u8) sf.Socket.Error![]const u8 {
-
+    var size: usize = undefined;
+    const code = sf.c.sfUdpSocket_receive(self._ptr, buf.ptr, buf.len, &size);
+    try sf.Socket._codeToErr(code);
+    return buf[0..size];
 }
 // TODO: consider receiveAlloc
 // TODO: should this return its own new packet
 /// Receives a packet from the remote
 /// Pass the packet to fill with the data
 pub fn receivePacket(self: *TcpSocket, packet: *sf.Packet) sf.Socket.Error!void {
-
+    const code = sf.c.sfUdpSocket_receivePacket(self._ptr, packet._ptr);
+    try sf.Socket._codeToErr(code);
+    return remote;
 }
 
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfTcpSocket,
 
-test "tcp socket: dumb test" {
-    @compileError("Todo");
-
-    const tst = @import("std").testing;
-
-    var buf: [1024]u8 = undefined;
-    var pack = try sf.Packet.create();
-    defer pack.destroy();
-
-    var sock = try UdpSocket.create();
-    defer sock.destroy();
-
-    sock.setBlocking(false);
-    try tst.expect(!sock.isBlocking());
-
-    try sock.bind(null, null);
-    const port = sock.getLocalPort().?;
-    try tst.expect(port >= 49152);
-
-    try tst.expectError(error.notReady, sock.receive(&buf));
-
-    sock.unbind();
-    try tst.expect(sock.getLocalPort() == null);
-    try tst.expectError(error.otherError, sock.receivePacket(&pack));
-    
-    const target = sf.IpAndPort{ .port = 1, .ip = sf.IpAddress.none() };
-    try tst.expectError(error.otherError, sock.sendPacket(pack, target));
-    try tst.expectError(error.otherError, sock.send(buf[0..10], target));
-}
+// TODO: write tests
