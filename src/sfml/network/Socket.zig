@@ -15,7 +15,7 @@ pub const Error = error {
 
 /// Turns a csfml error code into a proper zig error
 /// For this wrapper's internal workings
-pub fn __codeToErr(code: sf.c.sfSocketStatus) Error!void {
+pub fn _codeToErr(code: sf.c.sfSocketStatus) Error!void {
     switch (code) {
         sf.c.sfSocketDone => return,
         sf.c.sfSocketNotReady => return error.notReady,

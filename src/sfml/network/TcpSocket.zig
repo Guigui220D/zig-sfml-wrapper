@@ -44,17 +44,17 @@ pub fn getLocalPort(self: TcpSocket) ?u16 {
 pub fn getRemote(self: TcpSocket) error{notConnected}!sf.IpAndPort {
     const port = sf.c.sfTcpSocket_getRemotePort(self._ptr);
     if (port == 0)
-        return error.notConnected
+        return error.notConnected;
     const ip = sf.c.sfTcpSocket_getRemoteAddress(self._ptr);
-    const ip_and_port = sf.IpAndPort{ .ip = { ._ip = ip, .port = port } };
-    std.debug.assert(!ip_and_port.ip.equals(sf.IpAddress.None));
+    const ip_and_port = sf.IpAndPort{ .ip = .{ ._ip = ip }, .port = port };
+    std.debug.assert(!ip_and_port.ip.equals(sf.IpAddress.none()));
     return ip_and_port;
 }
 
 /// Connects to a server (the server typically has a Tcp Listener)
 /// To connect to clients, use a tcp listener instead and wait for connections
-pub fn connect(self: *TcpSocket, remote: sf.IpAndPort) sf.Socket.Error!void {
-    const code = sf.c.sfTcpSocket_connect(self._ptr, remote.ip._ip, remote.port);
+pub fn connect(self: *TcpSocket, remote: sf.IpAndPort, timeout: sf.system.Time) sf.Socket.Error!void {
+    const code = sf.c.sfTcpSocket_connect(self._ptr, remote.ip._ip, remote.port, timeout._toCSFML());
     try sf.Socket._codeToErr(code);
 }
 /// Disconnects from the remote
@@ -100,7 +100,6 @@ pub fn receive(self: *TcpSocket, buf: []u8) sf.Socket.Error![]const u8 {
 pub fn receivePacket(self: *TcpSocket, packet: *sf.Packet) sf.Socket.Error!void {
     const code = sf.c.sfUdpSocket_receivePacket(self._ptr, packet._ptr);
     try sf.Socket._codeToErr(code);
-    return remote;
 }
 
 /// Pointer to the csfml structure

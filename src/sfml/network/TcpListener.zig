@@ -34,7 +34,8 @@ pub fn isBlocking(self: TcpListener) bool {
     return sf.c.sfTcpListener_isBlocking(self._ptr) != 0;
 }
 
-/// Gets the port this socket is bound to (null for no port)
+/// Gets the port this socket is listening on
+/// Error if the socket is not listening
 pub fn getLocalPort(self: TcpListener) error{notListening}!u16 {
     const port = sf.c.sfTcpListener_getLocalPort(self._ptr);
     if (port == 0)
@@ -53,7 +54,8 @@ pub fn listen(self: *TcpListener, port: u16, address: ?sf.IpAddress) sf.Socket.E
 /// If the tcp is in blocking mode, it will wait
 pub fn accept(self: *TcpListener) sf.Socket.Error!?sf.TcpSocket {
     var ret: sf.TcpSocket = undefined;
-    const code = sf.c.sfTcpListener_accept(self._ptr, &(ret._ptr));
+    const retptr = @ptrCast([*c]?*sf.c.sfTcpSocket, &(ret._ptr));
+    const code = sf.c.sfTcpListener_accept(self._ptr, retptr);
     if (!self.isBlocking() and code == sf.c.sfSocketNotReady)
         return null;
     try sf.Socket._codeToErr(code);

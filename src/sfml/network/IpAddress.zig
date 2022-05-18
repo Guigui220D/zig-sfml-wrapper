@@ -84,13 +84,26 @@ pub fn toInt(self: IpAddress) u32 {
     //return sf.c.sfIpAddress_toInteger(self._ip);
     const str = self.toString();
     var iter = std.mem.split(u8, str, ".");
-    var a = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 24;
-    var b = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 16;
-    var c = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 8;
-    var d = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 0;
+    const a = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 24;
+    const b = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 16;
+    const c = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 8;
+    const d = (std.fmt.parseInt(u32, iter.next().?, 10) catch unreachable) << 0;
     if (iter.next()) |_|
         unreachable;
-    return a + b + c + d;
+    return a | b | c | d;
+}
+
+/// Prints this ip address as a string
+pub fn format(
+    self: @This(),
+    comptime fmt: []const u8,
+    options: std.fmt.FormatOptions,
+    writer: anytype
+) !void {
+    _ = options;
+    _ = fmt;
+
+    try writer.writeAll(self.toString());
 }
 
 /// Csfml structure
