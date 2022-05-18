@@ -12,6 +12,7 @@ pub fn build(b: *Builder) void {
     test_runner.linkSystemLibrary("csfml-system");
     test_runner.linkSystemLibrary("csfml-window");
     test_runner.linkSystemLibrary("csfml-audio");
+    test_runner.linkSystemLibrary("csfml-network");
     test_runner.addIncludeDir("csfml/include/");
     test_runner.setTarget(target);
     test_runner.setBuildMode(mode);
@@ -35,6 +36,7 @@ fn example(b: *Builder, targ: anytype, comptime name: []const u8) void {
     exe.linkSystemLibrary("csfml-system");
     exe.linkSystemLibrary("csfml-window");
     exe.linkSystemLibrary("csfml-audio");
+    exe.linkSystemLibrary("csfml-network");
     exe.addIncludeDir("csfml/include/");
     exe.setTarget(targ);
     exe.setBuildMode(mode);

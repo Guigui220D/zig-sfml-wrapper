@@ -10,8 +10,8 @@ My goal is to make things close enough to SFML, with nice methods.
 ### How much is done
 
 Most of the classes are wrapped and you should be able to write games with this wrapper.
-
-I do not plan to implement the network module, since there is already some pretty nice [networking libraries](https://github.com/MasterQ32/zig-network) available for zig for udp and tcp stuff.
+The network module is a recent addition and does not contain all classes yet (HTTP, FTP, ...).
+Threads are not available yet.
 
 ### Compiling
 

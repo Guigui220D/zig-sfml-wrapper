@@ -5,4 +5,5 @@ pub const c = @cImport({
     @cInclude("SFML/Window.h");
     @cInclude("SFML/System.h");
     @cInclude("SFML/Audio.h");
+    @cInclude("SFML/Network.h");
 });
