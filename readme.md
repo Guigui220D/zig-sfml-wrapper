@@ -1,6 +1,6 @@
-# Zig SFML Wrapper
+# Zig [SFML](https://www.sfml-dev.org/) Wrapper
 
-## A pretty interface to use csfml in a way that looks Object-Oriented in zig!
+## A pretty interface to use CSFML in a way that looks Object-Oriented in zig!
 
 ### What this is
 
