@@ -4,7 +4,7 @@ const sf = @import("../sfml_import.zig");
 
 /// Template for a 2 dimensional vector
 pub fn Vector2(comptime T: type) type {
-    return packed struct {
+    return extern struct {
         const Self = @This();
 
         /// The CSFML vector type equivalent
