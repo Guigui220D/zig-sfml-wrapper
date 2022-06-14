@@ -37,10 +37,10 @@ pub const Event = union(Event.Type) {
     /// Creates this event from a csfml one
     pub fn _fromCSFML(event: sf.c.sfEvent) Self {
         return switch (event.type) {
-            sf.c.sfEvtClosed => .{ .closed = {} },
+            sf.c.sfEvtClosed => .closed,
             sf.c.sfEvtResized => .{ .resized = .{ .size = .{ .x = event.size.width, .y = event.size.height } } },
-            sf.c.sfEvtLostFocus => .{ .lostFocus = {} },
-            sf.c.sfEvtGainedFocus => .{ .gainedFocus = {} },
+            sf.c.sfEvtLostFocus => .lostFocus,
+            sf.c.sfEvtGainedFocus => .gainedFocus,
             sf.c.sfEvtTextEntered => .{ .textEntered = .{ .unicode = event.text.unicode } },
             sf.c.sfEvtKeyPressed => .{ .keyPressed = .{ .code = @intToEnum(sf.window.keyboard.KeyCode, event.key.code), .alt = (event.key.alt != 0), .control = (event.key.control != 0), .shift = (event.key.shift != 0), .system = (event.key.system != 0) } },
             sf.c.sfEvtKeyReleased => .{ .keyReleased = .{ .code = @intToEnum(sf.window.keyboard.KeyCode, event.key.code), .alt = (event.key.alt != 0), .control = (event.key.control != 0), .shift = (event.key.shift != 0), .system = (event.key.system != 0) } },
@@ -48,8 +48,8 @@ pub const Event = union(Event.Type) {
             sf.c.sfEvtMouseButtonPressed => .{ .mouseButtonPressed = .{ .button = @intToEnum(sf.window.mouse.Button, event.mouseButton.button), .pos = .{ .x = event.mouseButton.x, .y = event.mouseButton.y } } },
             sf.c.sfEvtMouseButtonReleased => .{ .mouseButtonReleased = .{ .button = @intToEnum(sf.window.mouse.Button, event.mouseButton.button), .pos = .{ .x = event.mouseButton.x, .y = event.mouseButton.y } } },
             sf.c.sfEvtMouseMoved => .{ .mouseMoved = .{ .pos = .{ .x = event.mouseMove.x, .y = event.mouseMove.y } } },
-            sf.c.sfEvtMouseEntered => .{ .mouseEntered = {} },
-            sf.c.sfEvtMouseLeft => .{ .mouseLeft = {} },
+            sf.c.sfEvtMouseEntered => .mouseEntered,
+            sf.c.sfEvtMouseLeft => .mouseLeft,
             sf.c.sfEvtJoystickButtonPressed => .{ .joystickButtonPressed = .{ .joystickId = event.joystickButton.joystickId, .button = event.joystickButton.button } },
             sf.c.sfEvtJoystickButtonReleased => .{ .joystickButtonReleased = .{ .joystickId = event.joystickButton.joystickId, .button = event.joystickButton.button } },
             sf.c.sfEvtJoystickMoved => .{ .joystickMoved = .{ .joystickId = event.joystickMove.joystickId, .axis = event.joystickMove.axis, .position = event.joystickMove.position } },
@@ -137,10 +137,10 @@ pub const Event = union(Event.Type) {
     };
 
     // An event is one of those
-    closed: void,
+    closed,
     resized: SizeEvent,
-    lostFocus: void,
-    gainedFocus: void,
+    lostFocus,
+    gainedFocus,
     textEntered: TextEvent,
     keyPressed: KeyEvent,
     keyReleased: KeyEvent,
@@ -148,8 +148,8 @@ pub const Event = union(Event.Type) {
     mouseButtonPressed: MouseButtonEvent,
     mouseButtonReleased: MouseButtonEvent,
     mouseMoved: MouseMoveEvent,
-    mouseEntered: void,
-    mouseLeft: void,
+    mouseEntered,
+    mouseLeft,
     joystickButtonPressed: JoystickButtonEvent,
     joystickButtonReleased: JoystickButtonEvent,
     joystickMoved: JoystickMoveEvent,
