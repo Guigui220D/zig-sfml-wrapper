@@ -144,6 +144,18 @@ pub fn getGlobalBounds(self: RectangleShape) sf.FloatRect {
     return sf.FloatRect._fromCSFML(sf.c.sfRectangleShape_getGlobalBounds(self._ptr));
 }
 
+/// Gets the point count of this shape
+/// A rectangle has 4 points
+pub fn getPointCount(_: RectangleShape) usize {
+    return 4;
+}
+
+/// Gets a point of the shape using its index
+/// This function takes a u2 because a rectangle only has 4 points
+pub fn getPoint(self: RectangleShape, index: u2) sf.Vector2f {
+    return sf.Vector2f._fromCSFML(sf.c.sfRectangleShape_getPoint(self._ptr, index));
+}
+
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfRectangleShape,
 
@@ -172,6 +184,7 @@ test "rectangle shape: sane getters and setters" {
     try tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, rect.getPosition());
     try tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, rect.getOrigin());
     try tst.expectEqual(@as(?sf.Texture, null), rect.getTexture());
+    try tst.expectEqual(@as(usize, 4), rect.getPointCount());
 
     rect.rotate(5);
     rect.move(.{ .x = -5, .y = 5 });
@@ -182,4 +195,5 @@ test "rectangle shape: sane getters and setters" {
     _ = rect.getGlobalBounds();
     _ = rect.getLocalBounds();
     _ = rect.getTextureRect();
+    _ = rect.getPoint(2);
 }

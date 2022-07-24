@@ -8,5 +8,5 @@ test "all sfml tests" {
     std.testing.refAllDecls(sf.window);
     std.testing.refAllDecls(sf.graphics);
     std.testing.refAllDecls(sf.audio);
-    std.testing.refAllDecls(sf.network);
+    //std.testing.refAllDecls(sf.network);
 }

@@ -1,5 +1,6 @@
 //! Specialized shape representing a circle.
 
+const std = @import("std");
 const sf = struct {
     pub usingnamespace @import("../sfml.zig");
     pub usingnamespace sf.system;
@@ -134,24 +135,45 @@ pub fn setTextureRect(self: *CircleShape, rect: sf.IntRect) void {
     sf.c.sfCircleShape_getCircleRect(self._ptr, rect._toCSFML());
 }
 
-/// Gets the bounds in the local coordinates system
+/// Gets the bounds of this shape in the local coordinates system
 pub fn getLocalBounds(self: CircleShape) sf.FloatRect {
     return sf.FloatRect._fromCSFML(sf.c.sfCircleShape_getLocalBounds(self._ptr));
 }
 
-/// Gets the bounds in the global coordinates
+/// Gets the bounds of this shape in the global coordinates
 pub fn getGlobalBounds(self: CircleShape) sf.FloatRect {
     return sf.FloatRect._fromCSFML(sf.c.sfCircleShape_getGlobalBounds(self._ptr));
+}
+
+/// Gets the point count of this shape
+/// For a circle shape, this value can also be set
+pub fn getPointCount(self: CircleShape) usize {
+    return sf.c.sfCircleShape_getPointCount(self._ptr);
+}
+
+/// Gets a point of the shape using its index
+/// In debug mode, this index is asserted to be inbounds
+pub fn getPoint(self: CircleShape, index: usize) sf.Vector2f {
+    std.debug.assert(index < self.getPointCount());
+    return sf.Vector2f._fromCSFML(sf.c.sfCircleShape_getPoint(self._ptr, index));
+}
+
+/// Sets the point count of this shape
+/// The default value is 30
+pub fn setPointCount(self: *CircleShape, point_count: usize) void {
+    sf.c.sfCircleShape_setPointCount(self._ptr, point_count);
 }
 
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfCircleShape,
 
 test "circle shape: sane getters and setters" {
-    const tst = @import("std").testing;
+    const tst = std.testing;
 
     var circle = try CircleShape.create(30);
     defer circle.destroy();
+
+    try tst.expectEqual(@as(usize, 30), circle.getPointCount());
 
     circle.setFillColor(sf.Color.Yellow);
     circle.setOutlineColor(sf.Color.Red);
@@ -161,6 +183,7 @@ test "circle shape: sane getters and setters" {
     circle.setPosition(.{ .x = 1, .y = 2 });
     circle.setOrigin(.{ .x = 20, .y = 25 });
     circle.setTexture(null);
+    circle.setPointCount(40);
 
     try tst.expectEqual(sf.Color.Yellow, circle.getFillColor());
     try tst.expectEqual(sf.Color.Red, circle.getOutlineColor());
@@ -170,6 +193,7 @@ test "circle shape: sane getters and setters" {
     try tst.expectEqual(sf.Vector2f{ .x = 1, .y = 2 }, circle.getPosition());
     try tst.expectEqual(sf.Vector2f{ .x = 20, .y = 25 }, circle.getOrigin());
     try tst.expectEqual(@as(?sf.Texture, null), circle.getTexture());
+    try tst.expectEqual(@as(usize, 40), circle.getPointCount());
 
     circle.rotate(5);
     circle.move(.{ .x = -5, .y = 5 });
@@ -180,4 +204,5 @@ test "circle shape: sane getters and setters" {
     _ = circle.getGlobalBounds();
     _ = circle.getLocalBounds();
     _ = circle.getTextureRect();
+    _ = circle.getPoint(39);
 }
