@@ -151,6 +151,11 @@ pub fn setMouseCursorVisible(self: *RenderWindow, visible: bool) void {
     sf.c.sfRenderWindow_setMouseCursorVisible(self._ptr, @boolToInt(visible));
 }
 
+/// Set automatic key-repeat
+pub fn setKeyRepeatEnabled(self: *RenderWindow, enabled: bool) void {
+    sf.c.sfRenderWindow_setKeyRepeatEnabled(self._ptr, @boolToInt(enabled));
+}
+
 /// Gets the size of this window
 pub fn getSize(self: RenderWindow) sf.Vector2u {
     return sf.Vector2u._fromCSFML(sf.c.sfRenderWindow_getSize(self._ptr));
