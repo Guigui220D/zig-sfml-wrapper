@@ -11,8 +11,7 @@ const RenderWindow = @This();
 
 // Constructor/destructor
 
-/// Inits a render window with a size, a bits per pixel (most put 32), a title and a style
-/// The window will have the default style
+/// Inits a render window with a size, a bits per pixel (most put 32) a title, a style and context settings
 pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32, settings: ?sf.ContextSettings) !RenderWindow {
     var ret: RenderWindow = undefined;
 
@@ -146,6 +145,11 @@ pub fn setMouseCursorGrabbed(self: *RenderWindow, grab: bool) void {
 /// Set mouse cursor visibility
 pub fn setMouseCursorVisible(self: *RenderWindow, visible: bool) void {
     sf.c.sfRenderWindow_setMouseCursorVisible(self._ptr, @boolToInt(visible));
+}
+
+/// Set automatic key-repeat
+pub fn setKeyRepeatEnabled(self: *RenderWindow, enabled: bool) void {
+    sf.c.sfRenderWindow_setKeyRepeatEnabled(self._ptr, @boolToInt(enabled));
 }
 
 /// Gets the size of this window
