@@ -50,7 +50,7 @@ pub fn isAvailable() bool {
     return sf.c.sfVertexBuffer_isAvailable() != 0;
 }
 
-pub const draw_suffix = "CircleShape";
+pub const draw_suffix = "VertexBuffer";
 
 /// Pointer to the csfml structure
 _ptr: *sf.c.sfVertexBuffer,
