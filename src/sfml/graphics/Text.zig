@@ -171,7 +171,7 @@ pub fn setLineSpacing(self: *Text, spacing_factor: f32) void {
 }
 
 /// Sets the text's style
-pub setStyle(self: *Text, style: TextStyle) void {
+pub fn setStyle(self: *Text, style: TextStyle) void {
     sf.c.sfText_setStyle(self._ptr, @enumToInt(style));
 }
 /// Gets the text's style
