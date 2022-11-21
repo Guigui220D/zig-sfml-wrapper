@@ -9,6 +9,14 @@ const sf = struct {
 
 const Text = @This();
 
+pub const TextStyle = enum(c_uint){
+    Regular = 0,
+    Bold = 1 << 0,
+    Italic = 1 << 1,
+    Underlined = 1 << 2,
+    StrikeThrough = 1 << 3,
+}
+
 // Constructor/destructor
 
 /// Inits an empty text
@@ -160,6 +168,15 @@ pub fn getLineSpacing(self: Text) f32 {
 /// Sets the line spacing factor
 pub fn setLineSpacing(self: *Text, spacing_factor: f32) void {
     sf.c.sfText_setLineSpacing(self._ptr, spacing_factor);
+}
+
+/// Sets the text's style
+pub fn setStyle(self: *Text, style: TextStyle) void {
+    sf.c.sfText_setStyle(self._ptr, @enumToInt(style));
+}
+/// Gets the text's style
+pub fn getStyle(self: Text) TextStyle {
+    return @intToEnum(TextStyle, sf.c.sfText_getStyle());
 }
 
 /// Gets the local bounding rectangle of the text
