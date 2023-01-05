@@ -14,8 +14,7 @@ pub fn create() !TcpListener {
     var sock = sf.c.sfTcpListener_create();
     if (sock) |s| {
         return TcpListener{ ._ptr = s };
-    } else
-        return sf.Error.nullptrUnknownReason;
+    } else return sf.Error.nullptrUnknownReason;
 }
 /// Destroys this socket
 pub fn destroy(self: *TcpListener) void {

@@ -1,4 +1,4 @@
-//! Give access to the real-time state of the joysticks. 
+//! Give access to the real-time state of the joysticks.
 
 const std = @import("std");
 const sf = @import("../sfml_import.zig");

@@ -106,7 +106,7 @@ pub fn getChannelCount(self: Music) usize {
     return @intCast(usize, sf.c.sfMusic_getChannelCount(self._ptr));
 }
 
-/// Tell whether the sound's position is relative to the listener or is absolute 
+/// Tell whether the sound's position is relative to the listener or is absolute
 pub fn isRelativeToListener(self: Music) bool {
     return sf.c.sfMusic_getRelativeToListener(self._ptr) != 0;
 }

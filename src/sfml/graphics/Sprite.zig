@@ -1,9 +1,10 @@
 //! Drawable representation of a texture, with its own transformations, color, etc.
 
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
-    pub usingnamespace sf.graphics;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.system;
+    pub usingnamespace sfml.graphics;
 };
 
 const Sprite = @This();

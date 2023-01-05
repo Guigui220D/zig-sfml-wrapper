@@ -3,10 +3,11 @@
 //! Original code by binary1248
 
 const sf = struct {
-    usingnamespace @import("sfml");
-    usingnamespace sf.graphics;
-    usingnamespace sf.window;
-    usingnamespace sf.system;
+    const sfml = @import("sfml");
+    usingnamespace sfml;
+    usingnamespace sfml.graphics;
+    usingnamespace sfml.window;
+    usingnamespace sfml.system;
 };
 
 pub fn main() !void {
@@ -33,7 +34,7 @@ pub fn main() !void {
     sprite.setPosition(.{ .x = 100, .y = 150 });
 
     //var shader = try sf.Shader.createFromFile(null, null, "heat_shader.fs");
-    var shader = try sf.Shader.createFromMemory(null, null, @embedFile("../../heat_shader.fs"));
+    var shader = try sf.Shader.createFromFile(null, null, "heat_shader.fs");
     defer shader.destroy();
     shader.setUniform("currentTexture", sf.Shader.CurrentTexture);
     shader.setUniform("distortionMapTexture", distortion_map);

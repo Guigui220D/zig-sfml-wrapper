@@ -28,6 +28,6 @@ pub const Text = @import("Text.zig");
 
 pub const glsl = @import("glsl.zig");
 pub const Shader = @import("Shader.zig");
-pub const BlendMode = @import("BlendMode.zig");
+pub const BlendMode = @import("blend_mode.zig").BlendMode;
 pub const RenderStates = @import("RenderStates.zig");
-pub const Transform = @import("Transform.zig");
+pub const Transform = @import("transform.zig").Transform;

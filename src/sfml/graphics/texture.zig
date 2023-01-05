@@ -1,9 +1,10 @@
 //! Image living on the graphics card that can be used for drawing.
 
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
-    pub usingnamespace sf.graphics;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.system;
+    pub usingnamespace sfml.graphics;
 };
 
 const std = @import("std");
@@ -53,9 +54,8 @@ pub const Texture = union(TextureType) {
         // TODO: is it possible to detect that comptime?
         if (self.* == ._ptr) {
             sf.c.sfTexture_destroy(self._ptr);
-        } else
-            std.debug.print("SFML Debug: Trying to destroy a const texture!", .{});
-        
+        } else std.debug.print("SFML Debug: Trying to destroy a const texture!", .{});
+
         self._ptr = undefined;
     }
 

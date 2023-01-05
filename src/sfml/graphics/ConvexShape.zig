@@ -2,9 +2,10 @@
 
 const assert = @import("std").debug.assert;
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
-    pub usingnamespace sf.graphics;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.system;
+    pub usingnamespace sfml.graphics;
 };
 
 const ConvexShape = @This();
@@ -162,7 +163,7 @@ test "convex shape: sane getters and setters" {
     try tst.expectEqual(@as(usize, 3), shape.getPointCount());
     // TODO: find out why that doesn't work
     //try tst.expectEqual(sf.Vector2f{ .x = 1, .y = 1 }, shape.getPoint(1));
-    _ = shape.getPoint(0); 
+    _ = shape.getPoint(0);
 
     shape.setFillColor(sf.Color.Yellow);
     shape.setOutlineColor(sf.Color.Red);

@@ -1,4 +1,4 @@
-//! Storage for audio samples defining a sound. 
+//! Storage for audio samples defining a sound.
 
 const sf = @import("../sfml.zig");
 

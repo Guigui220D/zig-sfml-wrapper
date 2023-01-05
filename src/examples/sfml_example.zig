@@ -2,11 +2,12 @@
 //! https://www.sfml-dev.org/documentation/2.5.1/
 
 const sf = struct {
-    pub usingnamespace @import("sfml");
-    pub usingnamespace sf.system;
-    pub usingnamespace sf.graphics;
-    pub usingnamespace sf.audio;
-    pub usingnamespace sf.window;
+    const sfml = @import("sfml");
+    usingnamespace sfml;
+    usingnamespace sfml.audio;
+    usingnamespace sfml.graphics;
+    usingnamespace sfml.window;
+    usingnamespace sfml.system;
 };
 
 pub fn main() !void {

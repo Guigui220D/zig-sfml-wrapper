@@ -1,8 +1,9 @@
 //! Defines settings for drawing things on a target
 
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.graphics;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.graphics;
 };
 
 blend_mode: sf.BlendMode = sf.BlendMode.BlendAlpha,

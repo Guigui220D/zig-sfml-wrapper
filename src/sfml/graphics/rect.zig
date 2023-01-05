@@ -1,8 +1,9 @@
 //! Utility class for manipulating 2D axis aligned rectangles.
 
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.system;
 };
 const math = @import("std").math;
 

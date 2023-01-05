@@ -14,8 +14,7 @@ pub fn create() !UdpSocket {
     var sock = sf.c.sfUdpSocket_create();
     if (sock) |s| {
         return UdpSocket{ ._ptr = s };
-    } else
-        return sf.Error.nullptrUnknownReason;
+    } else return sf.Error.nullptrUnknownReason;
 }
 /// Destroys this socket
 pub fn destroy(self: *UdpSocket) void {
@@ -46,7 +45,7 @@ pub fn bind(self: *UdpSocket, port: ?u16, ip: ?sf.IpAddress) sf.Socket.Error!voi
     const i = ip orelse sf.IpAddress.any();
     const code = sf.c.sfUdpSocket_bind(self._ptr, p, i._ip);
     try sf.Socket._codeToErr(code);
-} 
+}
 /// Unbinds the socket from the port it's bound to
 pub fn unbind(self: *UdpSocket) void {
     sf.c.sfUdpSocket_unbind(self._ptr);
@@ -63,10 +62,7 @@ pub fn sendPacket(self: *UdpSocket, packet: sf.Packet, remote: sf.IpAndPort) sf.
 }
 
 /// Represents received data and a remote ip and port
-pub const ReceivedRaw = struct {
-    data: []const u8,
-    sender: sf.IpAndPort
-};
+pub const ReceivedRaw = struct { data: []const u8, sender: sf.IpAndPort };
 /// Receives raw data from a recipient
 /// Pass in a buffer large enough
 /// Returns the slice of the received data and the sender ip and port
@@ -118,7 +114,7 @@ test "udp socket: dumb test" {
     sock.unbind();
     try tst.expect(sock.getLocalPort() == null);
     try tst.expectError(error.otherError, sock.receivePacket(&pack));
-    
+
     const target = sf.IpAndPort{ .port = 1, .ip = sf.IpAddress.none() };
     try tst.expectError(error.otherError, sock.sendPacket(pack, target));
     try tst.expectError(error.otherError, sock.send(buf[0..10], target));

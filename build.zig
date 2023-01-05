@@ -7,13 +7,13 @@ pub fn build(b: *Builder) void {
 
     var test_runner = b.addTest("src/sfml/sfml_tests.zig");
     test_runner.linkLibC();
-    test_runner.addLibPath("csfml/lib/msvc/");
+    test_runner.addLibraryPath("csfml/lib/msvc/");
     test_runner.linkSystemLibrary("csfml-graphics");
     test_runner.linkSystemLibrary("csfml-system");
     test_runner.linkSystemLibrary("csfml-window");
     test_runner.linkSystemLibrary("csfml-audio");
     test_runner.linkSystemLibrary("csfml-network");
-    test_runner.addIncludeDir("csfml/include/");
+    test_runner.addIncludePath("csfml/include/");
     test_runner.setTarget(target);
     test_runner.setBuildMode(mode);
 
@@ -31,13 +31,13 @@ fn example(b: *Builder, targ: anytype, comptime name: []const u8) void {
     const exe = b.addExecutable("sfml", "src/examples/" ++ name ++ ".zig");
     exe.linkLibC();
     exe.addPackagePath("sfml", "src/sfml/sfml.zig");
-    exe.addLibPath("csfml/lib/msvc/");
+    exe.addLibraryPath("csfml/lib/msvc/");
     exe.linkSystemLibrary("csfml-graphics");
     exe.linkSystemLibrary("csfml-system");
     exe.linkSystemLibrary("csfml-window");
     exe.linkSystemLibrary("csfml-audio");
     exe.linkSystemLibrary("csfml-network");
-    exe.addIncludeDir("csfml/include/");
+    exe.addIncludePath("csfml/include/");
     exe.setTarget(targ);
     exe.setBuildMode(mode);
     exe.install();

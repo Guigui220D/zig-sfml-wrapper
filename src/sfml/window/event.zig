@@ -1,8 +1,9 @@
 //! Defines a system event and its parameters.
 
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.system;
 };
 
 pub const Event = union(Event.Type) {

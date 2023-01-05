@@ -6,12 +6,7 @@ const sf = struct {
 };
 
 /// Miscellaneous errors that can occur when handling sockets (connecting, sending, receiving, etc...)
-pub const Error = error {
-    notReady,
-    partial,
-    disconnected,
-    otherError
-};
+pub const Error = error{ notReady, partial, disconnected, otherError };
 
 /// Turns a csfml error code into a proper zig error
 /// For this wrapper's internal workings
@@ -22,6 +17,6 @@ pub fn _codeToErr(code: sf.c.sfSocketStatus) Error!void {
         sf.c.sfSocketPartial => return error.partial,
         sf.c.sfSocketDisconnected => return error.disconnected,
         sf.c.sfSocketError => return error.otherError,
-        else => unreachable
+        else => unreachable,
     }
 }

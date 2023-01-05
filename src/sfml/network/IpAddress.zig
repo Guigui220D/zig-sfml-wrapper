@@ -29,18 +29,18 @@ pub fn init(a: u8, b: u8, c: u8, d: u8) IpAddress {
 }
 /// Inits an ip address from an integer
 pub fn initFromInt(int: u32) IpAddress {
-    return .{ ._ip = sf.c.sfIpAddress_fromInteger(int) }; 
+    return .{ ._ip = sf.c.sfIpAddress_fromInteger(int) };
 }
 /// Inits an ip address from a string (network name or ip)
 pub fn initFromString(str: [*:0]const u8) IpAddress {
-    return .{ ._ip = sf.c.sfIpAddress_fromString(str) }; 
+    return .{ ._ip = sf.c.sfIpAddress_fromString(str) };
 }
 
 // Local/global addresses
 
 /// Gets the local address of this pc (takes no time)
 pub fn getLocalAddress() IpAddress {
-    return .{ ._ip = sf.c.sfIpAddress_getLocalAddress() }; 
+    return .{ ._ip = sf.c.sfIpAddress_getLocalAddress() };
 }
 /// Gets the public address of this pc (from outside)
 /// Takes time because it needs to contact an internet server
@@ -94,12 +94,7 @@ pub fn toInt(self: IpAddress) u32 {
 }
 
 /// Prints this ip address as a string
-pub fn format(
-    self: @This(),
-    comptime fmt: []const u8,
-    options: std.fmt.FormatOptions,
-    writer: anytype
-) !void {
+pub fn format(self: @This(), comptime fmt: []const u8, options: std.fmt.FormatOptions, writer: anytype) !void {
     _ = options;
     _ = fmt;
 

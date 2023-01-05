@@ -2,20 +2,21 @@
 
 const std = @import("std");
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
-    pub usingnamespace sf.graphics;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.system;
+    pub usingnamespace sfml.graphics;
 };
 
 const Text = @This();
 
-pub const TextStyle = enum(c_uint){
+pub const TextStyle = enum(c_uint) {
     Regular = 0,
     Bold = 1 << 0,
     Italic = 1 << 1,
     Underlined = 1 << 2,
     StrikeThrough = 1 << 3,
-}
+};
 
 // Constructor/destructor
 
@@ -176,7 +177,7 @@ pub fn setStyle(self: *Text, style: TextStyle) void {
 }
 /// Gets the text's style
 pub fn getStyle(self: Text) TextStyle {
-    return @intToEnum(TextStyle, sf.c.sfText_getStyle());
+    return @intToEnum(TextStyle, sf.c.sfText_getStyle(self._ptr));
 }
 
 /// Gets the local bounding rectangle of the text

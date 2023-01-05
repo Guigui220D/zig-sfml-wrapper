@@ -62,7 +62,7 @@ test "Font: sane getters and setters" {
     const tst = std.testing;
 
     // TODO: is it a good idea to have a test rely on resources?
-    var font = try createFromMemory(@embedFile("../../../arial.ttf"));
+    var font = try createFromFile("arial.ttf");
     defer font.destroy();
 
     try tst.expect(std.mem.eql(u8, "Arial", std.mem.span(font.getFamily())));

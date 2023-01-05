@@ -14,8 +14,7 @@ pub fn create() SocketSelector {
     var sock = sf.c.sfSocketSelector_create();
     if (sock) |s| {
         return SocketSelector{ ._ptr = s };
-    } else
-        return sf.Error.nullptrUnknownReason;
+    } else return sf.Error.nullptrUnknownReason;
 }
 /// Destroys this socket selector
 pub fn destroy(self: *SocketSelector) void {
@@ -26,8 +25,7 @@ pub fn copy(self: SocketSelector) SocketSelector {
     var sock = sf.c.sfSocketSelector_copy(self._ptr);
     if (sock) |s| {
         return SocketSelector{ ._ptr = s };
-    } else
-        return sf.Error.nullptrUnknownReason;
+    } else return sf.Error.nullptrUnknownReason;
 }
 
 // Methods
@@ -38,7 +36,7 @@ pub fn addSocket(self: *SocketSelector, socket: anytype) void {
         sf.UdpSocket => sf.c.sfSocketSelector_addUdpSocket(self._ptr, socket._ptr),
         sf.TcpSocket => sf.c.sfSocketSelector_addTcpSocket(self._ptr, socket._ptr),
         sf.TcpListener => sf.c.sfSocketSelector_addTcpListener(self._ptr, socket._ptr),
-        else => @compileError("Socket has to be a tcp socket, tcp listener or udp socket")
+        else => @compileError("Socket has to be a tcp socket, tcp listener or udp socket"),
     }
 }
 /// Removes a socket from the selector
@@ -47,7 +45,7 @@ pub fn removeSocket(self: *SocketSelector, socket: anytype) void {
         sf.UdpSocket => sf.c.sfSocketSelector_removeUdpSocket(self._ptr, socket._ptr),
         sf.TcpSocket => sf.c.sfSocketSelector_removeTcpSocket(self._ptr, socket._ptr),
         sf.TcpListener => sf.c.sfSocketSelector_removeTcpListener(self._ptr, socket._ptr),
-        else => @compileError("Socket has to be a tcp socket, tcp listener or udp socket")
+        else => @compileError("Socket has to be a tcp socket, tcp listener or udp socket"),
     }
 }
 /// Removes all sockets from the selector
@@ -69,7 +67,7 @@ pub fn isSocketReady(self: SocketSelector, socket: anytype) bool {
         sf.UdpSocket => sf.c.sfSocketSelector_isUdpSocketReady(self._ptr, socket._ptr),
         sf.TcpSocket => sf.c.sfSocketSelector_isTcpSocketReady(self._ptr, socket._ptr),
         sf.TcpListener => sf.c.sfSocketSelector_isTcpListenerReady(self._ptr, socket._ptr),
-        else => @compileError("Socket has to be a tcp socket, tcp listener or udp socket")
+        else => @compileError("Socket has to be a tcp socket, tcp listener or udp socket"),
     }
 }
 

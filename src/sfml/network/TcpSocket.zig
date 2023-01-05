@@ -15,8 +15,7 @@ pub fn create() !TcpSocket {
     var sock = sf.c.sfTcpSocket_create();
     if (sock) |s| {
         return TcpSocket{ ._ptr = s };
-    } else
-        return sf.Error.nullptrUnknownReason;
+    } else return sf.Error.nullptrUnknownReason;
 }
 /// Destroys this socket
 pub fn destroy(self: *TcpSocket) void {

@@ -1,4 +1,4 @@
-//! Utility class to build blocks of data to transfer over the network. 
+//! Utility class to build blocks of data to transfer over the network.
 
 const std = @import("std");
 const sf = @import("../sfml.zig");
@@ -12,8 +12,7 @@ pub fn create() !Packet {
     var pack = sf.c.sfPacket_create();
     if (pack) |p| {
         return Packet{ ._ptr = p };
-    } else
-        return sf.Error.nullptrUnknownReason;
+    } else return sf.Error.nullptrUnknownReason;
 }
 /// Destroys a packet
 pub fn destroy(self: *Packet) void {
@@ -24,8 +23,7 @@ pub fn copy(self: Packet) !Packet {
     var pack = sf.c.sfPacket_copy(self._ptr);
     if (pack) |p| {
         return Packet{ ._ptr = p };
-    } else
-        return sf.Error.nullptrUnknownReason;
+    } else return sf.Error.nullptrUnknownReason;
 }
 
 // Getters/Setters
@@ -88,7 +86,7 @@ pub fn read(self: *Packet, comptime T: type) !T {
         f64 => sf.c.sfPacket_readDouble(self._ptr),
         [*:0]const u8 => sf.c.sfPacket_readString(self._ptr),
         [*:0]const u16 => sf.c.sfPacket_readWideString(self._ptr),
-        else => @compileError("Can't read type " ++ @typeName(T) ++ " from packet")
+        else => @compileError("Can't read type " ++ @typeName(T) ++ " from packet"),
     };
     try self.checkLastRead();
     return res;
@@ -110,7 +108,7 @@ pub fn write(self: *Packet, comptime T: type, value: T) !void {
         f64 => sf.c.sfPacket_writeDouble(self._ptr, value),
         [*:0]const u8 => sf.c.sfPacket_writeString(self._ptr, value),
         [*:0]const u16 => sf.c.sfPacket_writeWideString(self._ptr, value),
-        else => @compileError("Can't write type " ++ @typeName(T) ++ " to packet")
+        else => @compileError("Can't write type " ++ @typeName(T) ++ " to packet"),
     }
 }
 
@@ -176,7 +174,7 @@ test "packet: reading and writing" {
     try pack1.append(str);
     try tst.expectEqual(@as(usize, 17), pack1.getDataSize());
 
-    var pack2 =  try pack1.copy();
+    var pack2 = try pack1.copy();
     defer pack2.destroy();
     pack1.clear();
     try tst.expectEqual(@as(usize, 0), pack1.getDataSize());

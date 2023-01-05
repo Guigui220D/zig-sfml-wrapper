@@ -1,8 +1,9 @@
 //! Regular sound that can be played in the audio environment.
 
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.audio;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.audio;
 };
 
 const Sound = @This();

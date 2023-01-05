@@ -1,9 +1,10 @@
-//! Target for off-screen 2D rendering into a texture. 
+//! Target for off-screen 2D rendering into a texture.
 
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
-    pub usingnamespace sf.graphics;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.system;
+    pub usingnamespace sfml.graphics;
 };
 
 const RenderTexture = @This();
@@ -47,13 +48,12 @@ pub fn display(self: *RenderTexture) void {
 
 /// Draw something on the texture (won't be visible until display is called)
 /// You can pass a render state or null for default
-pub fn draw(self: *RenderTexture, to_draw: anytype, states: ?sf.RenderStates) void { 
+pub fn draw(self: *RenderTexture, to_draw: anytype, states: ?sf.RenderStates) void {
     const draw_fn = @field(sf.c, "sfRenderTexture_draw" ++ @TypeOf(to_draw).draw_suffix);
     if (states) |s| {
         var cstates = s._toCSFML();
         draw_fn(self._ptr, to_draw._ptr, &cstates);
-    } else
-        draw_fn(self._ptr, to_draw._ptr, null);
+    } else draw_fn(self._ptr, to_draw._ptr, null);
 }
 
 /// Gets a const reference to the target texture (the reference doesn't change)

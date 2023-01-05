@@ -1,10 +1,11 @@
 //! Window that can serve as a target for 2D drawing.
 
 const sf = struct {
-    pub usingnamespace @import("../sfml.zig");
-    pub usingnamespace sf.system;
-    pub usingnamespace sf.graphics;
-    pub usingnamespace sf.window;
+    const sfml = @import("../sfml.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.system;
+    pub usingnamespace sfml.graphics;
+    pub usingnamespace sfml.window;
 };
 
 const RenderWindow = @This();
@@ -110,8 +111,7 @@ pub fn draw(self: *RenderWindow, to_draw: anytype, states: ?sf.RenderStates) voi
     if (states) |s| {
         var cstates = s._toCSFML();
         draw_fn(self._ptr, to_draw._ptr, &cstates);
-    } else
-        draw_fn(self._ptr, to_draw._ptr, null);
+    } else draw_fn(self._ptr, to_draw._ptr, null);
 }
 
 // Getters/setters
