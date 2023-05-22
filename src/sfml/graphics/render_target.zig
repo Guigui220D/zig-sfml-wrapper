@@ -6,7 +6,7 @@ pub const RenderTarget = union(enum) {
     window: *sf.RenderWindow,
     texture: *sf.RenderTexture,
 
-    pub fn draw(self: *RenderTarget, to_draw: anytype, states: ?sf.RenderStates) void {
+    pub fn draw(self: *const RenderTarget, to_draw: anytype, states: ?sf.RenderStates) void {
         switch (self.*) {
             .window => |w| w.draw(to_draw, states),
             .texture => |t| t.draw(to_draw, states),
