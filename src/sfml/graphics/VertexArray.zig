@@ -20,7 +20,7 @@ pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphic
     if (va) |vert| {
         sf.c.sfVertexArray_setPrimitiveType(vert, @enumToInt(primitive));
         sf.c.sfVertexArray_resize(vert, vertex.len);
-        for (vertex) |v, i|
+        for (vertex, 0..) |v, i|
             sf.c.sfVertexArray_getVertex(vert, i).* = @bitCast(sf.c.sfVertex, v);
         return VertexArray{ ._ptr = vert };
     } else return sf.Error.nullptrUnknownReason;

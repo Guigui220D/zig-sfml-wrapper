@@ -140,7 +140,7 @@ pub fn reader(self: *Packet) Reader {
 }
 /// Read function for the reader
 fn readFn(self: *Packet, b: []u8) sf.Error!usize {
-    for (b) |*byte, i| {
+    for (b, 0..) |*byte, i| {
         if (sf.c.sfPacket_endOfPacket(self._ptr) != 0)
             return i;
         const val = sf.c.sfPacket_readUint8(self._ptr);

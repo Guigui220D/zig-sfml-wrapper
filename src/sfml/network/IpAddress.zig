@@ -69,7 +69,7 @@ fn bytes(self: IpAddress) []const u8 {
 /// Gets the ip as it is stored but as a slice
 pub fn toString(self: IpAddress) []const u8 {
     var slice = self.bytes();
-    for (slice) |s, i| {
+    for (slice, 0..) |s, i| {
         if (s == 0) {
             slice.len = i;
             break;

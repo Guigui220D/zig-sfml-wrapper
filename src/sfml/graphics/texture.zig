@@ -245,7 +245,7 @@ test "texture: sane getters and setters" {
     var pixel_data = try allocator.alloc(sf.Color, 120);
     defer allocator.free(pixel_data);
 
-    for (pixel_data) |*c, i| {
+    for (pixel_data, 0..) |*c, i| {
         c.* = sf.graphics.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
     }
 
