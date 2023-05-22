@@ -8,8 +8,8 @@ pub fn link(exe: *std.build.Step.Compile) void {
     exe.linkSystemLibrary("csfml-window");
     exe.linkSystemLibrary("csfml-audio");
     exe.linkSystemLibrary("csfml-network");
-    //exe.addIncludePath("csfml/include/");
-    //exe.addLibraryPath("csfml/lib/msvc/");
+    // exe.addIncludePath("csfml/include/");
+    // exe.addLibraryPath("csfml/lib/msvc/");
 }
 
 pub fn pkg(name: []const u8) std.build.Pkg {

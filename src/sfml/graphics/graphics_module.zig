@@ -2,6 +2,7 @@ pub const Color = @import("color.zig").Color;
 
 pub const RenderWindow = @import("RenderWindow.zig");
 pub const RenderTexture = @import("RenderTexture.zig");
+pub const RenderTarget = @import("render_target.zig").RenderTarget;
 
 pub const View = @import("View.zig");
 
