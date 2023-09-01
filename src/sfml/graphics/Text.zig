@@ -33,7 +33,7 @@ pub fn createWithText(string: [:0]const u8, font: sf.Font, character_size: usize
     if (text == null)
         return sf.Error.nullptrUnknownReason;
     sf.c.sfText_setFont(text, font._ptr);
-    sf.c.sfText_setCharacterSize(text, @intCast(c_uint, character_size));
+    sf.c.sfText_setCharacterSize(text, @as(c_uint, @intCast(character_size)));
     sf.c.sfText_setString(text, string);
     return Text{ ._ptr = text.? };
 }
@@ -66,11 +66,11 @@ pub fn setFont(self: *Text, font: sf.Font) void {
 
 /// Gets the character size of this text
 pub fn getCharacterSize(self: Text) usize {
-    return @intCast(usize, sf.c.sfText_getCharacterSize(self._ptr));
+    return @as(usize, @intCast(sf.c.sfText_getCharacterSize(self._ptr)));
 }
 /// Sets the character size of this text
 pub fn setCharacterSize(self: *Text, character_size: usize) void {
-    sf.c.sfText_setCharacterSize(self._ptr, @intCast(c_uint, character_size));
+    sf.c.sfText_setCharacterSize(self._ptr, @as(c_uint, @intCast(character_size)));
 }
 
 /// Gets the fill color of this text
@@ -173,11 +173,11 @@ pub fn setLineSpacing(self: *Text, spacing_factor: f32) void {
 
 /// Sets the text's style
 pub fn setStyle(self: *Text, style: TextStyle) void {
-    sf.c.sfText_setStyle(self._ptr, @enumToInt(style));
+    sf.c.sfText_setStyle(self._ptr, @intFromEnum(style));
 }
 /// Gets the text's style
 pub fn getStyle(self: Text) TextStyle {
-    return @intToEnum(TextStyle, sf.c.sfText_getStyle(self._ptr));
+    return @as(TextStyle, @enumFromInt(sf.c.sfText_getStyle(self._ptr)));
 }
 
 /// Gets the local bounding rectangle of the text

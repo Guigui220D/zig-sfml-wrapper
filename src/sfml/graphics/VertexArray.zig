@@ -18,10 +18,10 @@ pub fn create() !VertexArray {
 pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphics.PrimitiveType) !VertexArray {
     var va = sf.c.sfVertexArray_create();
     if (va) |vert| {
-        sf.c.sfVertexArray_setPrimitiveType(vert, @enumToInt(primitive));
+        sf.c.sfVertexArray_setPrimitiveType(vert, @intFromEnum(primitive));
         sf.c.sfVertexArray_resize(vert, vertex.len);
         for (vertex, 0..) |v, i|
-            sf.c.sfVertexArray_getVertex(vert, i).* = @bitCast(sf.c.sfVertex, v);
+            sf.c.sfVertexArray_getVertex(vert, i).* = @as(sf.c.sfVertex, @bitCast(v));
         return VertexArray{ ._ptr = vert };
     } else return sf.Error.nullptrUnknownReason;
 }
@@ -55,7 +55,7 @@ pub fn getVertex(self: VertexArray, index: usize) *sf.graphics.Vertex {
     // Me, later, what did that comment even mean? ^
     var ptr = sf.c.sfVertexArray_getVertex(self._ptr, index);
     std.debug.assert(index < self.getVertexCount());
-    return @ptrCast(*sf.graphics.Vertex, ptr.?);
+    return @as(*sf.graphics.Vertex, @ptrCast(ptr.?));
 }
 
 /// Gets a slice to the vertices of the vertex array
@@ -65,7 +65,7 @@ pub fn getSlice(self: VertexArray) []sf.graphics.Vertex {
     var ret: []sf.graphics.Vertex = undefined;
 
     ret.len = self.getVertexCount();
-    ret.ptr = @ptrCast([*]sf.graphics.Vertex, self.getVertex(0));
+    ret.ptr = @as([*]sf.graphics.Vertex, @ptrCast(self.getVertex(0)));
 
     return ret;
 }
@@ -82,17 +82,17 @@ pub fn resize(self: *VertexArray, vertexCount: usize) void {
 
 /// Appends a vertex to the array
 pub fn append(self: *VertexArray, vertex: sf.graphics.Vertex) void {
-    sf.c.sfVertexArray_append(self._ptr, @bitCast(sf.c.sfVertex, vertex));
+    sf.c.sfVertexArray_append(self._ptr, @as(sf.c.sfVertex, @bitCast(vertex)));
 }
 
 /// Gets the primitives' type of this array
 pub fn getPrimitiveType(self: VertexArray) sf.graphics.PrimitiveType {
-    return @intToEnum(sf.graphics.PrimitiveType, sf.c.sfVertexArray_getPrimitiveType(self._ptr));
+    return @as(sf.graphics.PrimitiveType, @enumFromInt(sf.c.sfVertexArray_getPrimitiveType(self._ptr)));
 }
 
 /// Sets the primitives' type of this array
 pub fn setPrimitiveType(self: *VertexArray, primitive: sf.graphics.PrimitiveType) void {
-    sf.c.sfVertexArray_setPrimitiveType(self._ptr, @enumToInt(primitive));
+    sf.c.sfVertexArray_setPrimitiveType(self._ptr, @intFromEnum(primitive));
 }
 
 /// Gets the bounding rectangle of the vertex array

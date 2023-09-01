@@ -20,12 +20,12 @@ pub fn _toCSFML(self: Time) sf.c.sfTime {
 
 /// Creates a time object from a seconds count
 pub fn seconds(s: f32) Time {
-    return Time{ .us = @floatToInt(i64, s * 1_000) * 1_000 };
+    return Time{ .us = @as(i64, @intFromFloat(s * 1_000)) * 1_000 };
 }
 
 /// Creates a time object from milliseconds
 pub fn milliseconds(ms: i32) Time {
-    return Time{ .us = @intCast(i64, ms) * 1_000 };
+    return Time{ .us = @as(i64, @intCast(ms)) * 1_000 };
 }
 
 /// Creates a time object from microseconds
@@ -42,12 +42,12 @@ pub fn asMicroseconds(self: Time) i64 {
 
 /// Gets this time measurement as milliseconds
 pub fn asMilliseconds(self: Time) i32 {
-    return @truncate(i32, @divFloor(self.us, 1_000));
+    return @as(i32, @truncate(@divFloor(self.us, 1_000)));
 }
 
 /// Gets this time measurement as seconds (as a float)
 pub fn asSeconds(self: Time) f32 {
-    return @intToFloat(f32, self.us) / 1_000_000;
+    return @as(f32, @floatFromInt(self.us)) / 1_000_000;
 }
 
 // Misc

@@ -7,5 +7,5 @@ pub const KeyCode = enum(c_int) { Unknown = -1, A = 0, B, C, D, E, F, G, H, I, J
 
 /// Returns true if the specified key is pressed
 pub fn isKeyPressed(key: KeyCode) bool {
-    return sf.c.sfKeyboard_isKeyPressed(@enumToInt(key)) == 1;
+    return sf.c.sfKeyboard_isKeyPressed(@intFromEnum(key)) == 1;
 }

@@ -34,12 +34,12 @@ pub fn getButtonCount(joystick: Joystick) usize {
 }
 /// Checks if the joystick has a given axis
 pub fn hasAxis(self: Joystick, axis: Axis) bool {
-    return sf.c.sfJoystick_hasAxis(self._joystick_number, @enumToInt(axis)) != 0;
+    return sf.c.sfJoystick_hasAxis(self._joystick_number, @intFromEnum(axis)) != 0;
 }
 
 /// Gets the value of an axis
 pub fn getAxisPosition(self: Joystick, axis: Axis) f32 {
-    return sf.c.sfJoystick_getAxisPosition(self._joystick_number, @enumToInt(axis));
+    return sf.c.sfJoystick_getAxisPosition(self._joystick_number, @intFromEnum(axis));
 }
 /// Checks if a joystick button is pressed
 pub fn isButtonPressed(self: Joystick, button: c_uint) bool {

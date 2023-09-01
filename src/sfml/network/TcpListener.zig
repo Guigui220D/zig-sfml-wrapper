@@ -26,7 +26,7 @@ pub fn destroy(self: *TcpListener) void {
 /// Enables or disables blocking mode (true for blocking)
 /// In blocking mode, receive waits for data
 pub fn setBlocking(self: *TcpListener, blocking: bool) void {
-    sf.c.sfTcpListener_setBlocking(self._ptr, @boolToInt(blocking));
+    sf.c.sfTcpListener_setBlocking(self._ptr, @intFromBool(blocking));
 }
 /// Tells whether or not the socket is in blocking mode
 pub fn isBlocking(self: TcpListener) bool {
@@ -53,7 +53,7 @@ pub fn listen(self: *TcpListener, port: u16, address: ?sf.IpAddress) sf.Socket.E
 /// If the tcp is in blocking mode, it will wait
 pub fn accept(self: *TcpListener) sf.Socket.Error!?sf.TcpSocket {
     var ret: sf.TcpSocket = undefined;
-    const retptr = @ptrCast([*c]?*sf.c.sfTcpSocket, &(ret._ptr));
+    const retptr = @as([*c]?*sf.c.sfTcpSocket, @ptrCast(&(ret._ptr)));
     const code = sf.c.sfTcpListener_accept(self._ptr, retptr);
     if (!self.isBlocking() and code == sf.c.sfSocketNotReady)
         return null;

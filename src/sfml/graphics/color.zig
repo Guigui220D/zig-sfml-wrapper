@@ -8,13 +8,13 @@ pub const Color = packed struct {
     /// Converts a color from a csfml object
     /// For inner workings
     pub fn _fromCSFML(col: sf.c.sfColor) Color {
-        return @bitCast(Color, col);
+        return @as(Color, @bitCast(col));
     }
 
     /// Converts this color to a csfml one
     /// For inner workings
     pub fn _toCSFML(self: Color) sf.c.sfColor {
-        return @bitCast(sf.c.sfColor, self);
+        return @as(sf.c.sfColor, @bitCast(self));
     }
 
     /// Inits a color with rgb components
@@ -40,28 +40,28 @@ pub const Color = packed struct {
     /// Inits a color from a 32bits value (RGBA in that order)
     pub fn fromInteger(int: u32) Color {
         return Color{
-            .r = @truncate(u8, (int & 0xff000000) >> 24),
-            .g = @truncate(u8, (int & 0x00ff0000) >> 16),
-            .b = @truncate(u8, (int & 0x0000ff00) >> 8),
-            .a = @truncate(u8, (int & 0x000000ff) >> 0),
+            .r = @as(u8, @truncate((int & 0xff000000) >> 24)),
+            .g = @as(u8, @truncate((int & 0x00ff0000) >> 16)),
+            .b = @as(u8, @truncate((int & 0x0000ff00) >> 8)),
+            .a = @as(u8, @truncate((int & 0x000000ff) >> 0)),
         };
     }
 
     /// Gets a 32 bit integer representing the color
     pub fn toInteger(self: Color) u32 {
-        return (@intCast(u32, self.r) << 24) |
-            (@intCast(u32, self.g) << 16) |
-            (@intCast(u32, self.b) << 8) |
-            (@intCast(u32, self.a) << 0);
+        return (@as(u32, @intCast(self.r)) << 24) |
+            (@as(u32, @intCast(self.g)) << 16) |
+            (@as(u32, @intCast(self.b)) << 8) |
+            (@as(u32, @intCast(self.a)) << 0);
     }
 
     /// Creates a color with rgba floats from 0 to 1
     fn fromFloats(red: f32, green: f32, blue: f32, alpha: f32) Color {
         return Color{
-            .r = @floatToInt(u8, math.clamp(red, 0.0, 1.0) * 255.0),
-            .g = @floatToInt(u8, math.clamp(green, 0.0, 1.0) * 255.0),
-            .b = @floatToInt(u8, math.clamp(blue, 0.0, 1.0) * 255.0),
-            .a = @floatToInt(u8, math.clamp(alpha, 0.0, 1.0) * 255.0),
+            .r = @as(u8, @intFromFloat(math.clamp(red, 0.0, 1.0) * 255.0)),
+            .g = @as(u8, @intFromFloat(math.clamp(green, 0.0, 1.0) * 255.0)),
+            .b = @as(u8, @intFromFloat(math.clamp(blue, 0.0, 1.0) * 255.0)),
+            .a = @as(u8, @intFromFloat(math.clamp(alpha, 0.0, 1.0) * 255.0)),
         };
     }
 
@@ -98,7 +98,7 @@ pub const Color = packed struct {
         var q: f32 = v * (1.0 - (s * ff));
         var t: f32 = v * (1.0 - (s * (1.0 - ff)));
 
-        return switch (@floatToInt(usize, hh)) {
+        return switch (@as(usize, @intFromFloat(hh))) {
             0 => fromFloats(v, t, p, a),
             1 => fromFloats(q, v, p, a),
             2 => fromFloats(p, v, t, a),
@@ -110,7 +110,7 @@ pub const Color = packed struct {
 
     /// Get a GLSL float vector for this color (for shaders)
     pub fn toFVec4(self: Color) sf.graphics.glsl.FVec4 {
-        return .{ .x = @intToFloat(f32, self.r) / 255.0, .y = @intToFloat(f32, self.g) / 255.0, .z = @intToFloat(f32, self.b) / 255.0, .w = @intToFloat(f32, self.a) / 255.0 };
+        return .{ .x = @as(f32, @floatFromInt(self.r)) / 255.0, .y = @as(f32, @floatFromInt(self.g)) / 255.0, .z = @as(f32, @floatFromInt(self.b)) / 255.0, .w = @as(f32, @floatFromInt(self.a)) / 255.0 };
     }
     /// Get a GLSL int vector for this color (for shaders)
     pub fn toIVec4(self: Color) sf.graphcis.glsl.IVec4 {

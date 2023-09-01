@@ -27,7 +27,7 @@ pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Image {
     if (pixels.len < size.x * size.y)
         return sf.Error.notEnoughData;
 
-    var img = sf.c.sfImage_createFromPixels(size.x, size.y, @ptrCast([*]const u8, pixels.ptr));
+    var img = sf.c.sfImage_createFromPixels(size.x, size.y, @as([*]const u8, @ptrCast(pixels.ptr)));
 
     if (img) |i| {
         return Image{ ._ptr = i };
@@ -42,7 +42,7 @@ pub fn createFromFile(path: [:0]const u8) !Image {
 }
 /// Loads an image from a file in memory
 pub fn createFromMemory(data: []const u8) !Image {
-    var img = sf.c.sfImage_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
+    var img = sf.c.sfImage_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
     if (img) |i| {
         return Image{ ._ptr = i };
     } else return sf.Error.resourceLoadingError;
@@ -106,7 +106,7 @@ pub fn getPixelsSlice(self: Image) []const sf.Color {
 
     var ret: []const sf.Color = undefined;
     ret.len = len;
-    ret.ptr = @ptrCast([*]const sf.Color, @alignCast(4, ptr));
+    ret.ptr = @as([*]const sf.Color, @ptrCast(@alignCast(ptr)));
 
     return ret;
 }
@@ -122,7 +122,7 @@ test "image: sane getters and setters" {
     defer allocator.free(pixel_data);
 
     for (pixel_data, 0..) |*c, i| {
-        c.* = sf.Color.fromHSVA(@intToFloat(f32, i) / 30 * 360, 100, 100, 1);
+        c.* = sf.Color.fromHSVA(@as(f32, @floatFromInt(i)) / 30 * 360, 100, 100, 1);
     }
 
     var img = try Image.createFromPixels(.{ .x = 5, .y = 6 }, pixel_data);

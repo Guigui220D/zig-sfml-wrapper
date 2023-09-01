@@ -27,7 +27,7 @@ pub fn destroy(self: *TcpSocket) void {
 /// Enables or disables blocking mode (true for blocking)
 /// In blocking mode, receive waits for data
 pub fn setBlocking(self: *TcpSocket, blocking: bool) void {
-    sf.c.sfTcpSocket_setBlocking(self._ptr, @boolToInt(blocking));
+    sf.c.sfTcpSocket_setBlocking(self._ptr, @intFromBool(blocking));
 }
 /// Tells whether or not the socket is in blocking mode
 pub fn isBlocking(self: TcpSocket) bool {

@@ -15,7 +15,7 @@ pub fn createFromFile(path: [:0]const u8) !Music {
 }
 /// Loads music from a file in memory
 pub fn createFromMemory(data: []const u8) !Music {
-    var music = sf.c.sfMusic_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
+    var music = sf.c.sfMusic_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
     if (music) |m| {
         return Music{ ._ptr = m };
     } else return sf.Error.resourceLoadingError;
@@ -75,7 +75,7 @@ pub fn getLoop(self: Music) bool {
 }
 /// Enable or disable auto loop
 pub fn setLoop(self: *Music, loop: bool) void {
-    sf.c.sfMusic_setLoop(self._ptr, @boolToInt(loop));
+    sf.c.sfMusic_setLoop(self._ptr, @intFromBool(loop));
 }
 
 /// Sets the pitch of the music
@@ -98,12 +98,12 @@ pub fn setVolume(self: *Music, volume: f32) void {
 
 /// Gets the sample rate of this music
 pub fn getSampleRate(self: Music) usize {
-    return @intCast(usize, sf.c.sfMusic_getSampleRate(self._ptr));
+    return @as(usize, @intCast(sf.c.sfMusic_getSampleRate(self._ptr)));
 }
 
 /// Gets the channel count of the music
 pub fn getChannelCount(self: Music) usize {
-    return @intCast(usize, sf.c.sfMusic_getChannelCount(self._ptr));
+    return @as(usize, @intCast(sf.c.sfMusic_getChannelCount(self._ptr)));
 }
 
 /// Tell whether the sound's position is relative to the listener or is absolute
@@ -112,7 +112,7 @@ pub fn isRelativeToListener(self: Music) bool {
 }
 /// Make the sound's position relative to the listener or absolute
 pub fn setRelativeToListener(self: *Music, loop: bool) void {
-    sf.c.sfMusic_setRelativeToListener(self._ptr, @boolToInt(loop));
+    sf.c.sfMusic_setRelativeToListener(self._ptr, @intFromBool(loop));
 }
 
 pub const getStatus = @compileError("Function is not implemented yet.");

@@ -9,14 +9,14 @@ const Shader = @This();
 
 /// Creates a shader object from shader files, you can omit some shader types by passing null
 pub fn createFromFile(vertex_shader_path: ?[:0]const u8, geometry_shader_path: ?[:0]const u8, fragment_shader_path: ?[:0]const u8) !Shader {
-    const shader = sf.c.sfShader_createFromFile(if (vertex_shader_path) |vsp| @ptrCast([*c]const u8, vsp) else null, if (geometry_shader_path) |gsp| @ptrCast([*c]const u8, gsp) else null, if (fragment_shader_path) |fsp| @ptrCast([*c]const u8, fsp) else null);
+    const shader = sf.c.sfShader_createFromFile(if (vertex_shader_path) |vsp| @as([*c]const u8, @ptrCast(vsp)) else null, if (geometry_shader_path) |gsp| @as([*c]const u8, @ptrCast(gsp)) else null, if (fragment_shader_path) |fsp| @as([*c]const u8, @ptrCast(fsp)) else null);
     if (shader) |s| {
         return Shader{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;
 }
 /// Create a shader object from glsl code as string, you can omit some shader types by passing null
 pub fn createFromMemory(vertex_shader: ?[:0]const u8, geometry_shader: ?[:0]const u8, fragment_shader: ?[:0]const u8) !Shader {
-    const shader = sf.c.sfShader_createFromMemory(if (vertex_shader) |vs| @ptrCast([*c]const u8, vs) else null, if (geometry_shader) |gs| @ptrCast([*c]const u8, gs) else null, if (fragment_shader) |fs| @ptrCast([*c]const u8, fs) else null);
+    const shader = sf.c.sfShader_createFromMemory(if (vertex_shader) |vs| @as([*c]const u8, @ptrCast(vs)) else null, if (geometry_shader) |gs| @as([*c]const u8, @ptrCast(gs)) else null, if (fragment_shader) |fs| @as([*c]const u8, @ptrCast(fs)) else null);
     if (shader) |s| {
         return Shader{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;
@@ -56,23 +56,23 @@ pub fn setUniform(self: *Shader, name: [:0]const u8, value: anytype) void {
         bool => sf.c.sfShader_setBoolUniform(self._ptr, name, if (value) 1 else 0),
         glsl.FVec2 => sf.c.sfShader_setVec2Uniform(self._ptr, name, value._toCSFML()),
         glsl.FVec3 => sf.c.sfShader_setVec3Uniform(self._ptr, name, value._toCSFML()),
-        glsl.FVec4 => sf.c.sfShader_setVec4Uniform(self._ptr, name, @bitCast(sf.c.sfGlslVec4, value)),
+        glsl.FVec4 => sf.c.sfShader_setVec4Uniform(self._ptr, name, @as(sf.c.sfGlslVec4, @bitCast(value))),
         glsl.IVec2 => sf.c.sfShader_setIvec2Uniform(self._ptr, name, value._toCSFML()),
-        glsl.IVec3 => sf.c.sfShader_setIvec3Uniform(self._ptr, name, @bitCast(sf.c.sfGlslIvec3, value)),
-        glsl.IVec4 => sf.c.sfShader_setIvec4Uniform(self._ptr, name, @bitCast(sf.c.sfGlslIvec4, value)),
-        glsl.BVec2 => sf.c.sfShader_setBvec2Uniform(self._ptr, name, @bitCast(sf.c.sfGlslBvec2, value)),
-        glsl.BVec3 => sf.c.sfShader_setBvec3Uniform(self._ptr, name, @bitCast(sf.c.sfGlslBvec3, value)),
-        glsl.BVec4 => sf.c.sfShader_setBvec4Uniform(self._ptr, name, @bitCast(sf.c.sfGlslBvec4, value)),
-        glsl.Mat3 => sf.c.sfShader_setMat3Uniform(self._ptr, name, @ptrCast(*const sf.c.sfGlslMat3, @alignCast(4, &value))),
-        glsl.Mat4 => sf.c.sfShader_setMat4Uniform(self._ptr, name, @ptrCast(*const sf.c.sfGlslMat4, @alignCast(4, &value))),
+        glsl.IVec3 => sf.c.sfShader_setIvec3Uniform(self._ptr, name, @as(sf.c.sfGlslIvec3, @bitCast(value))),
+        glsl.IVec4 => sf.c.sfShader_setIvec4Uniform(self._ptr, name, @as(sf.c.sfGlslIvec4, @bitCast(value))),
+        glsl.BVec2 => sf.c.sfShader_setBvec2Uniform(self._ptr, name, @as(sf.c.sfGlslBvec2, @bitCast(value))),
+        glsl.BVec3 => sf.c.sfShader_setBvec3Uniform(self._ptr, name, @as(sf.c.sfGlslBvec3, @bitCast(value))),
+        glsl.BVec4 => sf.c.sfShader_setBvec4Uniform(self._ptr, name, @as(sf.c.sfGlslBvec4, @bitCast(value))),
+        glsl.Mat3 => sf.c.sfShader_setMat3Uniform(self._ptr, name, @as(*const sf.c.sfGlslMat3, @ptrCast(@alignCast(&value)))),
+        glsl.Mat4 => sf.c.sfShader_setMat4Uniform(self._ptr, name, @as(*const sf.c.sfGlslMat4, @ptrCast(@alignCast(&value)))),
         sf.graphics.Texture => sf.c.sfShader_setTextureUniform(self._ptr, name, value._get()),
         CurrentTextureT => sf.c.sfShader_setCurrentTextureUniform(self._ptr, name),
         []const f32 => sf.c.sfShader_setFloatUniformArray(self._ptr, name, value.ptr, value.len),
-        []const glsl.FVec2 => sf.c.sfShader_setVec2UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslVec2, value.ptr), value.len),
-        []const glsl.FVec3 => sf.c.sfShader_setVec3UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslVec3, value.ptr), value.len),
-        []const glsl.FVec4 => sf.c.sfShader_setVec4UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslVec4, value.ptr), value.len),
-        []const glsl.Mat3 => sf.c.sfShader_setMat3UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslMat3, value.ptr), value.len),
-        []const glsl.Mat4 => sf.c.sfShader_setMat4UniformArray(self._ptr, name, @ptrCast(*sf.c.sfGlslVec4, value.ptr), value.len),
+        []const glsl.FVec2 => sf.c.sfShader_setVec2UniformArray(self._ptr, name, @as(*sf.c.sfGlslVec2, @ptrCast(value.ptr)), value.len),
+        []const glsl.FVec3 => sf.c.sfShader_setVec3UniformArray(self._ptr, name, @as(*sf.c.sfGlslVec3, @ptrCast(value.ptr)), value.len),
+        []const glsl.FVec4 => sf.c.sfShader_setVec4UniformArray(self._ptr, name, @as(*sf.c.sfGlslVec4, @ptrCast(value.ptr)), value.len),
+        []const glsl.Mat3 => sf.c.sfShader_setMat3UniformArray(self._ptr, name, @as(*sf.c.sfGlslMat3, @ptrCast(value.ptr)), value.len),
+        []const glsl.Mat4 => sf.c.sfShader_setMat4UniformArray(self._ptr, name, @as(*sf.c.sfGlslVec4, @ptrCast(value.ptr)), value.len),
         else => @compileError("Uniform of type \"" ++ @typeName(T) ++ "\" cannot be set inside shader."),
     }
 }

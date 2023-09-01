@@ -17,7 +17,7 @@ pub const Texture = union(TextureType) {
 
     /// Creates a texture from nothing
     pub fn create(size: sf.Vector2u) !Texture {
-        const tex = sf.c.sfTexture_create(@intCast(c_uint, size.x), @intCast(c_uint, size.y));
+        const tex = sf.c.sfTexture_create(@as(c_uint, @intCast(size.x)), @as(c_uint, @intCast(size.y)));
         if (tex) |t| {
             return Texture{ ._ptr = t };
         } else return sf.Error.resourceLoadingError;
@@ -31,7 +31,7 @@ pub const Texture = union(TextureType) {
     }
     /// Loads a texture from a file in memory
     pub fn createFromMemory(data: []const u8) !Texture {
-        const tex = sf.c.sfTexture_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
+        const tex = sf.c.sfTexture_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
         if (tex) |t| {
             return Texture{ ._ptr = t };
         } else return sf.Error.resourceLoadingError;
@@ -135,7 +135,7 @@ pub const Texture = union(TextureType) {
         if (pixels.len < real_zone.width * real_zone.height)
             return sf.Error.notEnoughData;
 
-        sf.c.sfTexture_updateFromPixels(self._ptr, @ptrCast([*]const u8, pixels.ptr), real_zone.width, real_zone.height, real_zone.left, real_zone.top);
+        sf.c.sfTexture_updateFromPixels(self._ptr, @as([*]const u8, @ptrCast(pixels.ptr)), real_zone.width, real_zone.height, real_zone.left, real_zone.top);
     }
     /// Updates the pixels of the image from an other texture
     pub fn updateFromTexture(self: *Texture, other: Texture, copy_pos: ?sf.Vector2u) void {
@@ -173,7 +173,7 @@ pub const Texture = union(TextureType) {
         if (self.* == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
-        sf.c.sfTexture_setSmooth(self._ptr, @boolToInt(smooth));
+        sf.c.sfTexture_setSmooth(self._ptr, @intFromBool(smooth));
     }
 
     /// Tells whether or not this texture should repeat when rendering outside its bounds
@@ -185,7 +185,7 @@ pub const Texture = union(TextureType) {
         if (self.* == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
-        sf.c.sfTexture_setRepeated(self._ptr, @boolToInt(repeated));
+        sf.c.sfTexture_setRepeated(self._ptr, @intFromBool(repeated));
     }
 
     /// Tells whether or not this texture has colors in the SRGB format
@@ -198,7 +198,7 @@ pub const Texture = union(TextureType) {
         if (self.* == ._const_ptr)
             @panic("Can't set properties on a const texture");
 
-        sf.c.sfTexture_setSrgb(self._ptr, @boolToInt(srgb));
+        sf.c.sfTexture_setSrgb(self._ptr, @intFromBool(srgb));
     }
 
     /// Swaps this texture's contents with an other texture
@@ -246,7 +246,7 @@ test "texture: sane getters and setters" {
     defer allocator.free(pixel_data);
 
     for (pixel_data, 0..) |*c, i| {
-        c.* = sf.graphics.Color.fromHSVA(@intToFloat(f32, i) / 144 * 360, 100, 100, 1);
+        c.* = sf.graphics.Color.fromHSVA(@as(f32, @floatFromInt(i)) / 144 * 360, 100, 100, 1);
     }
 
     pixel_data[0] = sf.Color.Green;
