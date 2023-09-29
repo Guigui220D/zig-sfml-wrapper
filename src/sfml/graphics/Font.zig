@@ -15,7 +15,7 @@ pub fn createFromFile(path: [:0]const u8) !Font {
 }
 /// Loads a font from a file in memory
 pub fn createFromMemory(data: []const u8) !Font {
-    var font = sf.c.sfFont_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
+    var font = sf.c.sfFont_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
     if (font) |f| {
         return Font{ ._ptr = f };
     } else return sf.Error.resourceLoadingError;
@@ -34,21 +34,21 @@ pub fn getFamily(self: Font) [*:0]const u8 {
 
 /// Gets the kerning offset of two glyphs
 pub fn getKerning(self: Font, first: u32, second: u32, character_size: usize) f32 {
-    return sf.c.sfFont_getKerning(self._ptr, first, second, @intCast(c_uint, character_size));
+    return sf.c.sfFont_getKerning(self._ptr, first, second, @as(c_uint, @intCast(character_size)));
 }
 
 /// Gets the default spacing between two lines
 pub fn getLineSpacing(self: Font, character_size: usize) f32 {
-    return sf.c.sfFont_getLineSpacing(self._ptr, @intCast(c_uint, character_size));
+    return sf.c.sfFont_getLineSpacing(self._ptr, @as(c_uint, @intCast(character_size)));
 }
 
 /// Gets the vertical offset of the underline
 pub fn getUnderlinePosition(self: Font, character_size: usize) f32 {
-    return sf.c.sfFont_getUnderlinePosition(self._ptr, @intCast(c_uint, character_size));
+    return sf.c.sfFont_getUnderlinePosition(self._ptr, @as(c_uint, @intCast(character_size)));
 }
 /// Gets the underline thickness
 pub fn getUnderlineThickness(self: Font, character_size: usize) f32 {
-    return sf.c.sfFont_getUnderlineThickness(self._ptr, @intCast(c_uint, character_size));
+    return sf.c.sfFont_getUnderlineThickness(self._ptr, @as(c_uint, @intCast(character_size)));
 }
 
 pub const getGlyph = @compileError("Function is not implemented yet.");

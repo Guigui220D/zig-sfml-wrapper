@@ -14,14 +14,14 @@ pub fn createFromFile(path: [:0]const u8) !SoundBuffer {
 }
 /// Loads sound from a file in memory
 pub fn createFromMemory(data: []const u8) !SoundBuffer {
-    var sound = sf.c.sfSoundBuffer_createFromMemory(@ptrCast(?*const anyopaque, data.ptr), data.len);
+    var sound = sf.c.sfSoundBuffer_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
     if (sound) |s| {
         return SoundBuffer{ ._ptr = s };
     } else return sf.Error.resourceLoadingError;
 }
 /// Creates a sound buffer from sample data
 pub fn createFromSamples(samples: []const i16, channel_count: usize, sample_rate: usize) !SoundBuffer {
-    var sound = sf.c.sfSoundBuffer_createFromSamples(@ptrCast([*c]const c_short, samples.ptr), samples.len, @intCast(c_uint, channel_count), @intCast(c_uint, sample_rate));
+    var sound = sf.c.sfSoundBuffer_createFromSamples(@as([*c]const c_short, @ptrCast(samples.ptr)), samples.len, @as(c_uint, @intCast(channel_count)), @as(c_uint, @intCast(sample_rate)));
     if (sound == null)
         return sf.Error.resourceLoadingError;
     return SoundBuffer{ ._ptr = sound.? };
@@ -44,17 +44,17 @@ pub fn getDuration(self: SoundBuffer) sf.system.Time {
 
 /// Gets the sample count of this sound
 pub fn getSampleCount(self: SoundBuffer) usize {
-    return @intCast(usize, sf.c.sfSoundBuffer_getSampleCount(self._ptr));
+    return @as(usize, @intCast(sf.c.sfSoundBuffer_getSampleCount(self._ptr)));
 }
 
 /// Gets the sample rate of this sound (n° of samples per second, often 44100)
 pub fn getSampleRate(self: SoundBuffer) usize {
-    return @intCast(usize, sf.c.sfSoundBuffer_getSampleRate(self._ptr));
+    return @as(usize, @intCast(sf.c.sfSoundBuffer_getSampleRate(self._ptr)));
 }
 
 /// Gets the channel count (2 is stereo for instance)
 pub fn getChannelCount(self: SoundBuffer) usize {
-    return @intCast(usize, sf.c.sfSoundBuffer_getChannelCount(self._ptr));
+    return @as(usize, @intCast(sf.c.sfSoundBuffer_getChannelCount(self._ptr)));
 }
 
 // Misc

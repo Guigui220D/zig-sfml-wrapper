@@ -61,7 +61,7 @@ pub fn equals(self: IpAddress, other: IpAddress) bool {
 }
 /// Gets the full slice of the contents
 fn bytes(self: IpAddress) []const u8 {
-    return @ptrCast(*const [16]u8, &self._ip)[0..];
+    return @as(*const [16]u8, @ptrCast(&self._ip))[0..];
 }
 
 // Getter

@@ -32,14 +32,14 @@ pub fn Rect(comptime T: type) type {
         /// This is mainly for the inner workings of this wrapper
         pub fn _toCSFML(self: Self) CsfmlEquivalent {
             if (CsfmlEquivalent == void) @compileError("This rectangle type doesn't have a CSFML equivalent.");
-            return @bitCast(CsfmlEquivalent, self);
+            return @as(CsfmlEquivalent, @bitCast(self));
         }
 
         /// Creates a rect from a CSFML one (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
         pub fn _fromCSFML(rect: CsfmlEquivalent) Self {
             if (CsfmlEquivalent == void) @compileError("This rectangle type doesn't have a CSFML equivalent.");
-            return @bitCast(Self, rect);
+            return @as(Self, @bitCast(rect));
         }
 
         /// Checks if a point is inside this recangle

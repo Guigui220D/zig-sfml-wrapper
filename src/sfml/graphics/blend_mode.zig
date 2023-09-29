@@ -23,7 +23,7 @@ pub const BlendMode = extern struct {
     /// Bitcasts this blendmode to the csfml struct
     /// For inner workings
     pub fn _toCSFML(self: BlendMode) sfBlendMode {
-        return @bitCast(sfBlendMode, self);
+        return @as(sfBlendMode, @bitCast(self));
     }
 
     color_src_factor: Factor,

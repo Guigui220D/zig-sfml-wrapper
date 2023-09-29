@@ -17,13 +17,13 @@ pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32, se
     var ret: RenderWindow = undefined;
 
     var mode: sf.c.sfVideoMode = .{
-        .width = @intCast(c_uint, size.x),
-        .height = @intCast(c_uint, size.y),
-        .bitsPerPixel = @intCast(c_uint, bpp),
+        .width = @as(c_uint, @intCast(size.x)),
+        .height = @as(c_uint, @intCast(size.y)),
+        .bitsPerPixel = @as(c_uint, @intCast(bpp)),
     };
 
     const c_settings = if (settings) |s| s._toCSFML() else null;
-    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), style, if (c_settings) |s| &s else null);
+    var window = sf.c.sfRenderWindow_create(mode, @as([*c]const u8, @ptrCast(title)), style, if (c_settings) |s| &s else null);
 
     if (window) |w| {
         ret._ptr = w;
@@ -37,12 +37,12 @@ pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
     var ret: RenderWindow = undefined;
 
     var mode: sf.c.sfVideoMode = .{
-        .width = @intCast(c_uint, size.x),
-        .height = @intCast(c_uint, size.y),
+        .width = @as(c_uint, @intCast(size.x)),
+        .height = @as(c_uint, @intCast(size.y)),
         .bitsPerPixel = 32,
     };
 
-    var window = sf.c.sfRenderWindow_create(mode, @ptrCast([*c]const u8, title), sf.window.Style.defaultStyle, null);
+    var window = sf.c.sfRenderWindow_create(mode, @as([*c]const u8, @ptrCast(title)), sf.window.Style.defaultStyle, null);
 
     if (window) |w| {
         ret._ptr = w;
@@ -139,17 +139,17 @@ pub fn getViewport(self: RenderWindow, view: sf.View) sf.IntRect {
 
 /// Set mouse cursor grabbing
 pub fn setMouseCursorGrabbed(self: *RenderWindow, grab: bool) void {
-    sf.c.sfRenderWindow_setMouseCursorGrabbed(self._ptr, @boolToInt(grab));
+    sf.c.sfRenderWindow_setMouseCursorGrabbed(self._ptr, @intFromBool(grab));
 }
 
 /// Set mouse cursor visibility
 pub fn setMouseCursorVisible(self: *RenderWindow, visible: bool) void {
-    sf.c.sfRenderWindow_setMouseCursorVisible(self._ptr, @boolToInt(visible));
+    sf.c.sfRenderWindow_setMouseCursorVisible(self._ptr, @intFromBool(visible));
 }
 
 /// Set automatic key-repeat
 pub fn setKeyRepeatEnabled(self: *RenderWindow, enabled: bool) void {
-    sf.c.sfRenderWindow_setKeyRepeatEnabled(self._ptr, @boolToInt(enabled));
+    sf.c.sfRenderWindow_setKeyRepeatEnabled(self._ptr, @intFromBool(enabled));
 }
 
 /// Gets the size of this window
@@ -187,7 +187,7 @@ pub fn setFramerateLimit(self: *RenderWindow, fps: c_uint) void {
 }
 /// Enables or disables vertical sync
 pub fn setVerticalSyncEnabled(self: *RenderWindow, enabled: bool) void {
-    sf.c.sfRenderWindow_setVerticalSyncEnabled(self._ptr, @boolToInt(enabled));
+    sf.c.sfRenderWindow_setVerticalSyncEnabled(self._ptr, @intFromBool(enabled));
 }
 
 /// Convert a point from target coordinates to world coordinates, using the current view (or the specified view)

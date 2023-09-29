@@ -18,7 +18,7 @@ pub const Vertex = extern struct {
 
         var ret: []primitive_type.Type() = undefined;
         ret.len = vertices.len / (comptime primitive_type.packedBy());
-        ret.ptr = @ptrCast([*]primitive_type.Type(), vertices.ptr);
+        ret.ptr = @as([*]primitive_type.Type(), @ptrCast(vertices.ptr));
 
         return ret;
     }

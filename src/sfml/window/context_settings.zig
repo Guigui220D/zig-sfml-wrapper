@@ -19,10 +19,10 @@ pub const ContextSettings = packed struct {
     };
 
     pub fn _toCSFML(self: ContextSettings) sf.c.sfContextSettings {
-        return @bitCast(sf.c.sfContextSettings, self);
+        return @as(sf.c.sfContextSettings, @bitCast(self));
     }
 
     pub fn _fromCSFML(context_settings: sf.c.sfContextSettings) ContextSettings {
-        return @bitCast(ContextSettings, context_settings);
+        return @as(ContextSettings, @bitCast(context_settings));
     }
 };

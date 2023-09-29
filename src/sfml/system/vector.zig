@@ -23,14 +23,14 @@ pub fn Vector2(comptime T: type) type {
         /// This is mainly for the inner workings of this wrapper
         pub fn _toCSFML(self: Self) CsfmlEquivalent {
             if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return @bitCast(CsfmlEquivalent, self);
+            return @as(CsfmlEquivalent, @bitCast(self));
         }
 
         /// Creates a vector from a CSFML one (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
         pub fn _fromCSFML(vec: CsfmlEquivalent) Self {
             if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return @bitCast(Self, vec);
+            return @as(Self, @bitCast(vec));
         }
 
         /// Adds two vectors
@@ -68,14 +68,14 @@ pub fn Vector3(comptime T: type) type {
         /// This is mainly for the inner workings of this wrapper
         pub fn _toCSFML(self: Self) sf.c.sfVector3f {
             if (T != f32) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return @bitCast(sf.c.sfVector3f, self);
+            return @as(sf.c.sfVector3f, @bitCast(self));
         }
 
         /// Creates a vector from a CSFML one (only if the corresponding type exists)
         /// This is mainly for the inner workings of this wrapper
         pub fn _fromCSFML(vec: sf.c.sfVector3f) Self {
             if (T != f32) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return @bitCast(Self, vec);
+            return @as(Self, @bitCast(vec));
         }
 
         /// Adds two vectors

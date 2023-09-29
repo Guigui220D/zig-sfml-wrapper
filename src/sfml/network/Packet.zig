@@ -42,7 +42,7 @@ pub fn getData(self: Packet) []const u8 {
     const size = sf.c.sfPacket_getDataSize(self._ptr);
 
     var slice: []const u8 = undefined;
-    slice.ptr = @ptrCast([*]const u8, data);
+    slice.ptr = @as([*]const u8, @ptrCast(data));
     slice.len = size;
     return slice;
 }
@@ -97,7 +97,7 @@ pub fn read(self: *Packet, comptime T: type) !T {
 pub fn write(self: *Packet, comptime T: type, value: T) !void {
     // TODO: find how to make this safer
     switch (T) {
-        bool => sf.c.sfPacket_writeBool(self._ptr, @boolToInt(value)),
+        bool => sf.c.sfPacket_writeBool(self._ptr, @intFromBool(value)),
         i8 => sf.c.sfPacket_writeInt8(self._ptr, value),
         u8 => sf.c.sfPacket_writeUint8(self._ptr, value),
         i16 => sf.c.sfPacket_writeInt16(self._ptr, value),

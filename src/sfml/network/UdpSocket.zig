@@ -26,7 +26,7 @@ pub fn destroy(self: *UdpSocket) void {
 /// Enables or disables blocking mode (true for blocking)
 /// In blocking mode, receive waits for data
 pub fn setBlocking(self: *UdpSocket, blocking: bool) void {
-    sf.c.sfUdpSocket_setBlocking(self._ptr, @boolToInt(blocking));
+    sf.c.sfUdpSocket_setBlocking(self._ptr, @intFromBool(blocking));
 }
 /// Tells whether or not the socket is in blocking mode
 pub fn isBlocking(self: UdpSocket) bool {
