@@ -16,7 +16,7 @@ const Image = @This();
 
 /// Creates a new image
 pub fn create(size: sf.Vector2u, color: sf.Color) !Image {
-    var img = sf.c.sfImage_createFromColor(size.x, size.y, color._toCSFML());
+    const img = sf.c.sfImage_createFromColor(size.x, size.y, color._toCSFML());
     if (img) |i| {
         return Image{ ._ptr = i };
     } else return sf.Error.nullptrUnknownReason;
@@ -27,7 +27,7 @@ pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Image {
     if (pixels.len < size.x * size.y)
         return sf.Error.notEnoughData;
 
-    var img = sf.c.sfImage_createFromPixels(size.x, size.y, @as([*]const u8, @ptrCast(pixels.ptr)));
+    const img = sf.c.sfImage_createFromPixels(size.x, size.y, @as([*]const u8, @ptrCast(pixels.ptr)));
 
     if (img) |i| {
         return Image{ ._ptr = i };
@@ -35,14 +35,14 @@ pub fn createFromPixels(size: sf.Vector2u, pixels: []const sf.Color) !Image {
 }
 /// Loads an image from a file
 pub fn createFromFile(path: [:0]const u8) !Image {
-    var img = sf.c.sfImage_createFromFile(path);
+    const img = sf.c.sfImage_createFromFile(path);
     if (img) |i| {
         return Image{ ._ptr = i };
     } else return sf.Error.resourceLoadingError;
 }
 /// Loads an image from a file in memory
 pub fn createFromMemory(data: []const u8) !Image {
-    var img = sf.c.sfImage_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
+    const img = sf.c.sfImage_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
     if (img) |i| {
         return Image{ ._ptr = i };
     } else return sf.Error.resourceLoadingError;
@@ -118,7 +118,7 @@ test "image: sane getters and setters" {
     const tst = std.testing;
     const allocator = std.heap.page_allocator;
 
-    var pixel_data = try allocator.alloc(sf.Color, 30);
+    const pixel_data = try allocator.alloc(sf.Color, 30);
     defer allocator.free(pixel_data);
 
     for (pixel_data, 0..) |*c, i| {
@@ -137,6 +137,6 @@ test "image: sane getters and setters" {
     defer tex.destroy();
 
     img.setPixel(.{ .x = 1, .y = 2 }, sf.Color.Red);
-    var slice = img.getPixelsSlice();
+    const slice = img.getPixelsSlice();
     try tst.expectEqual(sf.Color.Red, slice[0]);
 }

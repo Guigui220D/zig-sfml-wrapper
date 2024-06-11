@@ -92,11 +92,11 @@ pub const Color = packed struct {
             hh = 0;
         hh /= 60.0;
 
-        var ff: f32 = hh - math.floor(hh);
+        const ff: f32 = hh - math.floor(hh);
 
-        var p: f32 = v * (1.0 - s);
-        var q: f32 = v * (1.0 - (s * ff));
-        var t: f32 = v * (1.0 - (s * (1.0 - ff)));
+        const p: f32 = v * (1.0 - s);
+        const q: f32 = v * (1.0 - (s * ff));
+        const t: f32 = v * (1.0 - (s * (1.0 - ff)));
 
         return switch (@as(usize, @intFromFloat(hh))) {
             0 => fromFloats(v, t, p, a),
@@ -150,14 +150,14 @@ pub const Color = packed struct {
 test "color: conversions" {
     const tst = @import("std").testing;
 
-    var code: u32 = 0x4BDA9CFF;
+    const code: u32 = 0x4BDA9CFF;
     var col = Color.fromInteger(code);
 
     try tst.expectEqual(Color.fromHex("#4BDA9C"), col);
     try tst.expectEqual(Color.fromRGB(75, 218, 156), col);
     try tst.expectEqual(code, col.toInteger());
 
-    var csfml_col = sf.c.sfColor_fromInteger(@as(c_uint, code));
+    const csfml_col = sf.c.sfColor_fromInteger(@as(c_uint, code));
 
     try tst.expectEqual(Color._fromCSFML(csfml_col), col);
 }
@@ -165,7 +165,7 @@ test "color: conversions" {
 test "color: hsv to rgb" {
     const tst = @import("std").testing;
 
-    var col = Color.fromHSVA(10, 20, 100, 255);
+    const col = Color.fromHSVA(10, 20, 100, 255);
 
     try tst.expectEqual(Color.fromRGB(255, 212, 204), col);
 }

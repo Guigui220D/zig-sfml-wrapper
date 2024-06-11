@@ -8,14 +8,14 @@ const Font = @This();
 
 /// Loads a font from a file
 pub fn createFromFile(path: [:0]const u8) !Font {
-    var font = sf.c.sfFont_createFromFile(path);
+    const font = sf.c.sfFont_createFromFile(path);
     if (font) |f| {
         return Font{ ._ptr = f };
     } else return sf.Error.resourceLoadingError;
 }
 /// Loads a font from a file in memory
 pub fn createFromMemory(data: []const u8) !Font {
-    var font = sf.c.sfFont_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
+    const font = sf.c.sfFont_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
     if (font) |f| {
         return Font{ ._ptr = f };
     } else return sf.Error.resourceLoadingError;

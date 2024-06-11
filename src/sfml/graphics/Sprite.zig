@@ -13,7 +13,7 @@ const Sprite = @This();
 
 /// Inits a sprite with no texture
 pub fn create() !Sprite {
-    var sprite = sf.c.sfSprite_create();
+    const sprite = sf.c.sfSprite_create();
     if (sprite == null)
         return sf.Error.nullptrUnknownReason;
 
@@ -22,7 +22,7 @@ pub fn create() !Sprite {
 
 /// Inits a sprite with a texture
 pub fn createFromTexture(texture: sf.Texture) !Sprite {
-    var sprite = sf.c.sfSprite_create();
+    const sprite = sf.c.sfSprite_create();
     if (sprite == null)
         return sf.Error.nullptrUnknownReason;
 
@@ -116,7 +116,7 @@ pub fn getTexture(self: Sprite) ?sf.Texture {
 }
 /// Sets this sprite's texture (the sprite will take the texture's dimensions)
 pub fn setTexture(self: *Sprite, texture: ?sf.Texture) void {
-    var tex = if (texture) |t| t._get() else null;
+    const tex = if (texture) |t| t._get() else null;
     sf.c.sfSprite_setTexture(self._ptr, tex, 1);
 }
 /// Gets the sub-rectangle of the texture that the sprite will display

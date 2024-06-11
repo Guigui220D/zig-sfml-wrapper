@@ -14,7 +14,7 @@ const ConvexShape = @This();
 
 /// Creates a new empty convex shape
 pub fn create() !ConvexShape {
-    var shape = sf.c.sfConvexShape_create();
+    const shape = sf.c.sfConvexShape_create();
     if (shape == null)
         return sf.Error.nullptrUnknownReason;
 
@@ -122,7 +122,7 @@ pub fn getTexture(self: ConvexShape) ?sf.Texture {
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: *ConvexShape, texture: ?sf.Texture) void {
-    var tex = if (texture) |t| t._get() else null;
+    const tex = if (texture) |t| t._get() else null;
     sf.c.sfConvexShape_setTexture(self._ptr, tex, 0);
 }
 /// Gets the sub-shapeangle of the texture that the shape will display

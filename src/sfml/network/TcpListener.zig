@@ -11,7 +11,7 @@ const TcpListener = @This();
 
 /// Creates a new tcp listener socket
 pub fn create() !TcpListener {
-    var sock = sf.c.sfTcpListener_create();
+    const sock = sf.c.sfTcpListener_create();
     if (sock) |s| {
         return TcpListener{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;

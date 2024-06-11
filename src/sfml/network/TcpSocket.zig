@@ -12,7 +12,7 @@ const TcpSocket = @This();
 
 /// Creates a new udp socket
 pub fn create() !TcpSocket {
-    var sock = sf.c.sfTcpSocket_create();
+    const sock = sf.c.sfTcpSocket_create();
     if (sock) |s| {
         return TcpSocket{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;

@@ -22,14 +22,14 @@ pub const TextStyle = enum(c_uint) {
 
 /// Inits an empty text
 pub fn create() !Text {
-    var text = sf.c.sfText_create();
+    const text = sf.c.sfText_create();
     if (text == null)
         return sf.Error.nullptrUnknownReason;
     return Text{ ._ptr = text.? };
 }
 /// Inits a text with content
 pub fn createWithText(string: [:0]const u8, font: sf.Font, character_size: usize) !Text {
-    var text = sf.c.sfText_create();
+    const text = sf.c.sfText_create();
     if (text == null)
         return sf.Error.nullptrUnknownReason;
     sf.c.sfText_setFont(text, font._ptr);

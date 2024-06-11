@@ -16,14 +16,14 @@ const RenderWindow = @This();
 pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32, settings: ?sf.ContextSettings) !RenderWindow {
     var ret: RenderWindow = undefined;
 
-    var mode: sf.c.sfVideoMode = .{
+    const mode: sf.c.sfVideoMode = .{
         .width = @as(c_uint, @intCast(size.x)),
         .height = @as(c_uint, @intCast(size.y)),
         .bitsPerPixel = @as(c_uint, @intCast(bpp)),
     };
 
     const c_settings = if (settings) |s| s._toCSFML() else null;
-    var window = sf.c.sfRenderWindow_create(mode, @as([*c]const u8, @ptrCast(title)), style, if (c_settings) |s| &s else null);
+    const window = sf.c.sfRenderWindow_create(mode, @as([*c]const u8, @ptrCast(title)), style, if (c_settings) |s| &s else null);
 
     if (window) |w| {
         ret._ptr = w;
@@ -36,13 +36,13 @@ pub fn create(size: sf.Vector2u, bpp: usize, title: [:0]const u8, style: u32, se
 pub fn createDefault(size: sf.Vector2u, title: [:0]const u8) !RenderWindow {
     var ret: RenderWindow = undefined;
 
-    var mode: sf.c.sfVideoMode = .{
+    const mode: sf.c.sfVideoMode = .{
         .width = @as(c_uint, @intCast(size.x)),
         .height = @as(c_uint, @intCast(size.y)),
         .bitsPerPixel = 32,
     };
 
-    var window = sf.c.sfRenderWindow_create(mode, @as([*c]const u8, @ptrCast(title)), sf.window.Style.defaultStyle, null);
+    const window = sf.c.sfRenderWindow_create(mode, @as([*c]const u8, @ptrCast(title)), sf.window.Style.defaultStyle, null);
 
     if (window) |w| {
         ret._ptr = w;
@@ -128,7 +128,7 @@ pub fn getDefaultView(self: RenderWindow) sf.View {
 }
 /// Sets the view of this window
 pub fn setView(self: *RenderWindow, view: sf.View) void {
-    var cview = view._toCSFML();
+    const cview = view._toCSFML();
     defer sf.c.sfView_destroy(cview);
     sf.c.sfRenderWindow_setView(self._ptr, cview);
 }
@@ -193,7 +193,7 @@ pub fn setVerticalSyncEnabled(self: *RenderWindow, enabled: bool) void {
 /// Convert a point from target coordinates to world coordinates, using the current view (or the specified view)
 pub fn mapPixelToCoords(self: RenderWindow, pixel: sf.Vector2i, view: ?sf.View) sf.Vector2f {
     if (view) |v| {
-        var cview = v._toCSFML();
+        const cview = v._toCSFML();
         defer sf.c.sfView_destroy(cview);
         return sf.Vector2f._fromCSFML(sf.c.sfRenderWindow_mapPixelToCoords(self._ptr, pixel._toCSFML(), cview));
     } else return sf.Vector2f._fromCSFML(sf.c.sfRenderWindow_mapPixelToCoords(self._ptr, pixel._toCSFML(), null));
@@ -201,7 +201,7 @@ pub fn mapPixelToCoords(self: RenderWindow, pixel: sf.Vector2i, view: ?sf.View) 
 /// Convert a point from world coordinates to target coordinates, using the current view (or the specified view)
 pub fn mapCoordsToPixel(self: RenderWindow, coords: sf.Vector2f, view: ?sf.View) sf.Vector2i {
     if (view) |v| {
-        var cview = v._toCSFML();
+        const cview = v._toCSFML();
         defer sf.c.sfView_destroy(cview);
         return sf.Vector2i._fromCSFML(sf.c.sfRenderWindow_mapCoordsToPixel(self._ptr, coords._toCSFML(), cview));
     } else return sf.Vector2i._fromCSFML(sf.c.sfRenderWindow_mapCoordsToPixel(self._ptr, coords._toCSFML(), null));

@@ -1,5 +1,6 @@
 csfml/
 zig-cache/
+.zig-cache/
 zig-out/
 docs/
 

@@ -12,7 +12,7 @@ const Sound = @This();
 
 /// Inits an empty sound
 pub fn create() !Sound {
-    var sound = sf.c.sfSound_create();
+    const sound = sf.c.sfSound_create();
     if (sound) |s| {
         return Sound{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;
@@ -50,7 +50,7 @@ pub fn stop(self: *Sound) void {
 
 /// Gets the buffer this sound is attached to
 pub fn getBuffer(self: Sound) ?sf.SoundBuffer {
-    var buf = sf.c.sfSound_getBuffer(self._ptr);
+    const buf = sf.c.sfSound_getBuffer(self._ptr);
     if (buf) |buffer| {
         return .{ ._ptr = buffer };
     } else return null;
