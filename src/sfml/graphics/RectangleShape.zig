@@ -13,7 +13,7 @@ const RectangleShape = @This();
 
 /// Creates a rectangle shape with a size. The rectangle will be white
 pub fn create(size: sf.Vector2f) !RectangleShape {
-    var rect = sf.c.sfRectangleShape_create();
+    const rect = sf.c.sfRectangleShape_create();
     if (rect == null)
         return sf.Error.nullptrUnknownReason;
 
@@ -111,7 +111,7 @@ pub fn getTexture(self: RectangleShape) ?sf.Texture {
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: *RectangleShape, texture: ?sf.Texture) void {
-    var tex = if (texture) |t| t._get() else null;
+    const tex = if (texture) |t| t._get() else null;
     sf.c.sfRectangleShape_setTexture(self._ptr, tex, 0);
 }
 /// Gets the sub-rectangle of the texture that the shape will display

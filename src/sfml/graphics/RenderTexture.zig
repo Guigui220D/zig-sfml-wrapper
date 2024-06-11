@@ -13,7 +13,7 @@ const RenderTexture = @This();
 
 /// Inits a render texture with a size (use createWithDepthBuffer if you want a depth buffer)
 pub fn create(size: sf.Vector2u) !RenderTexture {
-    var rtex = sf.c.sfRenderTexture_create(size.x, size.y, 0); //0 means no depth buffer
+    const rtex = sf.c.sfRenderTexture_create(size.x, size.y, 0); //0 means no depth buffer
 
     if (rtex) |t| {
         return RenderTexture{ ._ptr = t };
@@ -21,7 +21,7 @@ pub fn create(size: sf.Vector2u) !RenderTexture {
 }
 /// Inits a render texture with a size, it will have a depth buffer
 pub fn createWithDepthBuffer(size: sf.Vector2u) !RenderTexture {
-    var rtex = sf.c.sfRenderTexture_create(size.x, size.y, 1);
+    const rtex = sf.c.sfRenderTexture_create(size.x, size.y, 1);
 
     if (rtex) |t| {
         return .{ ._ptr = t };
@@ -106,7 +106,7 @@ pub fn getDefaultView(self: RenderTexture) sf.View {
 }
 /// Sets the view of this target
 pub fn setView(self: *RenderTexture, view: sf.View) void {
-    var cview = view._toCSFML();
+    const cview = view._toCSFML();
     defer sf.c.sfView_destroy(cview);
     sf.c.sfRenderTexture_setView(self._ptr, cview);
 }
@@ -118,7 +118,7 @@ pub fn getViewport(self: RenderTexture, view: sf.View) sf.IntRect {
 /// Convert a point from target coordinates to world coordinates, using the current view (or the specified view)
 pub fn mapPixelToCoords(self: RenderTexture, pixel: sf.Vector2i, view: ?sf.View) sf.Vector2f {
     if (view) |v| {
-        var cview = v._toCSFML();
+        const cview = v._toCSFML();
         defer sf.c.sfView_destroy(cview);
         return sf.Vector2f._fromCSFML(sf.c.sfRenderTexture_mapPixelToCoords(self._ptr, pixel._toCSFML(), cview));
     } else return sf.Vector2f._fromCSFML(sf.c.sfRenderTexture_mapPixelToCoords(self._ptr, pixel._toCSFML(), null));
@@ -126,7 +126,7 @@ pub fn mapPixelToCoords(self: RenderTexture, pixel: sf.Vector2i, view: ?sf.View)
 /// Convert a point from world coordinates to target coordinates, using the current view (or the specified view)
 pub fn mapCoordsToPixel(self: RenderTexture, coords: sf.Vector2f, view: ?sf.View) sf.Vector2i {
     if (view) |v| {
-        var cview = v._toCSFML();
+        const cview = v._toCSFML();
         defer sf.c.sfView_destroy(cview);
         return sf.Vector2i._fromCSFML(sf.c.sfRenderTexture_mapCoordsToPixel(self._ptr, coords._toCSFML(), cview));
     } else return sf.Vector2i._fromCSFML(sf.c.sfRenderTexture_mapCoordsToPixel(self._ptr, coords._toCSFML(), null));

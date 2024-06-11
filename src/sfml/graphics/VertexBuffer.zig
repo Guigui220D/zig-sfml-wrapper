@@ -10,7 +10,7 @@ pub const Usage = enum(c_uint) { Static = 0, Dynamic = 1, Stream = 2 };
 
 /// Creates a vertex buffer of a given size. Specify its usage and the primitive type.
 pub fn createFromSlice(vertices: []const sf.graphics.Vertex, primitive: sf.graphics.PrimitiveType, usage: Usage) !VertexBuffer {
-    var ptr = sf.c.sfVertexBuffer_create(@as(c_uint, @truncate(vertices.len)), @intFromEnum(primitive), @intFromEnum(usage)) orelse return sf.Error.nullptrUnknownReason;
+    const ptr = sf.c.sfVertexBuffer_create(@as(c_uint, @truncate(vertices.len)), @intFromEnum(primitive), @intFromEnum(usage)) orelse return sf.Error.nullptrUnknownReason;
     if (sf.c.sfVertexBuffer_update(ptr, @as([*]const sf.c.sfVertex, @ptrCast(@alignCast(vertices.ptr))), @as(c_uint, @truncate(vertices.len)), 0) != 1)
         return sf.Error.resourceLoadingError;
     return VertexBuffer{ ._ptr = ptr };

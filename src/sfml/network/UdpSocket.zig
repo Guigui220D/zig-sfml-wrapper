@@ -11,7 +11,7 @@ const UdpSocket = @This();
 
 /// Creates a new udp socket
 pub fn create() !UdpSocket {
-    var sock = sf.c.sfUdpSocket_create();
+    const sock = sf.c.sfUdpSocket_create();
     if (sock) |s| {
         return UdpSocket{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;

@@ -1,0 +1,5 @@
+.{
+    .name = "sfml",
+    .version = "2.5.0",
+    .paths = .{""},
+}

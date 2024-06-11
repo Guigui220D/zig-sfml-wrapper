@@ -7,21 +7,21 @@ const SoundBuffer = @This();
 // Constructor/destructor
 /// Loads sound from a file
 pub fn createFromFile(path: [:0]const u8) !SoundBuffer {
-    var sound = sf.c.sfSoundBuffer_createFromFile(path);
+    const sound = sf.c.sfSoundBuffer_createFromFile(path);
     if (sound) |s| {
         return SoundBuffer{ ._ptr = s };
     } else return sf.Error.resourceLoadingError;
 }
 /// Loads sound from a file in memory
 pub fn createFromMemory(data: []const u8) !SoundBuffer {
-    var sound = sf.c.sfSoundBuffer_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
+    const sound = sf.c.sfSoundBuffer_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
     if (sound) |s| {
         return SoundBuffer{ ._ptr = s };
     } else return sf.Error.resourceLoadingError;
 }
 /// Creates a sound buffer from sample data
 pub fn createFromSamples(samples: []const i16, channel_count: usize, sample_rate: usize) !SoundBuffer {
-    var sound = sf.c.sfSoundBuffer_createFromSamples(@as([*c]const c_short, @ptrCast(samples.ptr)), samples.len, @as(c_uint, @intCast(channel_count)), @as(c_uint, @intCast(sample_rate)));
+    const sound = sf.c.sfSoundBuffer_createFromSamples(@as([*c]const c_short, @ptrCast(samples.ptr)), samples.len, @as(c_uint, @intCast(channel_count)), @as(c_uint, @intCast(sample_rate)));
     if (sound == null)
         return sf.Error.resourceLoadingError;
     return SoundBuffer{ ._ptr = sound.? };
@@ -73,7 +73,7 @@ test "sound buffer: sane getter and setters" {
     const tst = std.testing;
     const allocator = std.heap.page_allocator;
 
-    var samples = try allocator.alloc(i16, 44100 * 3);
+    const samples = try allocator.alloc(i16, 44100 * 3);
     defer allocator.free(samples);
 
     var buffer = try SoundBuffer.createFromSamples(samples, 1, 44100);

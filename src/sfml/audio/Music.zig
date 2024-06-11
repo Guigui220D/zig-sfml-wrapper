@@ -8,14 +8,14 @@ const Music = @This();
 
 /// Loads music from a file
 pub fn createFromFile(path: [:0]const u8) !Music {
-    var music = sf.c.sfMusic_createFromFile(path);
+    const music = sf.c.sfMusic_createFromFile(path);
     if (music) |m| {
         return Music{ ._ptr = m };
     } else return sf.Error.resourceLoadingError;
 }
 /// Loads music from a file in memory
 pub fn createFromMemory(data: []const u8) !Music {
-    var music = sf.c.sfMusic_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
+    const music = sf.c.sfMusic_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
     if (music) |m| {
         return Music{ ._ptr = m };
     } else return sf.Error.resourceLoadingError;

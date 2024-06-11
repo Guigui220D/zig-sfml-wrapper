@@ -3,7 +3,7 @@ const std = @import("std");
 pub fn utf8toUnicode(comptime utf8: []const u8) []const u32 {
     const uni = std.unicode;
 
-    var ret = comptime t: {
+    const ret = comptime t: {
         var view = uni.Utf8View.initComptime(utf8);
         var iter = view.iterator();
 
