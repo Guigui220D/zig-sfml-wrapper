@@ -11,7 +11,7 @@ const SocketSelector = @This();
 
 /// Creates a new socket selector
 pub fn create() SocketSelector {
-    var sock = sf.c.sfSocketSelector_create();
+    const sock = sf.c.sfSocketSelector_create();
     if (sock) |s| {
         return SocketSelector{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;
@@ -22,7 +22,7 @@ pub fn destroy(self: *SocketSelector) void {
 }
 /// Copies this socket selector
 pub fn copy(self: SocketSelector) SocketSelector {
-    var sock = sf.c.sfSocketSelector_copy(self._ptr);
+    const sock = sf.c.sfSocketSelector_copy(self._ptr);
     if (sock) |s| {
         return SocketSelector{ ._ptr = s };
     } else return sf.Error.nullptrUnknownReason;

@@ -9,14 +9,14 @@ const VertexArray = @This();
 
 /// Creates an empty vertex array
 pub fn create() !VertexArray {
-    var va = sf.c.sfVertexArray_create();
+    const va = sf.c.sfVertexArray_create();
     if (va) |vert| {
         return VertexArray{ ._ptr = vert };
     } else return sf.Error.nullptrUnknownReason;
 }
 /// Creates a vertex array from a slice of vertices
 pub fn createFromSlice(vertex: []const sf.graphics.Vertex, primitive: sf.graphics.PrimitiveType) !VertexArray {
-    var va = sf.c.sfVertexArray_create();
+    const va = sf.c.sfVertexArray_create();
     if (va) |vert| {
         sf.c.sfVertexArray_setPrimitiveType(vert, @intFromEnum(primitive));
         sf.c.sfVertexArray_resize(vert, vertex.len);
@@ -34,7 +34,7 @@ pub fn destroy(self: *VertexArray) void {
 
 /// Copies the vertex array
 pub fn copy(self: VertexArray) !VertexArray {
-    var va = sf.c.sfVertexArray_copy(self._ptr);
+    const va = sf.c.sfVertexArray_copy(self._ptr);
     if (va) |vert| {
         return VertexArray{ ._ptr = vert };
     } else return sf.Error.nullptrUnknownReason;
@@ -53,7 +53,7 @@ pub fn getVertexCount(self: VertexArray) usize {
 pub fn getVertex(self: VertexArray, index: usize) *sf.graphics.Vertex {
     // TODO: Should this use a pointer to the vertexarray?
     // Me, later, what did that comment even mean? ^
-    var ptr = sf.c.sfVertexArray_getVertex(self._ptr, index);
+    const ptr = sf.c.sfVertexArray_getVertex(self._ptr, index);
     std.debug.assert(index < self.getVertexCount());
     return @as(*sf.graphics.Vertex, @ptrCast(ptr.?));
 }
@@ -133,7 +133,7 @@ test "VertexArray: sane getters and setters" {
 
     va.getVertex(1).* = .{ .position = .{ .x = 1, .y = 1 }, .color = sf.graphics.Color.Yellow };
 
-    var slice = va.getSlice();
+    const slice = va.getSlice();
     try tst.expectEqual(sf.graphics.Color.Yellow, slice[1].color);
     try tst.expectEqual(@as(usize, 3), slice.len);
 

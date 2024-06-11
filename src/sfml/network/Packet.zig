@@ -9,7 +9,7 @@ const Packet = @This();
 
 /// Inits an empty packet
 pub fn create() !Packet {
-    var pack = sf.c.sfPacket_create();
+    const pack = sf.c.sfPacket_create();
     if (pack) |p| {
         return Packet{ ._ptr = p };
     } else return sf.Error.nullptrUnknownReason;
@@ -20,7 +20,7 @@ pub fn destroy(self: *Packet) void {
 }
 /// Copies a packet
 pub fn copy(self: Packet) !Packet {
-    var pack = sf.c.sfPacket_copy(self._ptr);
+    const pack = sf.c.sfPacket_copy(self._ptr);
     if (pack) |p| {
         return Packet{ ._ptr = p };
     } else return sf.Error.nullptrUnknownReason;
@@ -189,7 +189,7 @@ test "packet: reading and writing" {
         var buf: [16]u8 = undefined;
         var r = pack2.reader();
         try tst.expectEqual(@as(u64, 12345678), try r.readIntNative(u64));
-        var count = try r.readAll(&buf);
+        const count = try r.readAll(&buf);
         try tst.expectEqual(@as(usize, 6), count);
         try tst.expectEqualStrings("oh:abc", buf[0..count]);
     }

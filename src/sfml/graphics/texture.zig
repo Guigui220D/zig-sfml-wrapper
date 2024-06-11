@@ -113,11 +113,11 @@ pub const Texture = union(TextureType) {
             @panic("Updating an srgb from a pixel array isn't implemented");
 
         var real_zone: sf.Rect(c_uint) = undefined;
-        var size = self.getSize();
+        const size = self.getSize();
 
         if (zone) |z| {
             // Check if the given zone is fully inside the image
-            var intersection = z.intersects(sf.Rect(c_uint).init(0, 0, size.x, size.y));
+            const intersection = z.intersects(sf.Rect(c_uint).init(0, 0, size.x, size.y));
 
             if (intersection) |i| {
                 if (!i.equals(z))
@@ -142,9 +142,9 @@ pub const Texture = union(TextureType) {
         if (self == ._const_ptr)
             @panic("Can't set pixels on a const texture");
 
-        var pos = if (copy_pos) |a| a else sf.Vector2u{ .x = 0, .y = 0 };
-        var max = other.getSize().add(pos);
-        var size = self.getSize();
+        const pos = if (copy_pos) |a| a else sf.Vector2u{ .x = 0, .y = 0 };
+        const max = other.getSize().add(pos);
+        const size = self.getSize();
 
         assert(max.x <= size.x and max.y <= size.y);
 
@@ -155,9 +155,9 @@ pub const Texture = union(TextureType) {
         if (self.* == ._const_ptr)
             @panic("Can't set pixels on a const texture");
 
-        var pos = if (copy_pos) |a| a else sf.Vector2u{ .x = 0, .y = 0 };
-        var max = image.getSize().add(pos);
-        var size = self.getSize();
+        const pos = if (copy_pos) |a| a else sf.Vector2u{ .x = 0, .y = 0 };
+        const max = image.getSize().add(pos);
+        const size = self.getSize();
 
         assert(max.x <= size.x and max.y <= size.y);
 
@@ -232,7 +232,7 @@ test "texture: sane getters and setters" {
     var tex = try Texture.create(.{ .x = 12, .y = 10 });
     defer tex.destroy();
 
-    var size = tex.getSize();
+    const size = tex.getSize();
 
     tex.setSrgb(false);
     tex.setSmooth(true);

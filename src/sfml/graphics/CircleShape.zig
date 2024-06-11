@@ -14,7 +14,7 @@ const CircleShape = @This();
 
 /// Inits a circle shape with a radius. The circle will be white and have 30 points
 pub fn create(radius: f32) !CircleShape {
-    var circle = sf.c.sfCircleShape_create();
+    const circle = sf.c.sfCircleShape_create();
     if (circle == null)
         return sf.Error.nullptrUnknownReason;
 
@@ -112,7 +112,7 @@ pub fn getTexture(self: CircleShape) ?sf.Texture {
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: *CircleShape, texture: ?sf.Texture) void {
-    var tex = if (texture) |t| t._get() else null;
+    const tex = if (texture) |t| t._get() else null;
     sf.c.sfCircleShape_setTexture(self._ptr, tex, 0);
 }
 /// Gets the sub-rectangle of the texture that the shape will display

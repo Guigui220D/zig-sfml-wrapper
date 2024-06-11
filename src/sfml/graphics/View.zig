@@ -33,7 +33,7 @@ pub fn _fromCSFML(view: *const sf.c.sfView) View {
 /// This is mainly for the inner workings of this wrapper
 /// The resulting view must be destroyed!
 pub fn _toCSFML(self: View) *sf.c.sfView {
-    var view = sf.c.sfView_create().?;
+    const view = sf.c.sfView_create().?;
     sf.c.sfView_setCenter(view, self.center._toCSFML());
     sf.c.sfView_setSize(view, self.size._toCSFML());
     sf.c.sfView_setViewport(view, self.viewport._toCSFML());
@@ -75,13 +75,13 @@ test "view: from rect" {
     // Testing if the view from rect initialization works
     var rect = sf.FloatRect.init(10, -15, 700, 600);
 
-    var view = sf.c.sfView_createFromRect(rect._toCSFML());
+    const view = sf.c.sfView_createFromRect(rect._toCSFML());
     defer sf.c.sfView_destroy(view);
 
     var view2 = View.fromRect(rect);
 
-    var center = sf.Vector2f._fromCSFML(sf.c.sfView_getCenter(view));
-    var size = sf.Vector2f._fromCSFML(sf.c.sfView_getSize(view));
+    const center = sf.Vector2f._fromCSFML(sf.c.sfView_getCenter(view));
+    const size = sf.Vector2f._fromCSFML(sf.c.sfView_getSize(view));
 
     try tst.expectApproxEqAbs(center.x, view2.center.x, 0.00001);
     try tst.expectApproxEqAbs(center.y, view2.center.y, 0.00001);
