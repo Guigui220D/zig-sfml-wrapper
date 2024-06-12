@@ -48,6 +48,15 @@ pub fn createFromMemory(data: []const u8) !Image {
     } else return sf.Error.resourceLoadingError;
 }
 
+/// Formats for saveToMemory
+pub const FileFormat = enum { bmp, png, tga, jpg };
+
+/// Save the image to a buffer in memory
+pub fn saveToMemory(self: Image, buffer: *sf.system.Buffer, format: FileFormat) !void {
+    if (sf.c.sfImage_saveToMemory(self._ptr, buffer._ptr, @tagName(format)) == 0)
+        return sf.Error.savingInFileFailed;
+}
+
 /// Destroys an image
 pub fn destroy(self: *Image) void {
     sf.c.sfImage_destroy(self._ptr);
@@ -139,4 +148,23 @@ test "image: sane getters and setters" {
     img.setPixel(.{ .x = 1, .y = 2 }, sf.Color.Red);
     const slice = img.getPixelsSlice();
     try tst.expectEqual(sf.Color.Red, slice[0]);
+}
+
+test "image: save to memory" {
+    const tst = std.testing;
+
+    var img = try Image.create(.{ .x = 50, .y = 50 }, sf.Color.Cyan);
+    defer img.destroy();
+
+    inline for (std.meta.fields(FileFormat)) |format| {
+        var buf = try sf.Buffer.create();
+        defer buf.destroy();
+
+        try img.saveToMemory(&buf, @enumFromInt(format.value));
+
+        try tst.expect(buf.getSize() != 0);
+        const slice = buf.getData();
+
+        try tst.expect(slice.len != 0);
+    }
 }

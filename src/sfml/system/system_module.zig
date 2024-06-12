@@ -13,3 +13,4 @@ pub const vector3f = Vector3f.new;
 
 pub const Time = @import("Time.zig");
 pub const Clock = @import("Clock.zig");
+pub const Buffer = @import("Buffer.zig");
