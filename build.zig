@@ -28,8 +28,25 @@ pub fn build(b: *std.Build) !void {
         .optimize = mode,
     });
     link(test_runner);
-    test_runner.addIncludePath(b.path("csfml/include/"));
-    test_runner.root_module.addImport("sfml", module);
+    test_runner.addIncludePath(b.path("CSFML/include/"));
+
+    //Build step to generate docs:
+    var docs = b.addTest(.{
+        .root_source_file = b.path("src/sfml/sfml_tests.zig"),
+        .target = target,
+        .optimize = mode,
+    });
+    link(docs);
+    docs.addIncludePath(b.path("CSFML/include/"));
+    docs.root_module.addImport("sfml", module);
+
+    const emitted_docs = docs.getEmittedDocs();
+    const docs_step = b.step("docs", "Generate docs");
+    docs_step.dependOn(&b.addInstallDirectory(.{
+        .source_dir = emitted_docs,
+        .install_dir = .prefix,
+        .install_subdir = "docs",
+    }).step);
 
     // Register the examples
     example(b, module, target, mode, "sfml_example");
