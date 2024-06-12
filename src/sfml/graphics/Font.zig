@@ -51,6 +51,20 @@ pub fn getUnderlineThickness(self: Font, character_size: usize) f32 {
     return sf.c.sfFont_getUnderlineThickness(self._ptr, @as(c_uint, @intCast(character_size)));
 }
 
+/// Check if the font has the following glyph
+pub fn hasGlyph(self: Font, codepoint: u21) bool {
+    return sf.c.sfFont_hasGlyph(self._ptr, @intCast(codepoint)) != 0;
+}
+
+/// Enable or disable the smooth filter
+pub fn setSmooth(self: *Font, smooth: bool) void {
+    sf.c.sfFont_setSmooth(self._ptr, @intFromBool(smooth));
+}
+/// Tell whether the smooth filter is enabled or disabled
+pub fn isSmooth(self: Font) bool {
+    return sf.c.sfFont_isSmooth(self._ptr) != 0;
+}
+
 pub const getGlyph = @compileError("Function is not implemented yet.");
 pub const initFromStream = @compileError("Function is not implemented yet.");
 
@@ -65,10 +79,15 @@ test "Font: sane getters and setters" {
     var font = try createFromFile("arial.ttf");
     defer font.destroy();
 
+    font.setSmooth(true);
+
     try tst.expect(std.mem.eql(u8, "Arial", std.mem.span(font.getFamily())));
     // TODO: how to test that?
     _ = font.getLineSpacing(12);
     _ = font.getUnderlinePosition(12);
     _ = font.getUnderlineThickness(12);
     _ = font.getKerning('a', 'b', 12);
+
+    try tst.expect(font.hasGlyph('a'));
+    try tst.expect(font.isSmooth());
 }
