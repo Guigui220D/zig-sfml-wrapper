@@ -92,6 +92,7 @@ pub fn Rect(comptime T: type) type {
         pub fn getCorner(self: Self) sf.Vector2(T) {
             return sf.Vector2(T){ .x = self.left, .y = self.top };
         }
+        pub const getPosition = getCorner;
         /// Gets a vector with the bottom right corner coordinates
         pub fn getOtherCorner(self: Self) sf.Vector2(T) {
             return self.getCorner().add(self.getSize());
@@ -134,12 +135,32 @@ test "rect: intersect" {
 test "rect: contains" {
     const tst = @import("std").testing;
 
-    var r1 = Rect(f32).init(0, 0, 10, 10);
+    const r1 = Rect(f32).init(0, 0, 10, 10);
 
     try tst.expect(r1.contains(.{ .x = 0, .y = 0 }));
     try tst.expect(r1.contains(.{ .x = 9, .y = 9 }));
     try tst.expect(!r1.contains(.{ .x = 5, .y = -1 }));
     try tst.expect(!r1.contains(.{ .x = 10, .y = 5 }));
+}
+
+test "rect: getPosition" {
+    const tst = @import("std").testing;
+
+    const r1 = Rect(f32).init(1, 3, 10, 10);
+    const pos = r1.getPosition();
+
+    try tst.expectApproxEqAbs(1.0, pos.x, 0.0001);
+    try tst.expectApproxEqAbs(3.0, pos.y, 0.0001);
+}
+
+test "rect: getSize" {
+    const tst = @import("std").testing;
+
+    const r1 = Rect(f32).init(1, 3, 10, 12);
+    const size = r1.getSize();
+
+    try tst.expectApproxEqAbs(10, size.x, 0.0001);
+    try tst.expectApproxEqAbs(12, size.y, 0.0001);
 }
 
 test "rect: sane from/to CSFML rect" {
