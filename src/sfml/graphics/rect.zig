@@ -5,7 +5,6 @@ const sf = struct {
     pub usingnamespace sfml;
     pub usingnamespace sfml.system;
 };
-const math = @import("std").math;
 
 pub fn Rect(comptime T: type) type {
     return packed struct {
@@ -45,10 +44,10 @@ pub fn Rect(comptime T: type) type {
         /// Checks if a point is inside this recangle
         pub fn contains(self: Self, vec: sf.Vector2(T)) bool {
             // Shamelessly stolen
-            const min_x: T = math.min(self.left, self.left + self.width);
-            const max_x: T = math.max(self.left, self.left + self.width);
-            const min_y: T = math.min(self.top, self.top + self.height);
-            const max_y: T = math.max(self.top, self.top + self.height);
+            const min_x: T = @min(self.left, self.left + self.width);
+            const max_x: T = @max(self.left, self.left + self.width);
+            const min_y: T = @min(self.top, self.top + self.height);
+            const max_y: T = @max(self.top, self.top + self.height);
 
             return (vec.x >= min_x and
                 vec.x < max_x and
@@ -59,20 +58,20 @@ pub fn Rect(comptime T: type) type {
         /// Checks if two rectangles have a common intersection, if yes returns that zone, if not returns null
         pub fn intersects(self: Self, other: Self) ?Self {
             // Shamelessly stolen too
-            const r1_min_x: T = math.min(self.left, self.left + self.width);
-            const r1_max_x: T = math.max(self.left, self.left + self.width);
-            const r1_min_y: T = math.min(self.top, self.top + self.height);
-            const r1_max_y: T = math.max(self.top, self.top + self.height);
+            const r1_min_x: T = @min(self.left, self.left + self.width);
+            const r1_max_x: T = @max(self.left, self.left + self.width);
+            const r1_min_y: T = @min(self.top, self.top + self.height);
+            const r1_max_y: T = @max(self.top, self.top + self.height);
 
-            const r2_min_x: T = math.min(other.left, other.left + other.width);
-            const r2_max_x: T = math.max(other.left, other.left + other.width);
-            const r2_min_y: T = math.min(other.top, other.top + other.height);
-            const r2_max_y: T = math.max(other.top, other.top + other.height);
+            const r2_min_x: T = @min(other.left, other.left + other.width);
+            const r2_max_x: T = @max(other.left, other.left + other.width);
+            const r2_min_y: T = @min(other.top, other.top + other.height);
+            const r2_max_y: T = @max(other.top, other.top + other.height);
 
-            const inter_left: T = math.max(r1_min_x, r2_min_x);
-            const inter_top: T = math.max(r1_min_y, r2_min_y);
-            const inter_right: T = math.min(r1_max_x, r2_max_x);
-            const inter_bottom: T = math.min(r1_max_y, r2_max_y);
+            const inter_left: T = @max(r1_min_x, r2_min_x);
+            const inter_top: T = @max(r1_min_y, r2_min_y);
+            const inter_right: T = @min(r1_max_x, r2_max_x);
+            const inter_bottom: T = @min(r1_max_y, r2_max_y);
 
             if (inter_left < inter_right and inter_top < inter_bottom) {
                 return Self.init(inter_left, inter_top, inter_right - inter_left, inter_bottom - inter_top);
