@@ -1,15 +1,13 @@
 const std = @import("std");
 
-pub fn link(b: *std.Build, exe: *std.Build.Step.Compile) void {
+// Call that from your own build.zig as a helper!
+pub fn link(exe: *std.Build.Step.Compile) void {
     exe.linkLibC();
     exe.linkSystemLibrary("csfml-graphics");
     exe.linkSystemLibrary("csfml-system");
     exe.linkSystemLibrary("csfml-window");
     exe.linkSystemLibrary("csfml-audio");
     exe.linkSystemLibrary("csfml-network");
-    //_ = b;
-
-    exe.addLibraryPath(b.path("csfml/lib/msvc/"));
 }
 
 pub fn build(b: *std.Build) !void {
@@ -20,6 +18,7 @@ pub fn build(b: *std.Build) !void {
     const module = b.addModule("sfml", .{
         .root_source_file = b.path("src/sfml/sfml.zig"),
     });
+    module.addLibraryPath(b.path("csfml/lib/msvc/"));
     module.addIncludePath(b.path("csfml/include/"));
 
     // Register test runner
@@ -28,7 +27,7 @@ pub fn build(b: *std.Build) !void {
         .target = target,
         .optimize = mode,
     });
-    link(b, test_runner);
+    link(test_runner);
     test_runner.addIncludePath(b.path("csfml/include/"));
     test_runner.root_module.addImport("sfml", module);
 
@@ -51,7 +50,7 @@ fn example(b: *std.Build, module: *std.Build.Module, target: anytype, mode: anyt
         .target = target,
         .optimize = mode,
     });
-    link(b, exe);
+    link(exe);
     exe.root_module.addImport("sfml", module);
 
     const run = b.addRunArtifact(exe);
