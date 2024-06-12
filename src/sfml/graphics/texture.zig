@@ -48,6 +48,29 @@ pub const Texture = union(TextureType) {
         } else return sf.Error.nullptrUnknownReason;
     }
 
+    /// Loads a texture from a file
+    pub fn createSrgbFromFile(path: [:0]const u8) !Texture {
+        const tex = sf.c.sfTexture_createSrgbFromFile(path, null);
+        if (tex) |t| {
+            return Texture{ ._ptr = t };
+        } else return sf.Error.resourceLoadingError;
+    }
+    /// Loads a texture from a file in memory
+    pub fn createSrgbFromMemory(data: []const u8) !Texture {
+        const tex = sf.c.sfTexture_createSrgbFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
+        if (tex) |t| {
+            return Texture{ ._ptr = t };
+        } else return sf.Error.resourceLoadingError;
+    }
+    /// Creates an texture from an image
+    pub fn createSrgbFromImage(image: sf.Image, area: ?sf.IntRect) !Texture {
+        const tex = sf.c.sfTexture_createSrgbFromImage(image._ptr, if (area) |a| &a._toCSFML() else null);
+
+        if (tex) |t| {
+            return Texture{ ._ptr = t };
+        } else return sf.Error.nullptrUnknownReason;
+    }
+
     /// Destroys a texture
     /// Be careful, you can only destroy non const textures
     pub fn destroy(self: *Texture) void {
@@ -193,13 +216,6 @@ pub const Texture = union(TextureType) {
     pub fn isSrgb(self: Texture) bool {
         return sf.c.sfTexture_isSrgb(self._ptr) != 0;
     }
-    /// Enables or disables SRGB
-    pub fn setSrgb(self: *Texture, srgb: bool) void {
-        if (self.* == ._const_ptr)
-            @panic("Can't set properties on a const texture");
-
-        sf.c.sfTexture_setSrgb(self._ptr, @intFromBool(srgb));
-    }
 
     /// Swaps this texture's contents with an other texture
     pub fn swap(self: *Texture, other: *Texture) void {
@@ -225,6 +241,8 @@ pub const Texture = union(TextureType) {
     _const_ptr: *const sf.c.sfTexture,
 };
 
+// TODO: texture bind function
+
 test "texture: sane getters and setters" {
     const tst = std.testing;
     const allocator = std.heap.page_allocator;
@@ -234,7 +252,6 @@ test "texture: sane getters and setters" {
 
     const size = tex.getSize();
 
-    tex.setSrgb(false);
     tex.setSmooth(true);
     tex.setRepeated(true);
 

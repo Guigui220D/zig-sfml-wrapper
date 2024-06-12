@@ -18,8 +18,8 @@ pub fn build(b: *std.Build) !void {
     const module = b.addModule("sfml", .{
         .root_source_file = b.path("src/sfml/sfml.zig"),
     });
-    module.addLibraryPath(b.path("csfml/lib/msvc/"));
-    module.addIncludePath(b.path("csfml/include/"));
+    module.addLibraryPath(b.path("CSFML/lib/msvc/"));
+    module.addIncludePath(b.path("CSFML/include/"));
 
     // Register test runner
     var test_runner = b.addTest(.{
