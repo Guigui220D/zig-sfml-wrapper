@@ -25,7 +25,7 @@ This is a small example of how you use this sfml wrapper:
 
 ```zig
 //! This is a translation of the c++ code the sfml website gives you to test if SFML works
-//! for instance, in this page: https://www.sfml-dev.org/tutorials/2.5/start-vc.php
+//! for instance, in this page: https://www.sfml-dev.org/tutorials/2.6/start-vc.php
 
 const sf = struct {
     usingnamespace @import("sfml");
@@ -59,4 +59,3 @@ Feel free to add your project to this list!
 
 - [Pong clone I made](https://github.com/Guigui220D/sfml-pong-zig)
 - [Minez](https://github.com/Guigui220D/minez) an arcade looking minecraft inspired mining game
-- [TwisteRTanks](https://github.com/TwisteRTanks/TwisteRTanks)

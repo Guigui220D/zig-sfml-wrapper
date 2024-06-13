@@ -1,5 +1,5 @@
 //! This the same example as presented on the sfml website
-//! https://www.sfml-dev.org/documentation/2.5.1/
+//! https://www.sfml-dev.org/documentation/2.6.1/
 
 const sf = struct {
     const sfml = @import("sfml");
