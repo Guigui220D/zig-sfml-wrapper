@@ -16,14 +16,14 @@ pub fn build(b: *std.Build) !void {
 
     // Register modules
     const module = b.addModule("sfml", .{
-        .root_source_file = b.path("src/sfml/sfml.zig"),
+        .root_source_file = b.path("src/root.zig"),
     });
     module.addLibraryPath(b.path("CSFML/lib/msvc/"));
     module.addIncludePath(b.path("CSFML/include/"));
 
     // Register test runner
     var test_runner = b.addTest(.{
-        .root_source_file = b.path("src/sfml/sfml_tests.zig"),
+        .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = mode,
     });
@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) !void {
 
     //Build step to generate docs:
     var docs = b.addTest(.{
-        .root_source_file = b.path("src/sfml/sfml_tests.zig"),
+        .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = mode,
     });
