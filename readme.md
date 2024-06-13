@@ -7,7 +7,7 @@
 This is a wrapper for CSFML. Theres no problem importing CSFML in Zig, but the resulting code can be a little bit messy.
 My goal is to make things close enough to SFML, with nice methods.
 
-This currently for Zig 0.12 (should work with 0.13) and CSFML 2.5.
+This currently for Zig 0.12 (should work with 0.13) and CSFML 2.6.1.
 
 ### How much is done
 
