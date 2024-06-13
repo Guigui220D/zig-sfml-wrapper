@@ -15,14 +15,14 @@ pub fn main() !void {
     defer window.destroy();
     window.setVerticalSyncEnabled(true);
 
-    var object_texture = try sf.Texture.createFromFile("cute_image.png");
+    var object_texture = try sf.Texture.createFromFile("res/cute_image.png");
     defer object_texture.destroy();
 
     var object = try sf.Sprite.createFromTexture(object_texture);
     defer object.destroy();
     //object.setScale(.{ .x = 0.5, .y = 0.5 });
 
-    var distortion_map = try sf.Texture.createFromFile("distortion_map.png");
+    var distortion_map = try sf.Texture.createFromFile("res/distortion_map.png");
     defer distortion_map.destroy();
     distortion_map.setRepeated(true);
     distortion_map.setSmooth(true);
@@ -34,7 +34,7 @@ pub fn main() !void {
     sprite.setPosition(.{ .x = 100, .y = 150 });
 
     //var shader = try sf.Shader.createFromFile(null, null, "heat_shader.fs");
-    var shader = try sf.Shader.createFromFile(null, null, "heat_shader.fs");
+    var shader = try sf.Shader.createFromFile(null, null, "res/heat_shader.fs");
     defer shader.destroy();
     shader.setUniform("currentTexture", sf.Shader.CurrentTexture);
     shader.setUniform("distortionMapTexture", distortion_map);

@@ -16,19 +16,19 @@ pub fn main() !void {
     defer window.destroy();
 
     // Load a sprite to display
-    var texture = try sf.Texture.createFromFile("cute_image.png");
+    var texture = try sf.Texture.createFromFile("res/cute_image.png");
     defer texture.destroy();
     var sprite = try sf.Sprite.createFromTexture(texture);
     defer sprite.destroy();
 
     // Create a graphical text to display
-    var font = try sf.Font.createFromFile("arial.ttf");
+    var font = try sf.Font.createFromFile("res/arial.ttf");
     defer font.destroy();
     var text = try sf.Text.createWithText("Hello SFML", font, 50);
     defer text.destroy();
 
     // Loads a music to play
-    var music = try sf.Music.createFromFile("funnysong.mp3");
+    var music = try sf.Music.createFromFile("res/funnysong.mp3");
     defer music.destroy();
     music.play();
 
