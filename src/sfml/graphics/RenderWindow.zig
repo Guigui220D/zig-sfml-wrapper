@@ -147,6 +147,11 @@ pub fn setMouseCursorVisible(self: *RenderWindow, visible: bool) void {
     sf.c.sfRenderWindow_setMouseCursorVisible(self._ptr, @intFromBool(visible));
 }
 
+/// Set the displayed cursor to a native system cursor
+pub fn setMouseCursor(self: *RenderWindow, cursor: sf.Cursor) void {
+    sf.c.sfRenderWindow_setMouseCursor(self._ptr, cursor._ptr);
+}
+
 /// Set automatic key-repeat
 pub fn setKeyRepeatEnabled(self: *RenderWindow, enabled: bool) void {
     sf.c.sfRenderWindow_setKeyRepeatEnabled(self._ptr, @intFromBool(enabled));

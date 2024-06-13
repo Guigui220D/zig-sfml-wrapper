@@ -12,4 +12,6 @@ pub const Error = error{
     noMoreData,
     couldntRead,
     timeout,
+    wrongDataSize,
+    unimplemented,
 };

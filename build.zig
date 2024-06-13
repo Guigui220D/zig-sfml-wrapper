@@ -28,6 +28,7 @@ pub fn build(b: *std.Build) !void {
         .optimize = mode,
     });
     link(test_runner);
+    test_runner.addLibraryPath(b.path("CSFML/lib/msvc/"));
     test_runner.addIncludePath(b.path("CSFML/include/"));
 
     //Build step to generate docs:
@@ -37,6 +38,7 @@ pub fn build(b: *std.Build) !void {
         .optimize = mode,
     });
     link(docs);
+    docs.addLibraryPath(b.path("CSFML/lib/msvc/"));
     docs.addIncludePath(b.path("CSFML/include/"));
     docs.root_module.addImport("sfml", module);
 
