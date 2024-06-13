@@ -28,7 +28,7 @@ pub fn main() !void {
     defer text.destroy();
 
     // Loads a music to play
-    var music = try sf.Music.createFromFile("nice_music.ogg");
+    var music = try sf.Music.createFromFile("funnysong.mp3");
     defer music.destroy();
     music.play();
 
