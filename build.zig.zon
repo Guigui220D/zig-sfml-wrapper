@@ -1,5 +1,12 @@
 .{
     .name = "sfml",
     .version = "2.5.0",
-    .paths = .{""},
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "res",
+        "LICENSE",
+        "CSFML-LICENSE",
+    },
 }
