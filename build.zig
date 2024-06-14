@@ -1,8 +1,33 @@
 const std = @import("std");
+const builtin = @import("builtin");
+
+/// Windows only: use the LIBRARY_PATH environment variable to add library paths
+/// TODO: is there an actual environment variable that works?
+fn addLibraryPathEnvVar(exe: *std.Build.Step.Compile, alloc: std.mem.Allocator) !void {
+    // This is ugly because of utf16...
+    const env_name = try std.unicode.utf8ToUtf16LeAllocZ(alloc, "LIBRARY_PATH");
+    defer alloc.free(env_name);
+    if (std.process.getenvW(env_name)) |env| {
+        var it = std.mem.tokenize(u16, env, &[_]u16{';'});
+        while (it.next()) |path| {
+            const path_u8 = try std.unicode.utf16LeToUtf8Alloc(alloc, path);
+            defer alloc.free(path_u8);
+
+            exe.addLibraryPath(std.Build.LazyPath.relative(path_u8));
+        }
+    }
+}
 
 // Call that from your own build.zig as a helper!
 pub fn link(exe: *std.Build.Step.Compile) void {
     exe.linkLibC();
+
+    if (builtin.os.tag == .windows) {
+        const alloc = std.heap.page_allocator;
+        // So that the library paths are available
+        addLibraryPathEnvVar(exe, alloc) catch @panic("Failed to use allocator in addLibraryPathEnvVar");
+    }
+
     exe.linkSystemLibrary("csfml-graphics");
     exe.linkSystemLibrary("csfml-system");
     exe.linkSystemLibrary("csfml-window");
@@ -18,28 +43,22 @@ pub fn build(b: *std.Build) !void {
     const module = b.addModule("sfml", .{
         .root_source_file = b.path("src/root.zig"),
     });
-    module.addLibraryPath(b.path("CSFML/lib/msvc/"));
-    module.addIncludePath(b.path("CSFML/include/"));
 
     // Register test runner
-    var test_runner = b.addTest(.{
+    const test_runner = b.addTest(.{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = mode,
     });
     link(test_runner);
-    test_runner.addLibraryPath(b.path("CSFML/lib/msvc/"));
-    test_runner.addIncludePath(b.path("CSFML/include/"));
 
     //Build step to generate docs:
-    var docs = b.addTest(.{
+    const docs = b.addTest(.{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = mode,
     });
     link(docs);
-    docs.addLibraryPath(b.path("CSFML/lib/msvc/"));
-    docs.addIncludePath(b.path("CSFML/include/"));
     docs.root_module.addImport("sfml", module);
 
     const emitted_docs = docs.getEmittedDocs();
@@ -71,6 +90,10 @@ fn example(b: *std.Build, module: *std.Build.Module, target: anytype, mode: anyt
     });
     link(exe);
     exe.root_module.addImport("sfml", module);
+
+    const install = b.addInstallArtifact(exe, .{});
+    const install_step = b.step(name, "Get the compiled " ++ name ++ " example in the bin folder");
+    install_step.dependOn(&install.step);
 
     const run = b.addRunArtifact(exe);
     const run_step = b.step("run-" ++ name, "Run the " ++ name ++ " test");
