@@ -13,7 +13,7 @@ fn addLibraryPathEnvVar(exe: *std.Build.Step.Compile, alloc: std.mem.Allocator) 
             const path_u8 = try std.unicode.utf16LeToUtf8Alloc(alloc, path);
             defer alloc.free(path_u8);
 
-            exe.addLibraryPath(std.Build.LazyPath.relative(path_u8));
+            exe.addLibraryPath(.{ .cwd_relative = path_u8 });
         }
     }
 }
@@ -69,10 +69,12 @@ pub fn build(b: *std.Build) !void {
         .install_subdir = "docs",
     }).step);
 
+    const all_step = b.step("all", "Compile all examples");
+
     // Register the examples
-    example(b, module, target, mode, "sfml_example");
-    example(b, module, target, mode, "green_circle");
-    example(b, module, target, mode, "heat_haze");
+    example(b, module, target, mode, all_step, "sfml_example");
+    example(b, module, target, mode, all_step, "green_circle");
+    example(b, module, target, mode, all_step, "heat_haze");
 
     // Register the test step
     const test_step = b.step("test", "Runs the test suite.");
@@ -81,7 +83,7 @@ pub fn build(b: *std.Build) !void {
     test_step.dependOn(&run.step);
 }
 
-fn example(b: *std.Build, module: *std.Build.Module, target: anytype, mode: anytype, comptime name: []const u8) void {
+fn example(b: *std.Build, module: *std.Build.Module, target: anytype, mode: anytype, all: *std.Build.Step, comptime name: []const u8) void {
     const exe = b.addExecutable(.{
         .name = name,
         .root_source_file = b.path("src/examples/" ++ name ++ ".zig"),
@@ -94,6 +96,7 @@ fn example(b: *std.Build, module: *std.Build.Module, target: anytype, mode: anyt
     const install = b.addInstallArtifact(exe, .{});
     const install_step = b.step(name, "Get the compiled " ++ name ++ " example in the bin folder");
     install_step.dependOn(&install.step);
+    all.dependOn(&install.step);
 
     const run = b.addRunArtifact(exe);
     const run_step = b.step("run-" ++ name, "Run the " ++ name ++ " test");
