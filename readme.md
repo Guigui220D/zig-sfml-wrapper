@@ -9,15 +9,18 @@ My goal is to make things close enough to SFML, with nice methods.
 
 This currently for Zig 0.12 (should work with 0.13) and CSFML 2.6.1.
 
-### How much is done
+### Adding to your project
 
-Most of the classes are wrapped and you should be able to write games with this wrapper.
-The network module is a recent addition and does not contain all classes yet (HTTP, FTP, ...).
-Threads are not available yet.
+Add using Zig's package manager like so: `zig fetch --save zig fetch --save https://github.com/Guigui220D/zig-sfml-wrapper/archive/d5272051a937c8a3756bb96eab8276b76a271de4.tar.gz` (replace the commit hash if you want an other version).
 
-### Compiling
+Add this to your exe compile in `build.zig`:
 
-Check the [wiki](../../wiki) for a small guide on how to compile your project or the examples.
+```zig
+exe.root_module.addImport("sfml", b.dependency("sfml", .{}).module("sfml"));
+sfml.link(exe);
+```
+
+Check the [wiki](../../wiki) for more details on how to compile your project or the examples.
 
 ### Small example
 
@@ -59,3 +62,9 @@ Feel free to add your project to this list!
 
 - [Pong clone I made](https://github.com/Guigui220D/sfml-pong-zig)
 - [Minez](https://github.com/Guigui220D/minez) an arcade looking minecraft inspired mining game
+  
+### How much is done
+
+Most of the classes are wrapped and you should be able to write games with this wrapper.
+The network module is a recent addition and does not contain all classes yet (HTTP, FTP, ...).
+Threads are not available yet.
