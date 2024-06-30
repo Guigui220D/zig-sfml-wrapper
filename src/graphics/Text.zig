@@ -11,11 +11,11 @@ const sf = struct {
 const Text = @This();
 
 pub const TextStyle = enum(c_uint) {
-    Regular = 0,
-    Bold = 1 << 0,
-    Italic = 1 << 1,
-    Underlined = 1 << 2,
-    StrikeThrough = 1 << 3,
+    regular = 0,
+    bold = 1 << 0,
+    italic = 1 << 1,
+    underlined = 1 << 2,
+    strike_through = 1 << 3,
 };
 
 // Constructor/destructor

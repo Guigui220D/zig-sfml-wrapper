@@ -3,9 +3,9 @@
 const sf = @import("../root.zig");
 
 /// Mouse buttons
-pub const Button = enum(c_uint) { Left, Right, Middle, XButton1, XButton2 };
+pub const Button = enum(c_uint) { left, right, middle, x_button1, x_button2 };
 /// Mouse wheels
-pub const Wheel = enum(c_uint) { Vertical, Horizontal };
+pub const Wheel = enum(c_uint) { vertical, horizontal };
 
 /// Returns true if the specified mouse button is pressed
 pub fn isButtonPressed(button: Button) bool {

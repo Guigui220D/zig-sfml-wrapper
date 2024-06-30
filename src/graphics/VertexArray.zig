@@ -113,18 +113,18 @@ test "VertexArray: sane getters and setters" {
         .{ .position = .{ .x = 1, .y = 0 }, .color = sf.graphics.Color.Green },
         .{ .position = .{ .x = -1, .y = 1 }, .color = sf.graphics.Color.Blue },
     };
-    var va = try createFromSlice(va_slice[0..], sf.graphics.PrimitiveType.Triangles);
+    var va = try createFromSlice(va_slice[0..], sf.graphics.PrimitiveType.triangles);
     defer va.destroy();
 
     va.append(.{ .position = .{ .x = 1, .y = 1 }, .color = sf.graphics.Color.Yellow });
-    va.setPrimitiveType(sf.graphics.PrimitiveType.Quads);
+    va.setPrimitiveType(sf.graphics.PrimitiveType.quads);
 
     try tst.expectEqual(@as(usize, 4), va.getVertexCount());
-    try tst.expectEqual(sf.graphics.PrimitiveType.Quads, va.getPrimitiveType());
+    try tst.expectEqual(sf.graphics.PrimitiveType.quads, va.getPrimitiveType());
     try tst.expectEqual(sf.graphics.FloatRect{ .left = -1, .top = 0, .width = 2, .height = 1 }, va.getBounds());
 
     va.resize(3);
-    va.setPrimitiveType(sf.graphics.PrimitiveType.TriangleFan);
+    va.setPrimitiveType(sf.graphics.PrimitiveType.triangle_fan);
     try tst.expectEqual(@as(usize, 3), va.getVertexCount());
 
     const vert = va.getVertex(0).*;

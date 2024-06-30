@@ -22,37 +22,37 @@ pub const Type = enum(c_uint) {
     /// Pointing hand cursor
     hand,
     /// Horizontal double arrow cursor
-    sizeHorizontal,
+    size_horizontal,
     /// Vertical double arrow cursor
-    sizeVertical,
+    size_vertical,
     /// Double arrow cursor going from top-left to bottom-right
-    sizeTopLeftBottomRight,
+    size_top_left_bottom_right,
     /// Double arrow cursor going from bottom-left to top-right
-    sizeBottomLeftTopRight,
+    size_bottom_left_top_right,
     /// Left arrow cursor on Linux, same as sizeHorizontal on other platforms
-    sizeLeft,
+    size_left,
     /// Right arrow cursor on Linux, same as sizeHorizontal on other platforms
-    sizeRight,
+    size_right,
     /// Up arrow cursor on Linux, same as sizeVertical on other platforms
-    sizeTop,
+    size_top,
     /// Down arrow cursor on Linux, same as sizeVertical on other platforms
-    sizeBottom,
+    size_bottom,
     /// Top-left arrow cursor on Linux, same as sizeTopLeftBottomRight on other platforms
-    sizeTopLeft,
+    size_top_left,
     /// Bottom-right arrow cursor on Linux, same as sizeTopLeftBottomRight on other platforms
-    sizeBottomRight,
+    size_bottom_right,
     /// Bottom-left arrow cursor on Linux, same as sizeBottomLeftTopRight on other platforms
-    sizeBottomLeft,
+    size_bottom_left,
     /// Top-right arrow cursor on Linux, same as sizeBottomLeftTopRight on other platforms
-    sizeTopRight,
+    size_top_right,
     /// Combination of sizeHorizontal and sizeVertical
-    sizeAll,
+    size_all,
     /// Crosshair cursor
     cross,
     /// Help cursor
     help,
     /// Action not allowed cursor
-    notAllowed,
+    not_allowed,
 };
 
 // Constructors and destructors

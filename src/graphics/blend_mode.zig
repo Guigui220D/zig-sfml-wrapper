@@ -5,14 +5,14 @@ pub const BlendMode = extern struct {
     pub const Factor = enum(c_int) {
         zero,
         one,
-        srcColor,
-        oneMinusSrcColor,
-        dstColor,
-        oneMinusDstColor,
-        srcAlpha,
-        oneMinusSrcAlpha,
-        dstAlpha,
-        oneMinusDstAlpha,
+        src_color,
+        one_minus_src_color,
+        dst_color,
+        one_minus_dst_color,
+        src_alpha,
+        one_minus_src_alpha,
+        dst_alpha,
+        one_minus_dst_alpha,
     };
 
     pub const Equation = enum(c_int) {
@@ -25,16 +25,16 @@ pub const BlendMode = extern struct {
 
     // Preset blend modes
     pub const BlendAlpha = BlendMode{
-        .color_src_factor = .srcAlpha,
-        .color_dst_factor = .oneMinusSrcAlpha,
+        .color_src_factor = .src_alpha,
+        .color_dst_factor = .one_minus_src_alpha,
         .color_equation = .add,
         .alpha_src_factor = .one,
-        .alpha_dst_factor = .oneMinusSrcAlpha,
+        .alpha_dst_factor = .one_minus_src_alpha,
         .alpha_equation = .add,
     };
 
     pub const BlendAdd = BlendMode{
-        .color_src_factor = .srcAlpha,
+        .color_src_factor = .src_alpha,
         .color_dst_factor = .one,
         .color_equation = .add,
         .alpha_src_factor = .one,
@@ -43,10 +43,10 @@ pub const BlendMode = extern struct {
     };
 
     pub const BlendMultiply = BlendMode{
-        .color_src_factor = .dstColor,
+        .color_src_factor = .dst_color,
         .color_dst_factor = .zero,
         .color_equation = .add,
-        .alpha_src_factor = .dstColor,
+        .alpha_src_factor = .dst_color,
         .alpha_dst_factor = .zero,
         .alpha_equation = .add,
     };

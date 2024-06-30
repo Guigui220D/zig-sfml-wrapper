@@ -49,13 +49,13 @@ pub fn main() !void {
         while (window.pollEvent()) |event| {
             switch (event) {
                 .closed => return,
-                .keyPressed => |kp| {
+                .key_pressed => |kp| {
                     switch (kp.code) {
-                        .Escape => return,
-                        .Up => distortion_factor *= 2,
-                        .Down => distortion_factor /= 2,
-                        .Right => rise_factor *= 2,
-                        .Left => rise_factor /= 2,
+                        .escape => return,
+                        .up => distortion_factor *= 2,
+                        .down => distortion_factor /= 2,
+                        .right => rise_factor *= 2,
+                        .left => rise_factor /= 2,
                         else => {},
                     }
                 },

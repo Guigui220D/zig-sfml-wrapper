@@ -3,32 +3,32 @@
 const Vertex = @import("vertex.zig").Vertex;
 
 pub const PrimitiveType = enum(c_uint) {
-    Points,
-    Lines,
-    LineStrip,
-    Triangles,
-    TriangleStrip,
-    TriangleFan,
-    Quads,
+    points,
+    lines,
+    line_strip,
+    triangles,
+    triangle_strip,
+    triangle_fan,
+    quads,
 
     /// Gives the corresponding primitive type for primitive iteration
     /// See Vertex.verticesAsPrimitives()
     pub fn Type(comptime primitive_type: PrimitiveType) type {
         return switch (primitive_type) {
-            .Points => PointPrimitive,
-            .Lines => LinePrimitive,
-            .Triangles => TrianglePrimitive,
-            .Quads => QuadPrimitive,
+            .points => PointPrimitive,
+            .lines => LinePrimitive,
+            .triangles => TrianglePrimitive,
+            .quads => QuadPrimitive,
             else => @compileError("Primitive type not supported"),
         };
     }
     /// Says how many vertices each primitive is composed of
-    pub fn packedBy(primitive_type: PrimitiveType) usize {
+    pub fn vertexCount(primitive_type: PrimitiveType) usize {
         return switch (primitive_type) {
-            .Points => 1,
-            .Lines => 2,
-            .Triangles => 3,
-            .Quads => 4,
+            .points => 1,
+            .lines => 2,
+            .triangles => 3,
+            .quads => 4,
             else => @panic("Primitive type not supported"),
         };
     }

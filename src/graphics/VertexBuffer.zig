@@ -4,7 +4,7 @@ const sf = @import("../root.zig");
 
 const VertexBuffer = @This();
 
-pub const Usage = enum(c_uint) { Static = 0, Dynamic = 1, Stream = 2 };
+pub const Usage = enum(c_uint) { static = 0, dynamic = 1, stream = 2 };
 
 // Constructors/destructors
 
@@ -63,10 +63,10 @@ test "VertexBuffer: sane getters and setters" {
         .{ .position = .{ .x = 1, .y = 0 }, .color = sf.graphics.Color.Green },
         .{ .position = .{ .x = -1, .y = 1 }, .color = sf.graphics.Color.Blue },
     };
-    var va = try createFromSlice(va_slice[0..], sf.graphics.PrimitiveType.Triangles, Usage.Static);
+    var va = try createFromSlice(va_slice[0..], sf.graphics.PrimitiveType.triangles, Usage.static);
     defer va.destroy();
 
     try tst.expectEqual(@as(usize, 3), va.getVertexCount());
-    try tst.expectEqual(sf.graphics.PrimitiveType.Triangles, va.getPrimitiveType());
-    try tst.expectEqual(Usage.Static, va.getUsage());
+    try tst.expectEqual(sf.graphics.PrimitiveType.triangles, va.getPrimitiveType());
+    try tst.expectEqual(Usage.static, va.getUsage());
 }
