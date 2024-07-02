@@ -131,7 +131,7 @@ pub fn getTextureRect(self: ConvexShape) sf.IntRect {
 }
 /// Sets the sub-shapeangle of the texture that the shape will display
 pub fn setTextureRect(self: *ConvexShape, shape: sf.IntRect) void {
-    sf.c.sfConvexShape_getTextureRect(self._ptr, shape._toCSFML());
+    sf.c.sfConvexShape_setTextureRect(self._ptr, shape._toCSFML());
 }
 
 /// Gets the bounds in the local coordinates system

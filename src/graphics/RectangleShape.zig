@@ -120,7 +120,7 @@ pub fn getTextureRect(self: RectangleShape) sf.IntRect {
 }
 /// Sets the sub-rectangle of the texture that the shape will display
 pub fn setTextureRect(self: *RectangleShape, rect: sf.IntRect) void {
-    sf.c.sfRectangleShape_getTextureRect(self._ptr, rect._toCSFML());
+    sf.c.sfRectangleShape_setTextureRect(self._ptr, rect._toCSFML());
 }
 
 /// Gets the bounds in the local coordinates system

@@ -121,7 +121,7 @@ pub fn getTextureRect(self: CircleShape) sf.IntRect {
 }
 /// Sets the sub-rectangle of the texture that the shape will display
 pub fn setTextureRect(self: *CircleShape, rect: sf.IntRect) void {
-    sf.c.sfCircleShape_getCircleRect(self._ptr, rect._toCSFML());
+    sf.c.sfCircleShape_setTextureRect(self._ptr, rect._toCSFML());
 }
 
 /// Gets the bounds of this shape in the local coordinates system
