@@ -6,6 +6,8 @@ pub const graphics = @import("graphics/graphics_module.zig");
 pub const audio = @import("audio/audio_module.zig");
 pub const network = @import("network/network_module.zig");
 
+pub usingnamespace @import("unicode.zig");
+
 pub const c = @cImport({
     @cInclude("SFML/Graphics.h");
     @cInclude("SFML/Window.h");

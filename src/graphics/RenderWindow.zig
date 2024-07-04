@@ -180,10 +180,8 @@ pub fn setTitle(self: *RenderWindow, title: [:0]const u8) void {
     sf.c.sfRenderWindow_setTitle(self._ptr, title);
 }
 /// Sets the title of this window, in unicode
-pub fn setUnicodeTitle(self: *RenderWindow, comptime title_utf8: []const u8) void {
-    const utils = @import("../utils.zig");
-    const u32string = utils.utf8toUnicode(title_utf8);
-    sf.c.sfRenderWindow_setUnicodeTitle(self._ptr, u32string.ptr);
+pub fn setTitleUnicode(self: *RenderWindow, title_unicode: [:0]const u32) void {
+    sf.c.sfRenderWindow_setUnicodeTitle(self._ptr, title_unicode.ptr);
 }
 
 /// Sets the windows's framerate limit

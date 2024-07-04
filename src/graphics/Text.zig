@@ -37,6 +37,16 @@ pub fn createWithText(string: [:0]const u8, font: sf.Font, character_size: usize
     sf.c.sfText_setString(text, string);
     return Text{ ._ptr = text.? };
 }
+/// Inits a text with unicode content
+pub fn createWithTextUnicode(unicode: [:0]const u32, font: sf.Font, character_size: usize) !Text {
+    const text = sf.c.sfText_create();
+    if (text == null)
+        return sf.Error.nullptrUnknownReason;
+    sf.c.sfText_setFont(text, font._ptr);
+    sf.c.sfText_setCharacterSize(text, @as(c_uint, @intCast(character_size)));
+    sf.c.sfText_setUnicodeString(text, unicode);
+    return Text{ ._ptr = text.? };
+}
 /// Destroys a text
 pub fn destroy(self: *Text) void {
     sf.c.sfText_destroy(self._ptr);
@@ -57,6 +67,10 @@ pub fn setStringFmt(self: *Text, comptime format: []const u8, args: anytype) std
     defer alloc.free(buf);
 
     sf.c.sfText_setString(self._ptr, buf);
+}
+/// Sets the string of this text, in unicode
+pub fn setStringUnicode(self: *Text, string_unicode: [:0]const u32) void {
+    sf.c.sfText_setUnicodeString(self._ptr, string_unicode.ptr);
 }
 
 /// Sets the font of this text

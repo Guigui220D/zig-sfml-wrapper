@@ -3,6 +3,13 @@
 const std = @import("std");
 const sf = @import("../root.zig");
 
+fn isNum(comptime T: type) bool {
+    return switch (@typeInfo(T)) {
+        .Int, .Float, .ComptimeFloat, .ComptimeInt => true,
+        else => false,
+    };
+}
+
 /// Template for a 2 dimensional vector
 pub fn Vector2(comptime T: type) type {
     return extern struct {
@@ -36,7 +43,7 @@ pub fn Vector2(comptime T: type) type {
             }
         } else struct {};
 
-        pub usingnamespace if (T != bool) struct {
+        pub usingnamespace if (isNum(T)) struct {
             /// Adds two vectors
             pub fn add(self: Self, other: Self) Self {
                 return Self{ .x = self.x + other.x, .y = self.y + other.y };
@@ -85,7 +92,7 @@ pub fn Vector3(comptime T: type) type {
             }
         } else struct {};
 
-        pub usingnamespace if (T != bool) struct {
+        pub usingnamespace if (isNum(T)) struct {
             /// Adds two vectors
             pub fn add(self: Self, other: Self) Self {
                 return Self{ .x = self.x + other.x, .y = self.y + other.y, .z = self.z + other.z };
