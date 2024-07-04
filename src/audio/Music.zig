@@ -1,6 +1,11 @@
 //! Streamed music played from an audio file.
 
-const sf = @import("../root.zig");
+const sf = struct {
+    const sfml = @import("../root.zig");
+    pub usingnamespace sfml;
+    pub usingnamespace sfml.audio;
+    pub usingnamespace sfml.system;
+};
 
 const Music = @This();
 
@@ -21,7 +26,8 @@ pub fn createFromMemory(data: []const u8) !Music {
     } else return sf.Error.resourceLoadingError;
 }
 
-pub const initFromStream = @compileError("Function is not implemented yet.");
+// TODO
+//pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Destroys this music object
 pub fn destroy(self: *Music) void {
@@ -61,11 +67,11 @@ pub fn setPlayingOffset(self: *Music, offset: sf.Time) void {
 }
 
 /// Gets the loop points of the music
-pub fn getLoopPoints(self: Music) sf.TimeSpan {
-    return sf.TimeSpan._fromCSFML(sf.c.sfMusic_getLoopPoints(self._ptr));
+pub fn getLoopPoints(self: Music) sf.Time.Span {
+    return sf.Time.Span._fromCSFML(sf.c.sfMusic_getLoopPoints(self._ptr));
 }
 /// Gets the loop points of the music
-pub fn setLoopPoints(self: *Music, span: sf.TimeSpan) void {
+pub fn setLoopPoints(self: *Music, span: sf.Time.Span) void {
     sf.c.sfMusic_setLoopPoints(self._ptr, span._toCSFML());
 }
 
@@ -108,18 +114,19 @@ pub fn getChannelCount(self: Music) usize {
 
 /// Tell whether the sound's position is relative to the listener or is absolute
 pub fn isRelativeToListener(self: Music) bool {
-    return sf.c.sfMusic_getRelativeToListener(self._ptr) != 0;
+    return sf.c.sfMusic_isRelativeToListener(self._ptr) != 0;
 }
 /// Make the sound's position relative to the listener or absolute
 pub fn setRelativeToListener(self: *Music, loop: bool) void {
     sf.c.sfMusic_setRelativeToListener(self._ptr, @intFromBool(loop));
 }
 
-pub const getStatus = @compileError("Function is not implemented yet.");
-pub const setMinDistance = @compileError("Function is not implemented yet.");
-pub const setAttenuation = @compileError("Function is not implemented yet.");
-pub const getMinDistance = @compileError("Function is not implemented yet.");
-pub const getAttenuation = @compileError("Function is not implemented yet.");
+// TODO
+// pub const getStatus = @compileError("Function is not implemented yet.");
+// pub const setMinDistance = @compileError("Function is not implemented yet.");
+// pub const setAttenuation = @compileError("Function is not implemented yet.");
+// pub const getMinDistance = @compileError("Function is not implemented yet.");
+// pub const getAttenuation = @compileError("Function is not implemented yet.");
 
 /// Pointer to the csfml music
 _ptr: *sf.c.sfMusic,

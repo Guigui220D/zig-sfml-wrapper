@@ -65,8 +65,9 @@ pub fn isSmooth(self: Font) bool {
     return sf.c.sfFont_isSmooth(self._ptr) != 0;
 }
 
-pub const getGlyph = @compileError("Function is not implemented yet.");
-pub const initFromStream = @compileError("Function is not implemented yet.");
+// TODO
+//pub const getGlyph = @compileError("Function is not implemented yet.");
+//pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Pointer to the csfml font
 _ptr: *sf.c.sfFont,

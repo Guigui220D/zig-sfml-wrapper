@@ -4,6 +4,7 @@ const sf = struct {
     const sfml = @import("../root.zig");
     pub usingnamespace sfml;
     pub usingnamespace sfml.audio;
+    pub usingnamespace sfml.system;
 };
 
 const Sound = @This();
@@ -49,12 +50,13 @@ pub fn stop(self: *Sound) void {
 // Getters / Setters
 
 /// Gets the buffer this sound is attached to
-pub fn getBuffer(self: Sound) ?sf.SoundBuffer {
-    const buf = sf.c.sfSound_getBuffer(self._ptr);
-    if (buf) |buffer| {
-        return .{ ._ptr = buffer };
-    } else return null;
-}
+/// TODO: same way as texture?
+// pub fn getBuffer(self: Sound) ?sf.SoundBuffer {
+//     const buf = sf.c.sfSound_getBuffer(self._ptr);
+//     if (buf) |buffer| {
+//         return .{ ._ptr = buffer };
+//     } else return null;
+// }
 
 /// Sets the buffer this sound will play
 pub fn setBuffer(self: *Sound, buffer: sf.SoundBuffer) void {
@@ -97,13 +99,14 @@ pub fn setVolume(self: *Sound, volume: f32) void {
     sf.c.sfSound_setVolume(self._ptr, volume);
 }
 
-pub const getStatus = @compileError("Function is not implemented yet.");
-pub const setRelativeToListener = @compileError("Function is not implemented yet.");
-pub const isRelativeToListener = @compileError("Function is not implemented yet.");
-pub const setMinDistance = @compileError("Function is not implemented yet.");
-pub const setAttenuation = @compileError("Function is not implemented yet.");
-pub const getMinDistance = @compileError("Function is not implemented yet.");
-pub const getAttenuation = @compileError("Function is not implemented yet.");
+// TODO
+// pub const getStatus = @compileError("Function is not implemented yet.");
+// pub const setRelativeToListener = @compileError("Function is not implemented yet.");
+// pub const isRelativeToListener = @compileError("Function is not implemented yet.");
+// pub const setMinDistance = @compileError("Function is not implemented yet.");
+// pub const setAttenuation = @compileError("Function is not implemented yet.");
+// pub const getMinDistance = @compileError("Function is not implemented yet.");
+// pub const getAttenuation = @compileError("Function is not implemented yet.");
 
 /// Pointer to the csfml sound
 _ptr: *sf.c.sfSound,

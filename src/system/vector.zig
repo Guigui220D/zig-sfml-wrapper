@@ -1,5 +1,6 @@
 //! Utility struct for manipulating 2-dimensional vectors.
 
+const std = @import("std");
 const sf = @import("../root.zig");
 
 /// Template for a 2 dimensional vector
@@ -19,39 +20,43 @@ pub fn Vector2(comptime T: type) type {
             return .{ .x = x, .y = y };
         }
 
-        /// Makes a CSFML vector with this vector (only if the corresponding type exists)
-        /// This is mainly for the inner workings of this wrapper
-        pub fn _toCSFML(self: Self) CsfmlEquivalent {
-            if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return @as(CsfmlEquivalent, @bitCast(self));
-        }
+        pub usingnamespace if (CsfmlEquivalent != void) struct {
+            /// Makes a CSFML vector with this vector (only if the corresponding type exists)
+            /// This is mainly for the inner workings of this wrapper
+            pub fn _toCSFML(self: Self) CsfmlEquivalent {
+                if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
+                return @as(CsfmlEquivalent, @bitCast(self));
+            }
 
-        /// Creates a vector from a CSFML one (only if the corresponding type exists)
-        /// This is mainly for the inner workings of this wrapper
-        pub fn _fromCSFML(vec: CsfmlEquivalent) Self {
-            if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return @as(Self, @bitCast(vec));
-        }
+            /// Creates a vector from a CSFML one (only if the corresponding type exists)
+            /// This is mainly for the inner workings of this wrapper
+            pub fn _fromCSFML(vec: CsfmlEquivalent) Self {
+                if (CsfmlEquivalent == void) @compileError("This vector type doesn't have a CSFML equivalent.");
+                return @as(Self, @bitCast(vec));
+            }
+        } else struct {};
 
-        /// Adds two vectors
-        pub fn add(self: Self, other: Self) Self {
-            return Self{ .x = self.x + other.x, .y = self.y + other.y };
-        }
+        pub usingnamespace if (T != bool) struct {
+            /// Adds two vectors
+            pub fn add(self: Self, other: Self) Self {
+                return Self{ .x = self.x + other.x, .y = self.y + other.y };
+            }
 
-        /// Substracts two vectors
-        pub fn substract(self: Self, other: Self) Self {
-            return Self{ .x = self.x - other.x, .y = self.y - other.y };
-        }
+            /// Substracts two vectors
+            pub fn substract(self: Self, other: Self) Self {
+                return Self{ .x = self.x - other.x, .y = self.y - other.y };
+            }
 
-        /// Scales a vector
-        pub fn scale(self: Self, scalar: T) Self {
-            return Self{ .x = self.x * scalar, .y = self.y * scalar };
-        }
+            /// Scales a vector
+            pub fn scale(self: Self, scalar: T) Self {
+                return Self{ .x = self.x * scalar, .y = self.y * scalar };
+            }
+        } else struct {};
 
         /// x component of the vector
-        x: T = 0,
+        x: T,
         /// y component of the vector
-        y: T = 0,
+        y: T,
     };
 }
 
@@ -64,41 +69,45 @@ pub fn Vector3(comptime T: type) type {
             return .{ .x = x, .y = y, .z = z };
         }
 
-        /// Makes a CSFML vector with this vector (only if the corresponding type exists)
-        /// This is mainly for the inner workings of this wrapper
-        pub fn _toCSFML(self: Self) sf.c.sfVector3f {
-            if (T != f32) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return @as(sf.c.sfVector3f, @bitCast(self));
-        }
+        pub usingnamespace if (T == f32) struct {
+            /// Makes a CSFML vector with this vector (only if the corresponding type exists)
+            /// This is mainly for the inner workings of this wrapper
+            pub fn _toCSFML(self: Self) sf.c.sfVector3f {
+                if (T != f32) @compileError("This vector type doesn't have a CSFML equivalent.");
+                return @as(sf.c.sfVector3f, @bitCast(self));
+            }
 
-        /// Creates a vector from a CSFML one (only if the corresponding type exists)
-        /// This is mainly for the inner workings of this wrapper
-        pub fn _fromCSFML(vec: sf.c.sfVector3f) Self {
-            if (T != f32) @compileError("This vector type doesn't have a CSFML equivalent.");
-            return @as(Self, @bitCast(vec));
-        }
+            /// Creates a vector from a CSFML one (only if the corresponding type exists)
+            /// This is mainly for the inner workings of this wrapper
+            pub fn _fromCSFML(vec: sf.c.sfVector3f) Self {
+                if (T != f32) @compileError("This vector type doesn't have a CSFML equivalent.");
+                return @as(Self, @bitCast(vec));
+            }
+        } else struct {};
 
-        /// Adds two vectors
-        pub fn add(self: Self, other: Self) Self {
-            return Self{ .x = self.x + other.x, .y = self.y + other.y, .z = self.z + other.z };
-        }
+        pub usingnamespace if (T != bool) struct {
+            /// Adds two vectors
+            pub fn add(self: Self, other: Self) Self {
+                return Self{ .x = self.x + other.x, .y = self.y + other.y, .z = self.z + other.z };
+            }
 
-        /// Substracts two vectors
-        pub fn substract(self: Self, other: Self) Self {
-            return Self{ .x = self.x - other.x, .y = self.y - other.y, .z = self.z - other.z };
-        }
+            /// Substracts two vectors
+            pub fn substract(self: Self, other: Self) Self {
+                return Self{ .x = self.x - other.x, .y = self.y - other.y, .z = self.z - other.z };
+            }
 
-        /// Scales a vector
-        pub fn scale(self: Self, scalar: T) Self {
-            return Self{ .x = self.x * scalar, .y = self.y * scalar, .z = self.z * scalar };
-        }
+            /// Scales a vector
+            pub fn scale(self: Self, scalar: T) Self {
+                return Self{ .x = self.x * scalar, .y = self.y * scalar, .z = self.z * scalar };
+            }
+        } else struct {};
 
         /// x component of the vector
-        x: T = 0,
+        x: T,
         /// y component of the vector
-        y: T = 0,
+        y: T,
         /// z component of the vector
-        z: T = 0,
+        z: T,
     };
 }
 
@@ -113,13 +122,13 @@ pub fn Vector4(comptime T: type) type {
         }
 
         /// x component of the vector
-        x: T = 0,
+        x: T,
         /// y component of the vector
-        y: T = 0,
+        y: T,
         /// z component of the vector
-        z: T = 0,
+        z: T,
         /// w component of the vector
-        w: T = 0,
+        w: T,
     };
 }
 

@@ -32,9 +32,9 @@ pub const Error = error{
 
 test "all sfml tests" {
     const tst = @import("std").testing;
-    tst.refAllDecls(system);
-    tst.refAllDecls(window);
-    tst.refAllDecls(graphics);
-    tst.refAllDecls(audio);
-    //tst.refAllDecls(network);
+    tst.refAllDeclsRecursive(system);
+    tst.refAllDeclsRecursive(window);
+    tst.refAllDeclsRecursive(graphics);
+    tst.refAllDeclsRecursive(audio);
+    //tst.refAllDeclsRecursive(network);
 }

@@ -195,8 +195,9 @@ pub fn centerOrigin(self: *Text) void {
     self.setOrigin(sf.Vector2f{ .x = bounds.width / 2, .y = bounds.height / 2 });
 }
 
-pub const getTransform = @compileError("Function is not implemented yet.");
-pub const getInverseTransform = @compileError("Function is not implemented yet.");
+// TODO
+//pub const getTransform = @compileError("Function is not implemented yet.");
+//pub const getInverseTransform = @compileError("Function is not implemented yet.");
 
 pub const draw_suffix = "Text";
 

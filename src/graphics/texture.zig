@@ -30,8 +30,8 @@ pub const Texture = union(TextureType) {
         } else return sf.Error.resourceLoadingError;
     }
     /// Loads a texture from a file in memory
-    pub fn createFromMemory(data: []const u8) !Texture {
-        const tex = sf.c.sfTexture_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
+    pub fn createFromMemory(data: []const u8, area: sf.IntRect) !Texture {
+        const tex = sf.c.sfTexture_createFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len, &area._toCSFML());
         if (tex) |t| {
             return Texture{ ._ptr = t };
         } else return sf.Error.resourceLoadingError;
@@ -56,8 +56,8 @@ pub const Texture = union(TextureType) {
         } else return sf.Error.resourceLoadingError;
     }
     /// Loads a texture from a file in memory
-    pub fn createSrgbFromMemory(data: []const u8) !Texture {
-        const tex = sf.c.sfTexture_createSrgbFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len);
+    pub fn createSrgbFromMemory(data: []const u8, area: sf.IntRect) !Texture {
+        const tex = sf.c.sfTexture_createSrgbFromMemory(@as(?*const anyopaque, @ptrCast(data.ptr)), data.len, &area._toCSFML());
         if (tex) |t| {
             return Texture{ ._ptr = t };
         } else return sf.Error.resourceLoadingError;
@@ -111,7 +111,7 @@ pub const Texture = union(TextureType) {
     }
 
     /// Gets a const reference to this texture
-    pub fn getConst(self: Texture) void {
+    pub fn getConst(self: Texture) Texture {
         var cpy = self;
         cpy.makeConst();
         return cpy;
@@ -162,7 +162,7 @@ pub const Texture = union(TextureType) {
     }
     /// Updates the pixels of the image from an other texture
     pub fn updateFromTexture(self: *Texture, other: Texture, copy_pos: ?sf.Vector2u) void {
-        if (self == ._const_ptr)
+        if (self.* == ._const_ptr)
             @panic("Can't set pixels on a const texture");
 
         const pos = if (copy_pos) |a| a else sf.Vector2u{ .x = 0, .y = 0 };
@@ -229,7 +229,7 @@ pub const Texture = union(TextureType) {
 
     /// Generates a mipmap for the current texture data, returns true if the operation succeeded
     pub fn generateMipmap(self: *Texture) bool {
-        if (self == ._const_ptr)
+        if (self.* == ._const_ptr)
             @panic("Can't act on a const texture");
 
         return sf.c.sfTexture_generateMipmap(self._ptr) != 0;

@@ -41,8 +41,8 @@ pub const Event = union(enum) {
     }
 
     /// Gets how many types of event exist
-    pub fn getEventCount() c_uint {
-        return @intFromEnum(sf.c.sfEventType.sfEvtCount);
+    pub fn getEventCount() usize {
+        return @intCast(sf.c.sfEvtCount);
     }
 
     /// Size events parameters

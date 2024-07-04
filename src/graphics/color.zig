@@ -113,7 +113,7 @@ pub const Color = packed struct {
         return .{ .x = @as(f32, @floatFromInt(self.r)) / 255.0, .y = @as(f32, @floatFromInt(self.g)) / 255.0, .z = @as(f32, @floatFromInt(self.b)) / 255.0, .w = @as(f32, @floatFromInt(self.a)) / 255.0 };
     }
     /// Get a GLSL int vector for this color (for shaders)
-    pub fn toIVec4(self: Color) sf.graphcis.glsl.IVec4 {
+    pub fn toIVec4(self: Color) sf.graphics.glsl.IVec4 {
         return .{ .x = self.r, .y = self.g, .z = self.b, .w = self.a };
     }
 

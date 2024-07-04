@@ -31,11 +31,11 @@ pub fn destroy(self: *Shader) void {
 
 /// Checks whether or not shaders can be used in the system
 pub fn isAvailable() bool {
-    return sf.c.sfShader_isAvailable();
+    return sf.c.sfShader_isAvailable() != 0;
 }
 /// Checks whether or not geometry shaders can be used
 pub fn isGeometryAvailable() bool {
-    return sf.c.sfShader_isAvailable();
+    return sf.c.sfShader_isAvailable() != 0;
 }
 
 const CurrentTextureT = struct {};

@@ -134,7 +134,7 @@ pub fn setView(self: *RenderWindow, view: sf.View) void {
 }
 /// Gets the viewport of this render target
 pub fn getViewport(self: RenderWindow, view: sf.View) sf.IntRect {
-    return sf.IntRect._fromCSFML(sf.c.sfRenderWindow_getViewPort(self._ptr, view._ptr));
+    return sf.IntRect._fromCSFML(sf.c.sfRenderWindow_getViewport(self._ptr, view._toCSFML()));
 }
 
 /// Set mouse cursor grabbing

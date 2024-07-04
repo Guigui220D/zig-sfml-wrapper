@@ -27,7 +27,8 @@ pub fn createFromSamples(samples: []const i16, channel_count: usize, sample_rate
     return SoundBuffer{ ._ptr = sound.? };
 }
 
-pub const initFromStream = @compileError("Function is not implemented yet.");
+// TODO
+//pub const initFromStream = @compileError("Function is not implemented yet.");
 
 /// Destroys this music object
 pub fn destroy(self: *SoundBuffer) void {

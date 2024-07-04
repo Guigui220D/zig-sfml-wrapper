@@ -112,7 +112,7 @@ pub fn setView(self: *RenderTexture, view: sf.View) void {
 }
 /// Gets the viewport of this target
 pub fn getViewport(self: RenderTexture, view: sf.View) sf.IntRect {
-    return sf.IntRect._fromCSFML(sf.c.sfRenderTexture_getViewPort(self._ptr, view._ptr));
+    return sf.IntRect._fromCSFML(sf.c.sfRenderTexture_getViewport(self._ptr, view._toCSFML()));
 }
 
 /// Convert a point from target coordinates to world coordinates, using the current view (or the specified view)

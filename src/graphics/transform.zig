@@ -26,7 +26,7 @@ pub const Transform = extern struct {
     /// Transforms a rectangle by this matrix
     pub fn transformRect(self: Transform, rect: sf.graphics.FloatRect) sf.graphics.FloatRect {
         const ptr = @as(*const sf.c.sfTransform, @ptrCast(&self));
-        return sf.system.Vector2f._fromCSFML(sf.c.sfTransform_transformRect(ptr, rect._toCSFML()));
+        return sf.graphics.FloatRect._fromCSFML(sf.c.sfTransform_transformRect(ptr, rect._toCSFML()));
     }
 
     // Operations
@@ -38,9 +38,8 @@ pub const Transform = extern struct {
         return _fromCSFML(sf.c.sfTransform_getInverse(ptr));
     }
     /// Combines two transformations
-    pub fn combine(self: Transform, other: Transform) Transform {
-        const ptr = @as(*const sf.c.sfTransform, @ptrCast(&self));
-        return _fromCSFML(sf.c.sfTransform_combine(ptr, other._toCSFML(other)));
+    pub fn combine(self: *Transform, other: Transform) void {
+        sf.c.sfTransform_combine(@ptrCast(self), &other._toCSFML());
     }
 
     /// Translates this transform by x and y
@@ -58,9 +57,6 @@ pub const Transform = extern struct {
         const ptr = @as(*sf.c.sfTransform, @ptrCast(self));
         sf.c.sfTransform_scale(ptr, factor.x, factor.y);
     }
-
-    /// Transform comparison
-    pub const equal = @compileError("Use std.mem.eql instead");
 
     /// The matrix defining this transform
     matrix: [9]f32,
