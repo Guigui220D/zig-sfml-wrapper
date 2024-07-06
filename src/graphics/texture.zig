@@ -8,11 +8,8 @@ const sf = struct {
 };
 
 const std = @import("std");
-const assert = std.debug.assert;
 
-const TextureType = enum { _ptr, _const_ptr };
-
-pub const Texture = union(TextureType) {
+pub const Texture = union(enum) {
     // Constructor/destructor
 
     /// Creates a texture from nothing
@@ -72,13 +69,10 @@ pub const Texture = union(TextureType) {
     }
 
     /// Destroys a texture
-    /// Be careful, you can only destroy non const textures
+    /// You can only destroy non const textures
     pub fn destroy(self: *Texture) void {
-        // TODO: is it possible to detect that comptime?
-        if (self.* == ._ptr) {
-            sf.c.sfTexture_destroy(self._ptr);
-        } else std.debug.print("SFML Debug: Trying to destroy a const texture!", .{});
-
+        std.debug.assert(self.* == ._ptr);
+        sf.c.sfTexture_destroy(self._ptr);
         self._ptr = undefined;
     }
 
@@ -169,7 +163,7 @@ pub const Texture = union(TextureType) {
         const max = other.getSize().add(pos);
         const size = self.getSize();
 
-        assert(max.x <= size.x and max.y <= size.y);
+        std.debug.assert(max.x <= size.x and max.y <= size.y);
 
         sf.c.sfTexture_updateFromTexture(self._ptr, other._get(), pos.x, pos.y);
     }
@@ -182,7 +176,7 @@ pub const Texture = union(TextureType) {
         const max = image.getSize().add(pos);
         const size = self.getSize();
 
-        assert(max.x <= size.x and max.y <= size.y);
+        std.debug.assert(max.x <= size.x and max.y <= size.y);
 
         sf.c.sfTexture_updateFromImage(self._ptr, image._ptr, pos.x, pos.y);
     }

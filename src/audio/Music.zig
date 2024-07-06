@@ -67,11 +67,11 @@ pub fn setPlayingOffset(self: *Music, offset: sf.Time) void {
 }
 
 /// Gets the loop points of the music
-pub fn getLoopPoints(self: Music) sf.Time.Span {
-    return sf.Time.Span._fromCSFML(sf.c.sfMusic_getLoopPoints(self._ptr));
+pub fn getLoopPoints(self: Music) sf.TimeSpan {
+    return sf.TimeSpan._fromCSFML(sf.c.sfMusic_getLoopPoints(self._ptr));
 }
 /// Gets the loop points of the music
-pub fn setLoopPoints(self: *Music, span: sf.Time.Span) void {
+pub fn setLoopPoints(self: *Music, span: sf.TimeSpan) void {
     sf.c.sfMusic_setLoopPoints(self._ptr, span._toCSFML());
 }
 
@@ -112,21 +112,46 @@ pub fn getChannelCount(self: Music) usize {
     return @as(usize, @intCast(sf.c.sfMusic_getChannelCount(self._ptr)));
 }
 
-/// Tell whether the sound's position is relative to the listener or is absolute
+/// Get the current status of a music (stopped, paused, playing)
+pub fn getStatus(self: Music) sf.SoundStatus {
+    return @enumFromInt(sf.c.sfMusic_getStatus(self._ptr));
+}
+
+/// Tell whether the music's position is relative to the listener or is absolute
 pub fn isRelativeToListener(self: Music) bool {
     return sf.c.sfMusic_isRelativeToListener(self._ptr) != 0;
 }
-/// Make the sound's position relative to the listener or absolute
+/// Make the music's position relative to the listener or absolute
 pub fn setRelativeToListener(self: *Music, loop: bool) void {
     sf.c.sfMusic_setRelativeToListener(self._ptr, @intFromBool(loop));
 }
 
-// TODO
-// pub const getStatus = @compileError("Function is not implemented yet.");
-// pub const setMinDistance = @compileError("Function is not implemented yet.");
-// pub const setAttenuation = @compileError("Function is not implemented yet.");
-// pub const getMinDistance = @compileError("Function is not implemented yet.");
-// pub const getAttenuation = @compileError("Function is not implemented yet.");
+/// Set the minimum distance of a music
+pub fn setMinDistance(self: *Music, min_distance: f32) void {
+    sf.c.sfMusic_setMinDistance(self._ptr, min_distance);
+}
+/// Get the minimum distance of a music
+pub fn getMinDistance(self: Music) f32 {
+    return sf.c.sfMusic_getMinDistance(self._ptr);
+}
+
+/// Set the attenuation factor of a music
+pub fn setAttenuation(self: *Music, attenuation: f32) void {
+    sf.c.sfMusic_setAttenuation(self._ptr, attenuation);
+}
+/// Get the attenuation factor of a music
+pub fn getAttenuation(self: Music) f32 {
+    return sf.c.sfMusic_getAttenuation(self._ptr);
+}
+
+/// Set the 3D position of a music in the audio scene
+pub fn setPosition(self: *Music, position: sf.Vector3f) void {
+    sf.c.sfMusic_setPosition(self._ptr, position._toCSFML());
+}
+/// Get the 3D position of a music in the audio scene
+pub fn getPosition(self: Music) sf.Vector3f {
+    return sf.Vector3f._fromCSFML(sf.c.sfMusic_getPosition(self._ptr));
+}
 
 /// Pointer to the csfml music
 _ptr: *sf.c.sfMusic,

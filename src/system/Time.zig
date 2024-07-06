@@ -62,41 +62,6 @@ pub const Zero = microseconds(0);
 
 us: i64,
 
-pub const Span = struct {
-    // Constructors
-
-    /// Construcs a time span
-    pub fn init(begin: Time, length: Time) Span {
-        return Span{
-            .offset = begin,
-            .length = length,
-        };
-    }
-
-    /// Converts a timespan from a csfml object
-    /// For inner workings
-    pub fn _fromCSFML(span: sf.c.sfTimeSpan) Span {
-        return Span{
-            .offset = Time._fromCSFML(span.offset),
-            .length = Time._fromCSFML(span.length),
-        };
-    }
-
-    /// Converts a timespan to a csfml object
-    /// For inner workings
-    pub fn _toCSFML(self: Span) sf.c.sfTimeSpan {
-        return sf.c.sfTimeSpan{
-            .offset = self.offset._toCSFML(),
-            .length = self.length._toCSFML(),
-        };
-    }
-
-    /// The beginning of this span
-    offset: Time,
-    /// The length of this time span
-    length: Time,
-};
-
 test "time: conversion" {
     const tst = @import("std").testing;
 
