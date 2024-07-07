@@ -92,6 +92,18 @@ pub fn pollEvent(self: *RenderWindow) ?sf.window.Event {
     return sf.window.Event._fromCSFML(event);
 }
 
+/// block until an event occurs
+/// can be used like:
+/// if (window.waitEvent()) |event| {}
+/// or:
+/// while (window.waitEvent()) |event| {}
+pub fn waitEvent(self: *RenderWindow) ?sf.window.Event {
+    var event: sf.c.sfEvent = undefined;
+    if (sf.c.sfRenderWindow_waitEvent(self._ptr, &event) != 0) {
+        return sf.window.Event._fromCSFML(event);
+    } else return null;
+}
+
 // Drawing functions
 
 /// Clears the drawing screen with a color
