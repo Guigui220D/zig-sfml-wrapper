@@ -62,6 +62,7 @@ Feel free to add your project to this list!
 
 - [Pong clone I made](https://github.com/Guigui220D/sfml-pong-zig)
 - [Minez](https://github.com/Guigui220D/minez) an arcade looking minecraft inspired mining game
+- [quran-warsh](https://github.com/muslimDevCommunity/quran-warsh) a desktop quran app
   
 ### How much is done
 
