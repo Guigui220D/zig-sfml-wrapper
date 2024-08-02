@@ -11,7 +11,7 @@ This currently for Zig 0.12 (should work with 0.13) and CSFML 2.6.1.
 
 ### Adding to your project
 
-Add using Zig's package manager like so: `zig fetch --save zig fetch --save https://github.com/Guigui220D/zig-sfml-wrapper/archive/d5272051a937c8a3756bb96eab8276b76a271de4.tar.gz` (replace the commit hash if you want an other version).
+Add using Zig's package manager like so: `zig fetch --save https://github.com/Guigui220D/zig-sfml-wrapper/archive/d5272051a937c8a3756bb96eab8276b76a271de4.tar.gz` (replace the commit hash if you want an other version).
 
 Add this to your exe compile in `build.zig`:
 
