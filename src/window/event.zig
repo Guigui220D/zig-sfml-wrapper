@@ -6,6 +6,8 @@ const sf = struct {
     pub usingnamespace sfml.system;
 };
 
+const std = @import("std");
+
 pub const Event = union(enum) {
     const Self = @This();
 
@@ -20,6 +22,7 @@ pub const Event = union(enum) {
             sf.c.sfEvtTextEntered => .{ .text_entered = .{ .unicode = event.text.unicode } },
             sf.c.sfEvtKeyPressed => .{ .key_pressed = .{ .code = @as(sf.window.keyboard.KeyCode, @enumFromInt(event.key.code)), .alt = (event.key.alt != 0), .control = (event.key.control != 0), .shift = (event.key.shift != 0), .system = (event.key.system != 0) } },
             sf.c.sfEvtKeyReleased => .{ .key_released = .{ .code = @as(sf.window.keyboard.KeyCode, @enumFromInt(event.key.code)), .alt = (event.key.alt != 0), .control = (event.key.control != 0), .shift = (event.key.shift != 0), .system = (event.key.system != 0) } },
+            sf.c.sfEvtMouseWheelMoved => .{ .mouse_wheel_moved = .{ .delta = event.mouseWheel.delta, .x = event.mouseWheel.x, .y = event.mouseWheel.y } },
             sf.c.sfEvtMouseWheelScrolled => .{ .mouse_wheel_scrolled = .{ .wheel = @as(sf.window.mouse.Wheel, @enumFromInt(event.mouseWheelScroll.wheel)), .delta = event.mouseWheelScroll.delta, .pos = .{ .x = event.mouseWheelScroll.x, .y = event.mouseWheelScroll.y } } },
             sf.c.sfEvtMouseButtonPressed => .{ .mouse_button_pressed = .{ .button = @as(sf.window.mouse.Button, @enumFromInt(event.mouseButton.button)), .pos = .{ .x = event.mouseButton.x, .y = event.mouseButton.y } } },
             sf.c.sfEvtMouseButtonReleased => .{ .mouse_button_released = .{ .button = @as(sf.window.mouse.Button, @enumFromInt(event.mouseButton.button)), .pos = .{ .x = event.mouseButton.x, .y = event.mouseButton.y } } },
@@ -35,8 +38,10 @@ pub const Event = union(enum) {
             sf.c.sfEvtTouchMoved => .{ .touch_moved = .{ .finger = event.touch.finger, .pos = .{ .x = event.touch.x, .y = event.touch.y } } },
             sf.c.sfEvtTouchEnded => .{ .touch_ended = .{ .finger = event.touch.finger, .pos = .{ .x = event.touch.x, .y = event.touch.y } } },
             sf.c.sfEvtSensorChanged => .{ .sensor_changed = .{ .sensorType = event.sensor.sensorType, .vector = .{ .x = event.sensor.x, .y = event.sensor.y, .z = event.sensor.z } } },
-            sf.c.sfEvtCount => @panic("sfEvtCount should't exist as an event!"),
-            else => @panic("Unknown event!"),
+            else => blk: {
+                std.debug.print("Event code {} is unimplemented! Please open an issue.\n", .{event.type});
+                break :blk .unimplemented;
+            }
         };
     }
 
@@ -73,6 +78,13 @@ pub const Event = union(enum) {
     pub const MouseButtonEvent = struct {
         button: sf.window.mouse.Button,
         pos: sf.Vector2i,
+    };
+
+    /// Mouse wheel events parameters (deprecated)
+    pub const MouseWheelEvent = struct {
+        delta: c_int,
+        x: c_int,
+        y: c_int,
     };
 
     /// Mouse wheel events parameters
@@ -120,6 +132,8 @@ pub const Event = union(enum) {
     text_entered: TextEvent,
     key_pressed: KeyEvent,
     key_released: KeyEvent,
+    /// Deprecated
+    mouse_wheel_moved: MouseWheelEvent,
     mouse_wheel_scrolled: MouseWheelScrollEvent,
     mouse_button_pressed: MouseButtonEvent,
     mouse_button_released: MouseButtonEvent,
@@ -135,4 +149,5 @@ pub const Event = union(enum) {
     touch_moved: TouchEvent,
     touch_ended: TouchEvent,
     sensor_changed: SensorEvent,
+    unimplemented, // If you encounter this, it means that event code needs to be added
 };
