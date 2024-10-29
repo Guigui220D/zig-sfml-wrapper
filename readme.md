@@ -16,9 +16,13 @@ Add using Zig's package manager like so: `zig fetch --save https://github.com/Gu
 Add this to your exe compile in `build.zig`:
 
 ```zig
+const sfml = @import("sfml"); // AT THE TOP OF THE FILE
+
 exe.root_module.addImport("sfml", b.dependency("sfml", .{}).module("sfml"));
 sfml.link(exe);
 ```
+
+> **Note:** Your project must know the location of the CSFML2.6.1 include, lib, and binaries directories for successful building and running. For more information, please refer to the wiki 👇 
 
 Check the [wiki](../../wiki) for more details on how to compile your project or the examples.
 
