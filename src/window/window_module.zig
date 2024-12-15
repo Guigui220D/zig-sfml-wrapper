@@ -5,7 +5,7 @@ pub const keyboard = @import("keyboard.zig");
 pub const mouse = @import("mouse.zig");
 pub const Joystick = @import("Joystick.zig");
 pub const Cursor = @import("Cursor.zig");
-pub const Clipboard = @import("Clipboard.zig");
+pub const Clipboard = @import("Clipboard.zig").Clipboard;
 
 //pub const touch = @compileError("touch not available yet");
 //pub const sensor = @compileError("Sensor not available yet");
