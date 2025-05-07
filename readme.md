@@ -35,8 +35,9 @@ This is a small example of how you use this sfml wrapper:
 //! for instance, in this page: https://www.sfml-dev.org/tutorials/2.6/start-vc.php
 
 const sf = struct {
-    usingnamespace @import("sfml");
-    usingnamespace @import("sfml").graphics;
+    const sfml = @import("sfml");
+    usingnamespace sfml;
+    usingnamespace sfml.graphics;
 };
 
 pub fn main() !void {
