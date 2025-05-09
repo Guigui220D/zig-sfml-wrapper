@@ -5,7 +5,7 @@ const sf = @import("../root.zig");
 
 fn isNum(comptime T: type) bool {
     return switch (@typeInfo(T)) {
-        .Int, .Float, .ComptimeFloat, .ComptimeInt => true,
+        .int, .float, .comptime_float, .comptime_int => true,
         else => false,
     };
 }
